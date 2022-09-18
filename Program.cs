@@ -1,6 +1,8 @@
+using JPFigure;
 using JPFigure.Data;
 using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Components.Web;
+using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -8,6 +10,11 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddRazorPages();
 builder.Services.AddServerSideBlazor();
 builder.Services.AddSingleton<WeatherForecastService>();
+
+var config = builder.Configuration;
+builder.Services.AddDbContext<JPFigureContext>(
+	optionsBuilder => optionsBuilder.UseNpgsql(config.GetConnectionString("JPFigurines"))
+);
 
 var app = builder.Build();
 
