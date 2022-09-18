@@ -1,10 +1,13 @@
 ﻿using System.ComponentModel;
+using JPFigure.Extensions;
 
 namespace JPFigure.Entities.Enums
 {
 
 	/// <summary>
 	/// Tỉ lệ của figure
+	/// <para> Dùng <see cref="EnumExtensions.GetDisplayText(Enum)"/>
+	/// để lấy text hiển thị cho người dùng </para>
 	/// </summary>
 	public enum FigureScale
 	{
