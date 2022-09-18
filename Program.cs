@@ -13,7 +13,7 @@ builder.Services.AddSingleton<WeatherForecastService>();
 
 var config = builder.Configuration;
 builder.Services.AddDbContext<JPFigureContext>(
-	optionsBuilder => optionsBuilder.UseNpgsql(config.GetConnectionString("JPFigurines"))
+	optionsBuilder => optionsBuilder.UseNpgsql(config.GetConnectionString("JPFigure"))
 );
 
 var app = builder.Build();
