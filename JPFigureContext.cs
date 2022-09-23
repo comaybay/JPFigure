@@ -7,14 +7,15 @@ namespace JPFigure
 {
 	public class JPFigureContext : DbContext
 	{
-		public DbSet<Figure> Figures { get; set; }
-		public DbSet<Character> Characters { get; set; }
-		public DbSet<Series> Series { get; set; }
-		public DbSet<Manufacture> Manufactures { get; set; }
+		public DbSet<Figure> Figures { get; set; } = null!;
+		public DbSet<Character> Characters { get; set; } = null!;
+		public DbSet<Series> Series { get; set; } = null!;
+		public DbSet<Manufacture> Manufactures { get; set; } = null!;
 
 		static JPFigureContext()
 			=> NpgsqlConnection.GlobalTypeMapper.MapEnum<FigureScale>()
-												.MapEnum<FigureType>();
+												.MapEnum<FigureType>()
+												.MapEnum<GundamType>();
 
 		// để trống để tránh bị lỗi
 		public JPFigureContext(DbContextOptions options) : base(options)
@@ -23,6 +24,7 @@ namespace JPFigure
 
 		protected override void OnModelCreating(ModelBuilder modelBuilder)
 			=> modelBuilder.HasPostgresEnum<FigureScale>()
-						   .HasPostgresEnum<FigureType>();
+						   .HasPostgresEnum<FigureType>()
+						   .HasPostgresEnum<GundamType>();
 	}
 }

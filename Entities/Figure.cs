@@ -30,6 +30,7 @@ namespace JPFigure.Entities
 		public int Height { get; set; }
 		public DateOnly ReleaseDate { get; set; }
 		public FigureScale Scale { get; set; }
+		public GundamType GundamType { get; set; }
 
 		public Character Character { get; set; } = null!;
 		public Manufacture Manufacture { get; set; } = null!;

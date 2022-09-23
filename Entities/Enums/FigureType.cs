@@ -15,11 +15,8 @@ namespace JPFigure.Entities.Enums
 		[Description("Nendoroid")]
 		Nendoroid, 
 		
-		[Description("Pop Up Parade")]
-		PopUpParade, 
-		
-		[Description("Figma")]
-		Figma, 
+		[Description("Gundam")]
+		Gundam, 
 		
 		[Description("Các loại figure khác")]
 		Others
