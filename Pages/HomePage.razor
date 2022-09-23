@@ -1,5 +1,16 @@
-﻿@page "/"
-@inject IJSRuntime JSRuntime
+﻿@page "/";
+@inject Microsoft.JSInterop.IJSRuntime JsRuntime;
+
+@functions {
+    protected async override Task OnAfterRenderAsync(bool firstRender)
+    {
+        if (firstRender)
+        {
+            await JsRuntime.InvokeAsync<object>("initializeCarousel");
+            firstRender = false;
+        }
+    }
+}
 
 <div class="navbar">
     <div class="left_nb">
@@ -625,7 +636,5 @@
     </div>
 </div>
 @code {
-    protected override async Task OnAfterRenderAsync(bool firstRender){
-        await JSRuntime.InvokeVoidAsync("startCarousels");
-    }
+    
 }
