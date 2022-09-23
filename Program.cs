@@ -3,6 +3,7 @@ using JPFigure.Data;
 using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Components.Web;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.AspNetCore.Identity;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -12,9 +13,18 @@ builder.Services.AddServerSideBlazor();
 builder.Services.AddSingleton<WeatherForecastService>();
 
 var config = builder.Configuration;
+var connectionString = config.GetConnectionString("JPFigure");
+
 builder.Services.AddDbContext<JPFigureContext>(
-	optionsBuilder => optionsBuilder.UseNpgsql(config.GetConnectionString("JPFigure"))
+	optionsBuilder => optionsBuilder.UseNpgsql(connectionString)
 );
+
+builder.Services.AddDbContext<IdentityContext>(
+	optionsBuilder => optionsBuilder.UseNpgsql(connectionString)
+);
+
+builder.Services.AddDefaultIdentity<IdentityUser>(options => options.SignIn.RequireConfirmedAccount = true)
+    .AddEntityFrameworkStores<IdentityContext>();
 
 var app = builder.Build();
 
@@ -34,5 +44,6 @@ app.UseRouting();
 
 app.MapBlazorHub();
 app.MapFallbackToPage("/_Host");
+app.UseAuthentication();;
 
 app.Run();
