@@ -1,16 +1,4 @@
 ﻿@page "/";
-@inject Microsoft.JSInterop.IJSRuntime JsRuntime;
-
-@functions {
-    protected async override Task OnAfterRenderAsync(bool firstRender)
-    {
-        if (firstRender)
-        {
-            await JsRuntime.InvokeAsync<object>("initializeCarousel");
-            firstRender = false;
-        }
-    }
-}
 
 <div class="navbar">
     <div class="left_nb">
@@ -88,7 +76,7 @@
         <li><a href="#">Liên hệ</a></li>
     </ul>
 </div>
-<div id="carouselExampleIndicators" class="carousel slide" data-bs-ride="true">
+<div id="carouselExampleIndicators" class="carousel slide" data-bs-interval="4000" data-bs-ride="carousel">
     <div class="carousel-indicators">
         <button type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide-to="0" class="active" aria-current="true" aria-label="Slide 1"></button>
         <button type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide-to="1" aria-label="Slide 2"></button>
