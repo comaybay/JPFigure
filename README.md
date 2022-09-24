@@ -7,7 +7,7 @@
 
 Tải postgresql tại đây: https://www.postgresql.org/download/ 
 
-**!! Lưu ý khi cài postgresql, đặt username và password cho superuser là 'postgres' để ứng dụng có thể chạy được, nếu không thì phải tự sửa lại connection string của chương trình trong file "appsettings.json"!!**
+**!! Lưu ý khi cài postgresql, đặt username và password cho superuser là 'postgres' để ứng dụng có thể chạy được, nếu không thì phải tự sửa lại connection string của chương trình trong file "appsettings.local.json"!!**
  
 
 ## Setup
