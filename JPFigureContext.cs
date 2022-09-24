@@ -18,7 +18,7 @@ namespace JPFigure
 												.MapEnum<GundamType>();
 
 		// để trống để tránh bị lỗi
-		public JPFigureContext(DbContextOptions options) : base(options)
+		public JPFigureContext(DbContextOptions<JPFigureContext> options) : base(options)
 		{
 		}
 
