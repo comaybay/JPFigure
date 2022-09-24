@@ -15,6 +15,8 @@ Tải postgresql tại đây: https://www.postgresql.org/download/
 
 2. cài dependency packages: chạy `dotnet restore`
 
-3. thiết lập CSDL trên máy: run `dotnet ef database update`
+3. thiết lập CSDL trên máy: 
+
+run `dotnet ef database update --context JPFigureContext` và `dotnet ef database update --context IdentityContext`
 
 4. Build và chạy ứng dụng
