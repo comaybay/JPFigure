@@ -1,34 +1,6 @@
 ﻿@page "/";
 
-<div class="navbar">
-    <div class="left_nb">
-        <img src="Image/logo.png">
-    </div>
-    <div class="center_nb">
-        <form>
-            <input type="text" placeholder="Tìm kiếm sản phẩm...?">
-            <button type="submit">
-                <img src="Image/magnifying-glass.png">
-            </button>
-        </form>
-    </div>
-    <div class="right_nb">     
-        <div class="container">
-            <button type="button" class="icon_bt">
-                <img src="Image/user.png">
-            </button>              
-            <span>Tài Khoản Của Tôi</span>              
-        </div>
-        <div class="container">
-            <button type="button" class="icon_bt">
-                <img src="Image/shopping-cart.png">
-                <span class="icon_badge">0</span>
-            </button>              
-            <span>Giỏ Hàng</span>             
-        </div>
-        
-    </div>
-</div>
+<NavBar></NavBar>
 <div class="menu">
     <ul>
         <li><a href="#">Trang Chủ</a></li>
@@ -573,56 +545,8 @@
         </ul>
     </div>
 </div>
-<div class="follow_us_ctn">
-    <h2>Follow Japan Figure on Instagram</h2>
-    <p>japanfigure.vn</p>
-</div>
-<div class="follow_us_img_ctn">
-    <div class="img_conner_1"></div>
-    <div class="img_center_1"></div>
-    <div class="img_center_2"></div>
-    <div class="img_center_3"></div>
-    <div class="img_center_4"></div>
-    <div class="img_conner_2"></div>
-</div>
-<div class="bottom_bar">
-    <div class="ctn">
-        <h4 class="h4_title">Giới thiệu Japan Figure</h4>
-        <p>Giúp các bạn trẻ Việt Nam dễ dàng tiếp cận với mô hình figure Nhật Bản</p>
-    </div>
-    <div class="ctn">
-        <ul class="contact">
-            <li>
-                <b>Địa chỉ: </b>Quận 10, Tp. Hồ Chí Minh. Japan Figure chưa có không gian trưng bày, bạn vui lòng hẹn trước khi đến
-            </li>
-            <li>
-                <b>Điện thoại: </b>090 8268 007
-            </li>
-            <li>
-                <b>Email: </b>support@japanfigure.vn
-            </li>
-        </ul>
-    </div>
-    <div class="ctn">
-        <h4 class="h4_title">Hỗ trợ khách hàng</h4>
-         <ul>
-            <li>Tìm kiếm</li>
-            <li>Giới thiệu</li>
-        </ul>
-    </div>
-    <div class="ctn">
-        <h4 class="h4_title">Chăm sóc khách hàng</h4>
-        <div class="support_ctn">
-            <div class="support_ctn_left">
-                <img src="Image/phone-call.png">
-            </div>
-            <div class="support_ctn_rigth">
-                <h4 class="h4_phone">0908268007</h4>
-                <p>support@japanfigure.vn</p>
-            </div>
-        </div>
-    </div>
-</div>
+<BottomBar></BottomBar>
+
 @code {
     
 }
