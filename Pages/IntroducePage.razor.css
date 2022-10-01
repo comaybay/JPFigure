@@ -1,0 +1,49 @@
+﻿* {
+    margin: 0;
+    padding: 0;
+}
+html, body {
+    width: 100%;
+    height: 100%;
+}
+.banner_ctn {
+    margin: 30px 0;
+    display: flex;
+    justify-content: center;
+}
+.ctn {
+    padding: 10px 50px;
+}
+span{
+    color: red;
+}
+ul{
+    margin: 20px 0;
+}
+li{
+    list-style: none;
+    margin-bottom: 15px;
+}
+.image_ctn{
+    display: flex;
+    justify-content: center;
+}
+.image_ctn img{
+    margin: 10px;
+}
+.image_title{
+    font-size: 15px;
+    font-style: italic;
+    text-align: center;
+}
+.content{
+    margin: 10px;
+}
+.sub{
+    list-style: outside;
+    margin-left: 40px;
+}
+.video{
+    width: 1000px;
+    margin-bottom: 10px;
+}

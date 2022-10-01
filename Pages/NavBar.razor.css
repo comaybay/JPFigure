@@ -99,6 +99,7 @@ form button img{
 }
 .menu ul li a:hover{
     color: #f879ff;
+    cursor: pointer;
 }
 .menu img{
     height: 10px;
