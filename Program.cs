@@ -27,7 +27,7 @@ builder.Services.AddDbContext<IdentityContext>(
 );
 
 builder.Services.AddDefaultIdentity<IdentityUser>(options => options.SignIn.RequireConfirmedAccount = true)
-    .AddEntityFrameworkStores<IdentityContext>();
+	.AddEntityFrameworkStores<IdentityContext>();
 
 var app = builder.Build();
 
