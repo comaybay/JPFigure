@@ -1,0 +1,137 @@
+﻿@page "/searchfor/"
+@page "/searchfor/{Value}"
+
+<NavBar></NavBar>
+<h2>Tìm kiếm sản phẩm</h2>
+<h3>@Value</h3>
+<div class="product_ctn">
+    <ul class="products">
+        <li>
+            <div class="product_item">
+                <div class="product_top">
+                    <a href="" class="product_thumb">
+                        <img src="Image/product5.png" alt="">
+                    </a>
+                    <a href="" class="add_cart">
+                        <span>Add To Cart</span>
+                        <img src="Image/cart-white.png">
+                    </a>
+                </div>
+                <div class="product_info">
+                    <div class="product_name_ctn">
+                        <a href="" class="product_name">Nendoroid Swacchao! Attack on Titan Levi</a>
+                    </div>
+                    <div class="product_price">1,300,000₫</div>
+                </div>
+            </div>
+
+        </li>
+        <li>
+            <div class="product_item">
+                <div class="product_top">
+                    <a href="" class="product_thumb">
+                        <img src="Image/product5.png" alt="">
+                    </a>
+                    <a href="" class="add_cart">
+                        <span>Add To Cart</span>
+                        <img src="Image/cart-white.png">
+                    </a>
+                </div>
+                <div class="product_info">
+                    <div class="product_name_ctn">
+                        <a href="" class="product_name">Nendoroid Swacchao! Attack on Titan Levi</a>
+                    </div>
+                    <div class="product_price">1,300,000₫</div>
+                </div>
+            </div>
+
+        </li>
+        <li>
+            <div class="product_item">
+                <div class="product_top">
+                    <a href="" class="product_thumb">
+                        <img src="Image/product5.png" alt="">
+                    </a>
+                    <a href="" class="add_cart">
+                        <span>Add To Cart</span>
+                        <img src="Image/cart-white.png">
+                    </a>
+                </div>
+                <div class="product_info">
+                    <div class="product_name_ctn">
+                        <a href="" class="product_name">Nendoroid Swacchao! Attack on Titan Levi</a>
+                    </div>
+                    <div class="product_price">1,300,000₫</div>
+                </div>
+            </div>
+
+        </li>
+        <li>
+            <div class="product_item">
+                <div class="product_top">
+                    <a href="" class="product_thumb">
+                        <img src="Image/product5.png" alt="">
+                    </a>
+                    <a href="" class="add_cart">
+                        <span>Add To Cart</span>
+                        <img src="Image/cart-white.png">
+                    </a>
+                </div>
+                <div class="product_info">
+                    <div class="product_name_ctn">
+                        <a href="" class="product_name">Nendoroid Swacchao! Attack on Titan Levi</a>
+                    </div>
+                    <div class="product_price">1,300,000₫</div>
+                </div>
+            </div>
+
+        </li>
+        <li>
+            <div class="product_item">
+                <div class="product_top">
+                    <a href="" class="product_thumb">
+                        <img src="Image/product5.png" alt="">
+                    </a>
+                    <a href="" class="add_cart">
+                        <span>Add To Cart</span>
+                        <img src="Image/cart-white.png">
+                    </a>
+                </div>
+                <div class="product_info">
+                    <div class="product_name_ctn">
+                        <a href="" class="product_name">Nendoroid Swacchao! Attack on Titan Levi</a>
+                    </div>
+                    <div class="product_price">1,300,000₫</div>
+                </div>
+            </div>
+
+        </li>
+    </ul>
+</div>
+<div class="page_navigate_ctn">
+    <nav aria-label="Page navigation example">
+        <ul class="pagination">
+            <li class="page-item">
+                <a class="page-link" href="#" aria-label="Previous">
+                    <span aria-hidden="true">&laquo;</span>
+                    <span class="sr-only"></span>
+                </a>
+            </li>
+            <li class="page-item"><a class="page-link" href="#">1</a></li>
+            <li class="page-item"><a class="page-link" href="#">2</a></li>
+            <li class="page-item"><a class="page-link" href="#">3</a></li>
+            <li class="page-item">
+                <a class="page-link" href="#" aria-label="Next">
+                    <span aria-hidden="true">&raquo;</span>
+                    <span class="sr-only"></span>
+                </a>
+            </li>
+        </ul>
+    </nav>
+</div>
+<BottomBar></BottomBar>
+
+@code {
+    [Parameter]
+    public string Value { get; set; }
+}
