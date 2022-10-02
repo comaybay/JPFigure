@@ -9,11 +9,6 @@ namespace JPFigure.Entities
 		public int Id { get; set; }
 
 		/// <summary>
-		/// Sản phẩm này có cần đặt trước không
-		/// </summary>
-		public bool IsPreorder { get; set; }
-
-		/// <summary>
 		/// Số lượng figure còn trong kho
 		/// </summary>
 		public int StockCount { get; set; }
