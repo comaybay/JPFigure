@@ -137,7 +137,7 @@ form button img{
     left: 150px;
     background-color: white;
 }
-.account_ctn {
+.account_ctn, .create_account_ctn, .forgot_account_ctn{
     position: absolute;
     bottom: -380px;
     width: 300px;
@@ -167,7 +167,7 @@ h4 {
     color: #677279;
     margin-bottom: 10px;
 }
-.account_ctn input {
+.account_ctn input, .create_account_ctn input, .forgot_account_ctn input {
     margin: 10px 0 5px 0;
     width: 100%;
     height: 40px;
@@ -183,7 +183,7 @@ b {
     color: #677279;
     margin: 5px 0;
 }
-.signin_bt {
+.signin_bt, .create_acc_signup_bt, .forgot_acc_bt {
     margin: 10px 0 5px 0;
     width: 100%;
     height: 40px;
@@ -192,15 +192,15 @@ b {
     background-color: red;
     color: white;
 }
-.signup_ctn, .forgot_pass_ctn {
+.signup_ctn, .forgot_pass_ctn, .create_acc_signin_ctn, .forgot_acc_ctn {
     display: flex;
     margin: 10px 0;
 }
-.signup_title, .forgot_pass_title {
+.signup_title, .forgot_pass_title, .create_acc_signin_title, .forgot_acc_title {
     font-size: 13px;
     margin-right: 5px;
 }
-.signup_bt, .forgot_pass_bt {
+.signup_bt, .forgot_pass_bt, .create_acc_signin_bt, .forgot_acc_signin_bt {
     font-size: 13px;
     border: none;
     background-color: white;

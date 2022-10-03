@@ -27,11 +27,34 @@
                 <button class="signin_bt">ĐĂNG NHẬP</button>
                 <div class="signup_ctn">
                     <p class="signup_title">Khách hàng mới?</p>
-                    <button class="signup_bt">Tạo tài khoản</button>
+                    <button class="signup_bt" @onclick=@OnClickCreateAccount>Tạo tài khoản</button>
                 </div>
                 <div class="forgot_pass_ctn">
                     <p class="forgot_pass_title">Quên mật khẩu?</p>
-                    <button class="forgot_pass_bt">Khôi phục mật khẩu</button>
+                    <button class="forgot_pass_bt" @onclick=@OnClickForgotAccount>Khôi phục mật khẩu</button>
+                </div>
+            </div>
+            <div class="create_account_ctn" style="display: @create_account_statue">
+                <h4>Tạo tài khoản</h4>
+                <input placeholder="Họ và Tên">
+                <input placeholder="Email...">
+                <input placeholder="Password...">
+                <p class="sub_title">This site is protected by reCAPTCHA and the Google <b>Privacy Policy</b> and <b>Terms of Service</b> apply.</p>
+                <button class="create_acc_signup_bt">ĐĂNG KÝ</button>
+                <div class="create_acc_signin_ctn">
+                    <p class="create_acc_signin_title">Đã có tài khoản?</p>
+                    <button class="create_acc_signin_bt" @onclick=@OnClickBack2Account>Trở lại đăng nhập</button>
+                </div>
+            </div>
+            <div class="forgot_account_ctn" style="display: @forgot_account_statue">
+                <h4>KHÔI PHỤC MẬT KHẨU</h4>
+                <p class="signin_title">Nhập email của bạn:</p>
+                <input placeholder="Email">
+                <p class="sub_title">This site is protected by reCAPTCHA and the Google <b>Privacy Policy</b> and <b>Terms of Service</b> apply.</p>
+                <button class="forgot_acc_bt">KHÔI PHỤC</button>
+                <div class="forgot_acc_ctn">
+                    <p class="forgot_acc_title">Bạn đã nhớ mật khẩu?</p>
+                    <button class="forgot_acc_signin_bt" @onclick=@OnClickBack2Account>Trở lại đăng nhập</button>
                 </div>
             </div>
             <span>Tài Khoản Của Tôi</span>
@@ -97,6 +120,8 @@
 @code {
     private string inputValue = "";
     private string account_statue = "none";
+    private string create_account_statue = "none";
+    private string forgot_account_statue = "none";
     private void OnInputEvent(ChangeEventArgs changeEvent)
     {
         inputValue = (string)changeEvent.Value;
@@ -104,11 +129,29 @@
     private void Navigate() => UriHelper.NavigateTo($"/searchfor/{inputValue}", true);
     private void OnClickAccount(MouseEventArgs mouseEventArgs)
     {
-        if (account_statue == "none")
+        if (account_statue == "none" && create_account_statue == "none" && forgot_account_statue == "none")
         {
             account_statue = "block";
         }else{
             account_statue = "none";
+            create_account_statue = "none";
+            forgot_account_statue = "none";
         }
+    }
+    private void OnClickCreateAccount(MouseEventArgs mouseEventArgs)
+    {
+        create_account_statue = "block";
+        account_statue = "none";
+    }
+    private void OnClickForgotAccount(MouseEventArgs mouseEventArgs)
+    {
+        forgot_account_statue = "block";
+        account_statue = "none";
+    }
+    private void OnClickBack2Account(MouseEventArgs mouseEventArgs)
+    {
+        forgot_account_statue = "none";
+        create_account_statue = "none";
+        account_statue = "block";
     }
 }
