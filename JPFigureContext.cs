@@ -23,8 +23,19 @@ namespace JPFigure
 		}
 
 		protected override void OnModelCreating(ModelBuilder modelBuilder)
-			=> modelBuilder.HasPostgresEnum<FigureScale>()
-						   .HasPostgresEnum<FigureType>()
-						   .HasPostgresEnum<GundamType>();
+		{
+			modelBuilder.HasPostgresEnum<FigureScale>()
+								   .HasPostgresEnum<FigureType>()
+								   .HasPostgresEnum<GundamType>()
+								   .HasPostgresEnum<FigureScale>();
+
+
+			modelBuilder.HasCollation("nondeterministic", "vi-VN", "icu", deterministic: false);
+
+			modelBuilder.Entity<Figure>()
+						.Property(p => p.SearchVector).UseCollation("nondeterministic");
+			modelBuilder.Entity<Figure>()
+						.HasIndex(p => p.SearchVector).HasMethod("GIN");
+		}
 	}
 }

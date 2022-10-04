@@ -1,5 +1,6 @@
 ﻿using JPFigure.Entities.Enums;
 using Microsoft.Extensions.Hosting;
+using NpgsqlTypes;
 using static System.Formats.Asn1.AsnWriter;
 
 namespace JPFigure.Entities
@@ -26,6 +27,8 @@ namespace JPFigure.Entities
 		public DateOnly ReleaseDate { get; set; }
 		public FigureScale Scale { get; set; }
 		public GundamType GundamType { get; set; }
+
+		public NpgsqlTsVector SearchVector { get; set; } = null!;
 
 		public Character Character { get; set; } = null!;
 		public Manufacture Manufacture { get; set; } = null!;

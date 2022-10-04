@@ -4,6 +4,7 @@ using JPFigure;
 using JPFigure.Entities.Enums;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 using NpgsqlTypes;
@@ -13,9 +14,10 @@ using NpgsqlTypes;
 namespace JPFigure.Migrations
 {
     [DbContext(typeof(JPFigureContext))]
-    partial class JPFigureContextModelSnapshot : ModelSnapshot
+    [Migration("20221004043818_InitialFTSSetup")]
+    partial class InitialFTSSetup
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
