@@ -1,6 +1,4 @@
 ﻿using JPFigure.Entities;
-using JPFigure.Entities.Enums;
-using Microsoft.Extensions.Hosting;
 
 namespace JPFigure.Models;
 

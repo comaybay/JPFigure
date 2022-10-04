@@ -1,4 +1,6 @@
-﻿using JPFigure.Repositories.Data.Inputs;
+﻿using JPFigure.Entities;
+using JPFigure.Repositories.Data.Inputs;
+using Microsoft.EntityFrameworkCore;
 
 namespace JPFigure.Repositories
 {
@@ -16,6 +18,11 @@ namespace JPFigure.Repositories
 			});
 
 			await Context.SaveChangesAsync();
+		}
+
+		public async Task<List<Series>> GetAllSeries()
+		{
+			return await Context.Series.ToListAsync();
 		}
 	}
 }
