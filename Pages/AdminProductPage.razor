@@ -48,8 +48,12 @@
             <input placeholder="Instock...">
         </div>
         <div>
-            <img src="Image/power-plant.png">
-            <input placeholder="Producer...">
+            <img src="Image/id-card.png">
+            <input placeholder="Producer ID...">
+        </div>
+        <div>
+            <img src="Image/price-tag.png">
+            <input placeholder="Price...">
         </div>
         <div>
             <img src="Image/scale.png">
@@ -60,11 +64,53 @@
             <input placeholder="Gundam Type..." style="pointer-events: @gundam_type_state">
         </div>
     </div>
-</div>
-<div class="button_ctn">
-    <button>Thêm</button>
-    <button>Xóa</button>
-    <button>Cập Nhật</button>
+    <div class="button_ctn">
+        <button>Thêm</button>
+        <button>Xóa</button>
+        <button>Cập Nhật</button>
+    </div>
+    <div class="input_extra_ctn">
+        <div class="extra_part_ctn">
+            <h4 style="font-size: 20px">Nhân Vật</h4>
+            <div>
+                <img src="Image/dog-tag.png">
+                <input placeholder="Character Name...">
+            </div>
+            <div>
+                <img src="Image/badge.png">
+                <input placeholder="Series ID...">
+            </div>
+            <div class="button_ctn">
+                <button>Thêm</button>
+                <button>Xóa</button>
+                <button>Cập Nhật</button>
+            </div>
+        </div>
+        <div class="extra_part_ctn">
+            <h4 style="font-size: 20px">Series</h4>
+            <div>
+                <img src="Image/serialized-books.png">
+                <input placeholder="Series...">
+            </div>
+            <div class="button_ctn">
+                <button>Thêm</button>
+                <button>Xóa</button>
+                <button>Cập Nhật</button>
+            </div>
+        </div>
+        <div class="extra_part_ctn">
+            <h4 style="font-size: 20px">Hãng Sản Xuất</h4>
+            <div>
+                <img src="Image/brand-image.png">
+                <input placeholder="Producer...">
+            </div>
+            <div class="button_ctn">
+                <button>Thêm</button>
+                <button>Xóa</button>
+                <button>Cập Nhật</button>
+            </div>
+        </div>
+    </div>
 </div>
 <h3>Dưới này là danh sách hàng hóa</h3>
 @code {
@@ -84,8 +130,7 @@
         {
             gundam_type_state = "auto";
         }
-        else
-        {
+        else{
             gundam_type_state = "none";
         }
     }

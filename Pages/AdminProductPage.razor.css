@@ -31,16 +31,16 @@ select {
     display: flex;
     flex-wrap: wrap;
 }
-.input_ctn div{
+.input_ctn div, .extra_part_ctn div{
     display: flex;
     margin: 20px 10px;
 }
-.input_ctn img {
+.input_ctn img, .extra_part_ctn img {
     width: 30px;
     height: 30px;
     margin-right: 5px;
 }
-.input_ctn input {
+.input_ctn input, .extra_part_ctn input {
     width: 240px;
     height: 30px;
     outline: none;
@@ -50,7 +50,6 @@ select {
 .button_ctn {
     display: flex;
     justify-content: flex-end;
-    border-bottom: 1px solid black;
 }
 .button_ctn button{
     height: 30px;
@@ -60,4 +59,15 @@ select {
     border-radius: 20px;
     background-color: hsl(240, 100%, 75%); 
     color: white;
+}
+.input_extra_ctn {
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+    border-top: 1px solid black;
+    border-bottom: 1px solid black;
+}
+.extra_part_ctn {
+    width: 33%;
+    border-right: 1px solid black;
 }
