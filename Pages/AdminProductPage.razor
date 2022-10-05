@@ -1,0 +1,92 @@
+﻿@page "/admin/product"
+<h4>Hàng Hóa</h4>
+<div class="select_ctn">
+    <span>Chọn loại sản phẩm: </span>
+    <select @onchange="SelectOnChange">
+        <option value="1">Scale Figure</option>
+        <option value="2">Nendoroid</option>
+        <option value="3">Gundam</option>
+        <option value="4">Khác</option>
+    </select>
+</div>
+<div class="add_product_ctn">
+    <div class="input_ctn">
+        <div>
+            <img src="Image/image.png">
+            <input placeholder="Image1 Link...">
+        </div>
+        <div>
+            <img src="Image/image.png">
+            <input placeholder="Image2 Link...">
+        </div>
+        <div>
+            <img src="Image/image.png">
+            <input placeholder="Image3 Link...">
+        </div>
+        <div>
+            <img src="Image/image.png">
+            <input placeholder="Image4 Link...">
+        </div>
+        <div>
+            <img src="Image/dog-tag.png">
+            <input placeholder="Product Name...">
+        </div>
+        <div>
+            <img src="Image/height.png">
+            <input placeholder="Product Height...">
+        </div>
+        <div>
+            <img src="Image/release.png">
+            <input placeholder="Release Date...">
+        </div>
+        <div>
+            <img src="Image/face-id.png">
+            <input placeholder="Character ID...">
+        </div>
+        <div>
+            <img src="Image/boxes.png">
+            <input placeholder="Instock...">
+        </div>
+        <div>
+            <img src="Image/power-plant.png">
+            <input placeholder="Producer...">
+        </div>
+        <div>
+            <img src="Image/scale.png">
+            <input placeholder="Sacle..."style="pointer-events: @scale_state">
+        </div>
+        <div>
+            <img src="Image/robot.png">
+            <input placeholder="Gundam Type..." style="pointer-events: @gundam_type_state">
+        </div>
+    </div>
+</div>
+<div class="button_ctn">
+    <button>Thêm</button>
+    <button>Xóa</button>
+    <button>Cập Nhật</button>
+</div>
+<h3>Dưới này là danh sách hàng hóa</h3>
+@code {
+    private string gundam_type_state = "none";
+    private string scale_state = "auto";
+    private string SelectedString = "1";
+    void SelectOnChange(ChangeEventArgs e)
+    {
+        SelectedString = e.Value.ToString();
+        if (SelectedString == "1")
+        {
+            scale_state = "auto";
+        }else{
+            scale_state = "none";
+        }
+        if (SelectedString == "3")
+        {
+            gundam_type_state = "auto";
+        }
+        else
+        {
+            gundam_type_state = "none";
+        }
+    }
+}

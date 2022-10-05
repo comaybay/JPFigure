@@ -1,0 +1,21 @@
+﻿* {
+    margin: 0;
+    padding: 0;
+}
+
+html, body {
+    width: 100%;
+    height: 100%;
+}
+.title_ctn{
+    padding: 10px;
+}
+h3{
+    text-align: center;
+}
+.title_ctn div{
+   width:70px;
+   height: 5px;
+   background-color: black;
+   margin: 10px auto;
+}

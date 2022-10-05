@@ -1,0 +1,51 @@
+﻿@page "/admin"
+<div class="ctn">
+    <h3>Welcome, Admin</h3>
+    <div class="content_ctn">
+        <div class="side_bar">
+            <button style="background-color: @CustomerBtColor" @onclick=@ChangeCustomerBtColor><img src="Image/value.png">Khách Hàng</button>
+            <button style="background-color: @ProductBtColor" @onclick=@ChangeProductBtColor><img src="Image/warehouse.png">Hàng Hóa</button>
+            <button style="background-color: @RevenueBtColor" @onclick=@ChangeRevenueBtColor><img src="Image/revenue.png">Doanh Thu</button>
+        </div>
+        <div class="content">
+            <iframe src=@IframeLink></iframe>
+        </div>
+    </div>
+</div>
+@code {
+    private string CustomerBtColor = "white";
+    private string ProductBtColor = "hsl(240, 100%, 75%)";
+    private string RevenueBtColor = "hsl(240, 100%, 75%)";
+    private string IframeLink = "https://localhost:7041/admin/customer";
+
+    private void ChangeCustomerBtColor(MouseEventArgs mouseEventArgs)
+    {
+        if (CustomerBtColor == "hsl(240, 100%, 75%)")
+        {
+            CustomerBtColor = "white";
+            ProductBtColor = "hsl(240, 100%, 75%)";
+            RevenueBtColor = "hsl(240, 100%, 75%)";
+            IframeLink = "https://localhost:7041/admin/customer";
+        }
+    }
+    private void ChangeProductBtColor(MouseEventArgs mouseEventArgs)
+    {
+        if (ProductBtColor == "hsl(240, 100%, 75%)")
+        {
+            CustomerBtColor = "hsl(240, 100%, 75%)";
+            ProductBtColor = "white";
+            RevenueBtColor = "hsl(240, 100%, 75%)";
+            IframeLink = "https://localhost:7041/admin/product";
+        }
+    }
+    private void ChangeRevenueBtColor(MouseEventArgs mouseEventArgs)
+    {
+        if (RevenueBtColor == "hsl(240, 100%, 75%)")
+        {
+            CustomerBtColor = "hsl(240, 100%, 75%)";
+            ProductBtColor = "hsl(240, 100%, 75%)";
+            RevenueBtColor = "white";
+            IframeLink = "https://localhost:7041/admin/revenue";
+        }
+    }
+}

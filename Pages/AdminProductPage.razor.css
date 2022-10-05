@@ -1,0 +1,63 @@
+﻿* {
+    margin: 0;
+    padding: 0;
+}
+
+html, body {
+    width: 100%;
+    height: 100%;
+}
+h4{
+    padding: 10px;
+}
+span{
+    font-size: 20px;
+    margin-right: 10px;
+    font-weight: bold;
+}
+.select_ctn{
+    display: flex;
+    justify-content: flex-end;
+    padding-right: 10px;
+}
+select {
+    background-color: hsl(240, 100%, 75%);
+    color: white;
+    height: 30px;
+    width: 150px;
+}
+.input_ctn {
+    width: 100%;
+    display: flex;
+    flex-wrap: wrap;
+}
+.input_ctn div{
+    display: flex;
+    margin: 20px 10px;
+}
+.input_ctn img {
+    width: 30px;
+    height: 30px;
+    margin-right: 5px;
+}
+.input_ctn input {
+    width: 240px;
+    height: 30px;
+    outline: none;
+    border: none;
+    border-bottom: 1px solid black;
+}
+.button_ctn {
+    display: flex;
+    justify-content: flex-end;
+    border-bottom: 1px solid black;
+}
+.button_ctn button{
+    height: 30px;
+    width: 100px;
+    margin: 10px;
+    border: none;
+    border-radius: 20px;
+    background-color: hsl(240, 100%, 75%); 
+    color: white;
+}
