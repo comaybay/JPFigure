@@ -25,6 +25,8 @@ namespace JPFigure.Entities
 		public int ManufactureId { get; set; }
 		public int Height { get; set; }
 		public DateOnly ReleaseDate { get; set; }
+		public int Price { get; set; }
+		public string[] Images { get; set; } = null!;
 		public FigureScale Scale { get; set; }
 		public GundamType GundamType { get; set; }
 

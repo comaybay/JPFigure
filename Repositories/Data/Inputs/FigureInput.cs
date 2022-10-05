@@ -10,5 +10,7 @@ namespace JPFigure.Repositories.Data.Inputs
         public int ManufactureId { get; set; }
         public int Height { get; set; }
         public DateOnly ReleaseDate { get; set; }
-    }
+		public int Price { get; set; }
+		public string[] Images { get; set; } = null!;
+	}
 }

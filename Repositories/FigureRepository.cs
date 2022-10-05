@@ -25,6 +25,8 @@ namespace JPFigure.Repositories
 				CharacterId = input.CharacterId,
 				StockCount = input.StockCount,
 				ManufactureId = input.ManufactureId,
+				Price = input.Price,
+				Images = input.Images
 			});
 			
 			await Context.SaveChangesAsync();
@@ -43,6 +45,8 @@ namespace JPFigure.Repositories
 				CharacterId = input.CharacterId,
 				StockCount = input.StockCount,
 				ManufactureId = input.ManufactureId,
+				Price = input.Price,
+				Images = input.Images
 			});
 
 			await Context.SaveChangesAsync();
@@ -61,6 +65,8 @@ namespace JPFigure.Repositories
 				CharacterId = input.CharacterId,
 				StockCount = input.StockCount,
 				ManufactureId = input.ManufactureId,
+				Price = input.Price,
+				Images = input.Images
 			});
 
 			await Context.SaveChangesAsync();
@@ -79,6 +85,8 @@ namespace JPFigure.Repositories
 				CharacterId = input.CharacterId,
 				StockCount = input.StockCount,
 				ManufactureId = input.ManufactureId,
+				Price = input.Price,
+				Images = input.Images
 			});
 
 			await Context.SaveChangesAsync();
