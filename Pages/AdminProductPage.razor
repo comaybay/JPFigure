@@ -1,67 +1,69 @@
 ﻿@page "/admin/product"
+@using JPFigure.Entities.Enums
+@using JPFigure.Extensions
 <h4>Hàng Hóa</h4>
 <div class="select_ctn">
     <span>Chọn loại sản phẩm: </span>
     <select @onchange="SelectOnChange">
-        <option value="1">Scale Figure</option>
-        <option value="2">Nendoroid</option>
-        <option value="3">Gundam</option>
-        <option value="4">Khác</option>
+        <option value=@FigureType.ScaleFigure> Scale Figure</option>
+        <option value=@FigureType.Nendoroid> Nendoroid</option>
+        <option value=@FigureType.Gundam> Gundam</option>
+		<option value=@FigureType.Others> Khác</option>
     </select>
 </div>
 <div class="add_product_ctn">
     <div class="input_ctn">
         <div>
             <img src="Image/image.png">
-            <input placeholder="Image1 Link...">
+			<input @bind="input_data.Image1" placeholder="Image1 Link...">
         </div>
         <div>
             <img src="Image/image.png">
-            <input placeholder="Image2 Link...">
+            <input @bind="input_data.Image2" placeholder="Image2 Link...">
         </div>
         <div>
             <img src="Image/image.png">
-            <input placeholder="Image3 Link...">
+            <input @bind="input_data.Image3" placeholder="Image3 Link...">
         </div>
         <div>
             <img src="Image/image.png">
-            <input placeholder="Image4 Link...">
+            <input @bind="input_data.Image4" placeholder="Image4 Link...">
         </div>
         <div>
             <img src="Image/dog-tag.png">
-            <input placeholder="Product Name...">
+			<input @bind="input_data.ProductName" placeholder="Product Name...">
         </div>
         <div>
             <img src="Image/height.png">
-            <input placeholder="Product Height...">
+            <input @bind="input_data.Height" placeholder="Product Height...">
         </div>
         <div>
             <img src="Image/release.png">
-            <input placeholder="Release Date...">
+            <input @bind="input_data.ReleaseDate" placeholder="Release Date...">
         </div>
         <div>
             <img src="Image/face-id.png">
-            <input placeholder="Character ID...">
+            <input @bind="input_data.CharacterId" placeholder="Character ID...">
         </div>
         <div>
             <img src="Image/boxes.png">
-            <input placeholder="Instock...">
+            <input @bind="input_data.StockCount" placeholder="Instock...">
         </div>
         <div>
             <img src="Image/id-card.png">
-            <input placeholder="Producer ID...">
+            <input @bind="input_data.ManufactureId" placeholder="Manufacture ID...">
         </div>
         <div>
             <img src="Image/price-tag.png">
-            <input placeholder="Price...">
+			<input @bind="input_data.Price" placeholder="Price...">
         </div>
         <div>
             <img src="Image/scale.png">
-            <input placeholder="Sacle..."style="pointer-events: @scale_state">
+			<input placeholder="@(scale_disabled ? FigureScale.NonScale.GetDisplayText() : "Scale...")" disabled=@scale_disabled>
         </div>
         <div>
             <img src="Image/robot.png">
-            <input placeholder="Gundam Type..." style="pointer-events: @gundam_type_state">
+			<input placeholder="@(gundam_type_disabled ? GundamType.NonGundam.GetDisplayText() : "Gundam Type..." )" disabled=@gundam_type_disabled>
         </div>
     </div>
     <div class="button_ctn">
@@ -114,24 +116,41 @@
 </div>
 <h3>Dưới này là danh sách hàng hóa</h3>
 @code {
-    private string gundam_type_state = "none";
-    private string scale_state = "auto";
-    private string SelectedString = "1";
-    void SelectOnChange(ChangeEventArgs e)
-    {
-        SelectedString = e.Value.ToString();
-        if (SelectedString == "1")
-        {
-            scale_state = "auto";
-        }else{
-            scale_state = "none";
-        }
-        if (SelectedString == "3")
-        {
-            gundam_type_state = "auto";
-        }
-        else{
-            gundam_type_state = "none";
-        }
-    }
+	private bool gundam_type_disabled = false;
+	private bool scale_disabled = false;
+	private FigureType SelectedFigureType = FigureType.ScaleFigure;
+	private InputData input_data = new();
+
+	protected override void OnInitialized()
+	{
+		UpdateInputFields();
+	}
+
+	void SelectOnChange(ChangeEventArgs e)
+	{
+			Enum.TryParse<FigureType>(e.Value!.ToString(), out SelectedFigureType);
+		UpdateInputFields();
+
+	}
+
+	void UpdateInputFields() {
+		scale_disabled = SelectedFigureType != FigureType.ScaleFigure;
+		gundam_type_disabled = SelectedFigureType != FigureType.Gundam;
+	}
+
+	private class InputData {
+		public int? StockCount { get; set; }
+		public string? ProductName { get; set; }
+		public int? CharacterId { get; set; }
+		public int? ManufactureId { get; set; }
+		public int? Height { get; set; }
+		public DateOnly? ReleaseDate { get; set; }
+		public int? Price { get; set; }
+		public string? Image1 { get; set; }
+		public string? Image2 { get; set; }
+		public string? Image3 { get; set; }
+		public string? Image4 { get; set; }
+		public FigureScale? Scale { get; set; }
+		public GundamType? GundamType { get; set; }
+	}
 }

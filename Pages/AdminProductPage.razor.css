@@ -71,3 +71,7 @@ select {
     width: 33%;
     border-right: 1px solid black;
 }
+
+input[disabled] {
+	background-color: hsl(240, 26%, 90%)
+}
