@@ -1,5 +1,4 @@
-﻿using JPFigure.Entities;
-using JPFigure.Repositories.Data.Inputs;
+﻿using JPFigure.Repositories.Data.Inputs;
 using Microsoft.EntityFrameworkCore;
 
 namespace JPFigure.Repositories
@@ -10,7 +9,7 @@ namespace JPFigure.Repositories
 		{
 		}
 
-		public async void AddManufacture(ManufactureInput input)
+		public async Task AddManufacture(ManufactureInput input)
 		{
 			await Context.Manufactures.AddAsync(new()
 			{
@@ -20,9 +19,13 @@ namespace JPFigure.Repositories
 			await Context.SaveChangesAsync();
 		}
 
-		public async Task<List<Manufacture>> GetAllSeries()
+		public async Task<List<Models.Manufacture>> GetAllManufactures()
 		{
-			return await Context.Manufactures.ToListAsync();
+			return await Context.Manufactures.Select(m => new Models.Manufacture()
+			{
+				Id = m.Id,
+				Name = m.Name,
+			}).ToListAsync();
 		}
 	}
 }

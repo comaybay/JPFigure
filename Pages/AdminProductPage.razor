@@ -1,6 +1,13 @@
 ﻿@page "/admin/product"
+@inject FigureRepository FigureRepository;
+@inject CharacterRepository CharacterRepository; 
+@inject SeriesRepository SeriesRepository;
+@inject ManufactureRepository ManufactureRepository;
+@using JPFigure.Pages.Shared.Admin
 @using JPFigure.Entities.Enums
 @using JPFigure.Extensions
+@using JPFigure.Repositories
+@using JPFigure.Repositories.Data.Inputs
 <h4>Hàng Hóa</h4>
 <div class="select_ctn">
     <span>Chọn loại sản phẩm: </span>
@@ -68,77 +75,165 @@
     </div>
     <div class="button_ctn">
         <button>Thêm</button>
-        <button>Xóa</button>
-        <button>Cập Nhật</button>
     </div>
     <div class="input_extra_ctn">
         <div class="extra_part_ctn">
             <h4 style="font-size: 20px">Nhân Vật</h4>
             <div>
                 <img src="Image/dog-tag.png">
-                <input placeholder="Character Name...">
+				<input @bind=characterInput.Name placeholder="Character Name..." disabled=@isProcessing>
             </div>
             <div>
                 <img src="Image/badge.png">
-                <input placeholder="Series ID...">
+				<SelectWithSearch 
+					SelectedOptionChanged=@(o => characterInput.SeriesId = o != null ? int.Parse(o.Value) : -1)
+					PlaceHolder="Series..."
+					Disabled=@isProcessing Options=@seriesOptions />
             </div>
             <div class="button_ctn">
-                <button>Thêm</button>
-                <button>Xóa</button>
-                <button>Cập Nhật</button>
+                <button @onclick=OnAddCharacter disabled=@CharacterButtonsDisabled>Thêm</button>
             </div>
         </div>
         <div class="extra_part_ctn">
             <h4 style="font-size: 20px">Series</h4>
             <div>
                 <img src="Image/serialized-books.png">
-                <input placeholder="Series...">
+				<input @bind=seriesInput.Name placeholder="Series..." disabled=@isProcessing>
             </div>
             <div class="button_ctn">
-                <button>Thêm</button>
-                <button>Xóa</button>
-                <button>Cập Nhật</button>
+                <button @onclick=OnAddSeries disabled="@SeriesButtonsDisabled">Thêm</button>
             </div>
         </div>
         <div class="extra_part_ctn">
             <h4 style="font-size: 20px">Hãng Sản Xuất</h4>
             <div>
                 <img src="Image/brand-image.png">
-                <input placeholder="Producer...">
+				<input @bind=manufactureInput.Name placeholder="Producer...">
             </div>
             <div class="button_ctn">
-                <button>Thêm</button>
-                <button>Xóa</button>
-                <button>Cập Nhật</button>
+				<button disabled="@ManufactureButtonsDisabled" @onclick=OnAddManufacture>Thêm</button>
             </div>
         </div>
+		<div hidden=@hideNotification class="notification">Xử lý thành công!</div>
     </div>
 </div>
 <h3>Dưới này là danh sách hàng hóa</h3>
 @code {
 	private bool gundam_type_disabled = false;
 	private bool scale_disabled = false;
-	private FigureType SelectedFigureType = FigureType.ScaleFigure;
-	private InputData input_data = new();
+	private FigureType selectedFigureType = FigureType.ScaleFigure;
+	private FigureInputData input_data = new();
+	private CharacterInput characterInput = new();
+	private SeriesInput seriesInput = new();
+	private ManufactureInput manufactureInput = new();
 
-	protected override void OnInitialized()
+	private List<SelectWithSearch.Option> characterOptions = new();
+	private List<SelectWithSearch.Option> seriesOptions = new();
+	private List<SelectWithSearch.Option> manufactureOptions = new();
+
+	private bool isProcessing = false;
+	private bool hideNotification = true;
+
+	private bool CharacterButtonsDisabled
+	{
+		get => isProcessing || String.IsNullOrEmpty(characterInput.Name) || characterInput.SeriesId <= 0;
+	}
+
+	private bool SeriesButtonsDisabled
+	{
+		get => isProcessing || String.IsNullOrEmpty(seriesInput.Name);
+	}
+
+	private bool ManufactureButtonsDisabled
+	{
+		get => isProcessing || String.IsNullOrEmpty(manufactureInput.Name);
+	}
+
+
+	protected override async Task OnInitializedAsync()
 	{
 		UpdateInputFields();
+		await UpdateOptions();
+	}
+
+	private async Task UpdateOptions() {
+		characterOptions = (await CharacterRepository.GetAllCharacters()).Select(
+			c => new SelectWithSearch.Option() {
+				Value = c.Id.ToString(),
+				DisplayText = c.Name
+		}).ToList();
+
+		seriesOptions = (await SeriesRepository.GetAllSeries()).Select(
+			c => new SelectWithSearch.Option() {
+				Value = c.Id.ToString(),
+				DisplayText = c.Name
+		}).ToList();
+
+		manufactureOptions = (await ManufactureRepository.GetAllManufactures()).Select(
+			c => new SelectWithSearch.Option() {
+				Value = c.Id.ToString(),
+				DisplayText = c.Name
+		}).ToList();
+	}
+
+
+	void UpdateInputFields()
+	{
+		scale_disabled = selectedFigureType != FigureType.ScaleFigure;
+		gundam_type_disabled = selectedFigureType != FigureType.Gundam;
 	}
 
 	void SelectOnChange(ChangeEventArgs e)
 	{
-			Enum.TryParse<FigureType>(e.Value!.ToString(), out SelectedFigureType);
+		Enum.TryParse<FigureType>(e.Value!.ToString(), out selectedFigureType);
 		UpdateInputFields();
-
 	}
 
-	void UpdateInputFields() {
-		scale_disabled = SelectedFigureType != FigureType.ScaleFigure;
-		gundam_type_disabled = SelectedFigureType != FigureType.Gundam;
+	private async Task OnAddCharacter()
+	{
+		isProcessing = true;
+		await CharacterRepository.AddCharacter(characterInput);
+		isProcessing = false;
+		characterInput = new();
+
+		await NotifyAndUpdateOptions();
 	}
 
-	private class InputData {
+	private async Task OnAddSeries() {
+		isProcessing = true;
+		await SeriesRepository.AddSeries(seriesInput);
+		isProcessing = false;
+		seriesInput = new();
+
+		await NotifyAndUpdateOptions();
+	}
+
+	private async Task OnAddManufacture()
+	{
+		isProcessing = true;
+		await ManufactureRepository.AddManufacture(manufactureInput);
+		isProcessing = false;
+		manufactureInput = new();
+
+		await NotifyAndUpdateOptions();
+	}
+
+	private async Task NotifyAndUpdateOptions() {
+		var notifyTask = ShowNotification();
+		await UpdateOptions();
+		await notifyTask;
+	}
+
+	private async Task ShowNotification() {
+		hideNotification = false;
+		StateHasChanged();
+		await Task.Delay(4000);
+		hideNotification = true;
+		StateHasChanged();
+	}
+
+
+	private class FigureInputData {
 		public int? StockCount { get; set; }
 		public string? ProductName { get; set; }
 		public int? CharacterId { get; set; }
@@ -154,3 +249,4 @@
 		public GundamType? GundamType { get; set; }
 	}
 }
+	

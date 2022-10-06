@@ -60,13 +60,18 @@ select {
     background-color: hsl(240, 100%, 75%); 
     color: white;
 }
-.input_extra_ctn {
-    width: 100%;
-    display: flex;
-    justify-content: space-between;
-    border-top: 1px solid black;
-    border-bottom: 1px solid black;
+.button_ctn button[disabled] {
+	background-color: hsl(240, 60%, 85%);
 }
+	
+.input_extra_ctn {
+	width: 100%;
+	display: flex;
+	justify-content: space-between;
+	border-top: 1px solid black;
+	border-bottom: 1px solid black;
+}
+
 .extra_part_ctn {
     width: 33%;
     border-right: 1px solid black;
@@ -74,4 +79,13 @@ select {
 
 input[disabled] {
 	background-color: hsl(240, 26%, 90%)
+}
+
+.notification {
+	transition: all 0.2s;
+	position: fixed;
+	bottom: 10px;
+	right: 10px;
+	padding: 5px 20px;
+	background-color: lightgreen;
 }

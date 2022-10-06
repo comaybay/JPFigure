@@ -12,7 +12,7 @@ namespace JPFigure.Repositories
 		{
 		}
 
-		public async void AddScaleFigure(ScaleFigureInput input)
+		public async Task AddScaleFigure(ScaleFigureInput input)
 		{
 			await Context.Figures.AddAsync(new()
 			{
@@ -32,7 +32,7 @@ namespace JPFigure.Repositories
 			await Context.SaveChangesAsync();
 		}
 
-		public async void AddGundamFigure(GundamFigureInput input)
+		public async Task AddGundamFigure(GundamFigureInput input)
 		{
 			await Context.Figures.AddAsync(new()
 			{
@@ -52,7 +52,7 @@ namespace JPFigure.Repositories
 			await Context.SaveChangesAsync();
 		}
 
-		public async void AddNendoroidFigure(FigureInput input)
+		public async Task AddNendoroidFigure(FigureInput input)
 		{
 			await Context.Figures.AddAsync(new()
 			{
@@ -72,7 +72,7 @@ namespace JPFigure.Repositories
 			await Context.SaveChangesAsync();
 		}
 
-		public async void AddOtherFigure(FigureInput input)
+		public async Task AddOtherFigure(FigureInput input)
 		{
 			await Context.Figures.AddAsync(new()
 			{

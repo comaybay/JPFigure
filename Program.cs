@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Components.Web;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.AspNetCore.Identity;
+using JPFigure.Repositories;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -28,6 +29,11 @@ builder.Services.AddDbContext<IdentityContext>(
 
 builder.Services.AddDefaultIdentity<IdentityUser>(options => options.SignIn.RequireConfirmedAccount = true)
 	.AddEntityFrameworkStores<IdentityContext>();
+
+builder.Services.AddScoped<FigureRepository>();
+builder.Services.AddScoped<CharacterRepository>();
+builder.Services.AddScoped<SeriesRepository>();
+builder.Services.AddScoped<ManufactureRepository>();
 
 var app = builder.Build();
 

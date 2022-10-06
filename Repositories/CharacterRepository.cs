@@ -11,7 +11,7 @@ namespace JPFigure.Repositories
 		{
 		}
 
-		public async void AddCharacter(CharacterInput input)
+		public async Task AddCharacter(CharacterInput input)
 		{
 			await Context.Characters.AddAsync(new()
 			{
@@ -29,7 +29,7 @@ namespace JPFigure.Repositories
 				.Select(c => new Models.Character() { 
 					Id = c.Id, 
 					Name = c.Name, 
-					Series = c.Series
+					Series = new Models.Series() { Id = c.Series.Id, Name = c.Series.Name}
 				})
 				.ToListAsync();
 		}

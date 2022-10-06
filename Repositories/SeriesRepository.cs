@@ -10,7 +10,7 @@ namespace JPFigure.Repositories
 		{
 		}
 
-		public async void AddSeries(SeriesInput input)
+		public async Task AddSeries(SeriesInput input)
 		{
 			await Context.Series.AddAsync(new()
 			{
@@ -20,9 +20,13 @@ namespace JPFigure.Repositories
 			await Context.SaveChangesAsync();
 		}
 
-		public async Task<List<Series>> GetAllSeries()
+		public async Task<List<Models.Series>> GetAllSeries()
 		{
-			return await Context.Series.ToListAsync();
+			return await Context.Series.Select(
+				s => new Models.Series() { 
+					Id = s.Id,
+					Name = s.Name
+				}).ToListAsync();
 		}
 	}
 }
