@@ -19,3 +19,77 @@ h3{
    background-color: black;
    margin: 10px auto;
 }
+.content_ctn{
+   margin-bottom: 30px;
+}
+.content_ctn div{
+    width: 700px;
+    margin: 0 auto;
+}
+h4 {
+    font-size: 20px;
+    border-bottom: 1px solid #D8D8D8;
+    height: 30px;
+}
+.user_info_ctn{
+    display: flex;
+}
+p{
+    margin: 30px 10px 0 0;
+    font-size: 17px;
+}
+.user_name {
+    font-weight: bold;
+    font-size: 18px;
+}
+input {
+    outline: none;
+    border: none;
+    border-bottom: 1px solid #D8D8D8;
+    width: 500px;
+    height: 25.5px;
+    margin-top: 30px;
+}
+button {
+    outline: none;
+    border: none;
+    border-radius: 20px;
+    width: 100px;
+    height: 30px;
+    margin-top: 25px;
+    background-color: red;
+    color: white;
+}
+.logout_ctn{
+    display: flex;
+    justify-content: center;
+}
+.logout_ctn button{
+    height: 40px;
+    width: 150px;
+}
+.bougth_title{
+    margin-top: 40px;
+}
+.bougth_ctn{
+    display: flex;
+    padding: 10px 0;
+}
+.image_ctn {
+    width: 15% !important;
+    height: 150px;
+}
+.image_ctn img{
+    height: 100%;
+    object-fit: contain;
+}
+.bougth_info_title {
+    width: 85% !important;
+    padding: 10px;
+}
+.bougth_info_title div{
+    margin-bottom: 5px;
+}
+.bougth_info_title span{
+    font-size: 16px;
+}
