@@ -43,108 +43,31 @@
     </div>
 </div>
 <div class="product_ctn">
-            <ul class="products">
-                <li>
-                    <div class="product_item">
-                        <div class="product_top">
-                            <a href="" class="product_thumb">
-                                <img src="Image/product5.png" alt="">
-                            </a>
-                            <a href="" class="add_cart">
-                                <span>Add To Cart</span>
-                                <img src="Image/cart-white.png">
-                            </a>
-                        </div>
-                        <div class="product_info">
-                            <div class="product_name_ctn">
-                                <a href="" class="product_name">Nendoroid Swacchao! Attack on Titan Levi</a>
-                            </div>
-                            <div class="product_price">1,300,000₫</div>
-                        </div>
+    <ul class="products">
+        @for (int i = 0; i < list.Count; i++)
+        {
+            <li>
+                <div class="product_item">
+                    <div class="product_top">
+                        <a href="" class="product_thumb">
+                            <img src=@list[i].Image alt="">
+                        </a>
+                        <a href="" class="add_cart">
+                            <span>Add To Cart</span>
+                            <img src="Image/cart-white.png">
+                        </a>
                     </div>
-
-                </li>
-                <li>
-                    <div class="product_item">
-                        <div class="product_top">
-                            <a href="" class="product_thumb">
-                                <img src="Image/product5.png" alt="">
-                            </a>
-                            <a href="" class="add_cart">
-                                <span>Add To Cart</span>
-                                <img src="Image/cart-white.png">
-                            </a>
+                    <div class="product_info">
+                        <div class="product_name_ctn">
+                            <a href="" class="product_name">@list[i].Name</a>
                         </div>
-                        <div class="product_info">
-                            <div class="product_name_ctn">
-                                <a href="" class="product_name">Nendoroid Swacchao! Attack on Titan Levi</a>
-                            </div>
-                            <div class="product_price">1,300,000₫</div>
-                        </div>
+                        <div class="product_price">@list[i].Price</div>
                     </div>
+                </div>
 
-                </li>
-                <li>
-                    <div class="product_item">
-                        <div class="product_top">
-                            <a href="" class="product_thumb">
-                                <img src="Image/product5.png" alt="">
-                            </a>
-                            <a href="" class="add_cart">
-                                <span>Add To Cart</span>
-                                <img src="Image/cart-white.png">
-                            </a>
-                        </div>
-                        <div class="product_info">
-                            <div class="product_name_ctn">
-                                <a href="" class="product_name">Nendoroid Swacchao! Attack on Titan Levi</a>
-                            </div>
-                            <div class="product_price">1,300,000₫</div>
-                        </div>
-                    </div>
-
-                </li>
-                <li>
-                    <div class="product_item">
-                        <div class="product_top">
-                            <a href="" class="product_thumb">
-                                <img src="Image/product5.png" alt="">
-                            </a>
-                            <a href="" class="add_cart">
-                                <span>Add To Cart</span>
-                                <img src="Image/cart-white.png">
-                            </a>
-                        </div>
-                        <div class="product_info">
-                            <div class="product_name_ctn">
-                                <a href="" class="product_name">Nendoroid Swacchao! Attack on Titan Levi</a>
-                            </div>
-                            <div class="product_price">1,300,000₫</div>
-                        </div>
-                    </div>
-
-                </li>
-                <li>
-                    <div class="product_item">
-                        <div class="product_top">
-                            <a href="" class="product_thumb">
-                                <img src="Image/product5.png" alt="">
-                            </a>
-                            <a href="" class="add_cart">
-                                <span>Add To Cart</span>
-                                <img src="Image/cart-white.png">
-                            </a>
-                        </div>
-                        <div class="product_info">
-                            <div class="product_name_ctn">
-                                <a href="" class="product_name">Nendoroid Swacchao! Attack on Titan Levi</a>
-                            </div>
-                            <div class="product_price">1,300,000₫</div>
-                        </div>
-                    </div>
-
-                </li>
-            </ul>
+            </li>
+        }
+    </ul>
 </div>
 <div class="page_navigate_ctn">
     <nav aria-label="Page navigation example">
@@ -170,5 +93,24 @@
 <BottomBar></BottomBar>
 
 @code {
+    public class Product
+    {
+        public string Image { get; set; }
+        public string Name { get; set; }
+        public string Price { get; set; }
 
+        public Product(string image, string name, string price)
+        {
+            Image = image;
+            Name = name;
+            Price = price;
+        }
+    }
+    List<Product> list = new List<Product>{
+       new Product("https://product.hstatic.net/1000160337/product/steins_gate_kurisu_makise_-_reading_steiner_-_1__2__942867e096e04b3aa8b4965e8229f0a3_master.jpg", "Steins;Gate Kurisu Makise - Reading Steiner - 1/7", "9,800,000₫"),
+       new Product("https://product.hstatic.net/1000160337/product/rezero_-_starting_life_in_another_world_-_emilia_-_hanfu_-_1__2__24fb7fdf0219474e98676baf0e47e2b3_master.jpg", "Re:ZERO - Starting Life in Another World - Emilia - Hanfu - 1/7", "9,950,000₫"),
+       new Product("https://product.hstatic.net/1000160337/product/steins_gate_kurisu_makise_-_reading_steiner_-_1__2__942867e096e04b3aa8b4965e8229f0a3_master.jpg", "Steins;Gate Kurisu Makise - Reading Steiner - 1/7", "9,800,000₫"),
+       new Product("https://product.hstatic.net/1000160337/product/rezero_-_starting_life_in_another_world_-_emilia_-_hanfu_-_1__2__24fb7fdf0219474e98676baf0e47e2b3_master.jpg", "Re:ZERO - Starting Life in Another World - Emilia - Hanfu - 1/7", "9,950,000₫"),
+       new Product("https://product.hstatic.net/1000160337/product/rezero_-_starting_life_in_another_world_-_emilia_-_hanfu_-_1__2__24fb7fdf0219474e98676baf0e47e2b3_master.jpg", "Re:ZERO - Starting Life in Another World - Emilia - Hanfu - 1/7", "9,950,000₫"),
+    };
 }
