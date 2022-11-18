@@ -60,7 +60,7 @@
             <span>Tài Khoản Của Tôi</span>
         </div>
         <div class="container">
-            <button type="button" class="icon_bt">
+            <button type="button" class="icon_bt" @onclick=@Navigate2Cart>
                 <img src="Image/shopping-cart.png">
                 <span class="icon_badge">0</span>
             </button>
@@ -127,6 +127,7 @@
         inputValue = (string)changeEvent.Value;
     }
     private void Navigate() => UriHelper.NavigateTo($"/searchfor/{inputValue}", true);
+    private void Navigate2Cart() => UriHelper.NavigateTo($"/cart", true);
     private void OnClickAccount(MouseEventArgs mouseEventArgs)
     {
         if (account_statue == "none" && create_account_statue == "none" && forgot_account_statue == "none")

@@ -1,0 +1,72 @@
+﻿@page "/cart"
+
+<NavBar></NavBar>
+<div class="title_ctn">
+    <h3>Giỏ hàng của bạn</h3>
+    <div></div>
+</div>
+<div class="content_ctn">
+    <div class="left_content_ctn">
+        <div class="product_info_ctn">
+            <div class="product_info_ctn_left">
+                <img src="Image/product1,1.png">
+            </div>
+            <div class="product_info_ctn_right">
+                <label>Nendoroid Swacchao! Attack on Titan Levi</label>
+                <div style="display: flex; justify-content: space-between">
+                    <input type="number" value="1" min="1">
+                    <button class="delete_bt">                     
+                        <img src="Image/delete.png">                        
+                    </button>
+                </div>
+                <label>1,400,000₫</label>
+                <div style="display: flex;justify-content:space-between">
+                    <label>Thành tiền</label>
+                    <label style="color: red;">1,400,000₫</label>
+                </div>
+            </div>
+        </div>
+        <div class="product_info_ctn">
+            <div class="product_info_ctn_left">
+                <img src="Image/product1,1.png">
+            </div>
+            <div class="product_info_ctn_right">
+                <label>Nendoroid Swacchao! Attack on Titan Levi</label>
+                <div style="display: flex; justify-content: space-between">
+                    <input type="number" value="1" min="1">
+                    <button class="delete_bt">
+                        <img src="Image/delete.png">
+                    </button>
+                </div>
+                <label>1,400,000₫</label>
+                <div style="display: flex;justify-content:space-between">
+                    <label>Thành tiền</label>
+                    <label style="color: red;">1,400,000₫</label>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="right_content_ctn">
+        <h4 class="bill_title">Thông tin đơn hàng</h4>
+        <div style="display: flex;justify-content: space-between">
+            <h4>Tổng tiền:</h4>
+            <h4 style="color: red">6,200,000₫</h4>
+        </div>
+        <ul>
+            <li>* Phí vận chuyển sẽ được tính ở trang thanh toán.</li>
+            <li>* Bạn cũng có thể nhập mã giảm giá ở trang thanh toán.</li>
+        </ul>
+        <button class="pay_bt">THANH TOÁN</button>
+        <div style="border-bottom: none;background-color:#d9edf7; padding:5px;height:80px; margin-bottom:0">
+            <b>Chính sách mua hàng:</b>
+            <p>
+                Miễn phí ship cho đơn hàng từ <b>1.000.000₫</b> trở lên.
+            </p>
+        </div>
+    </div>
+</div>
+<BottomBar></BottomBar>
+
+@code {
+
+}
