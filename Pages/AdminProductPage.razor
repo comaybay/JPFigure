@@ -22,59 +22,65 @@
     <div class="input_ctn">
         <div>
             <img src="Image/image.png">
-			<input @bind="input_data.Image1" placeholder="Image1 Link...">
+			<input @bind="figureInput.Image1" placeholder="Image1 Link...">
         </div>
         <div>
             <img src="Image/image.png">
-            <input @bind="input_data.Image2" placeholder="Image2 Link...">
+            <input @bind="figureInput.Image2" placeholder="Image2 Link...">
         </div>
         <div>
             <img src="Image/image.png">
-            <input @bind="input_data.Image3" placeholder="Image3 Link...">
+            <input @bind="figureInput.Image3" placeholder="Image3 Link...">
         </div>
         <div>
             <img src="Image/image.png">
-            <input @bind="input_data.Image4" placeholder="Image4 Link...">
+            <input @bind="figureInput.Image4" placeholder="Image4 Link...">
         </div>
         <div>
             <img src="Image/dog-tag.png">
-			<input @bind="input_data.ProductName" placeholder="Product Name...">
+			<input @bind="figureInput.ProductName" placeholder="Product Name...">
         </div>
         <div>
             <img src="Image/height.png">
-            <input @bind="input_data.Height" placeholder="Product Height...">
+            <input @bind="figureInput.Height" placeholder="Product Height...">
         </div>
         <div>
             <img src="Image/release.png">
-            <input @bind="input_data.ReleaseDate" placeholder="Release Date...">
+            <input @bind="figureInput.ReleaseDate" placeholder="Release Date...">
         </div>
         <div>
             <img src="Image/face-id.png">
-            <input @bind="input_data.CharacterId" placeholder="Character ID...">
+			<SelectWithSearch Id="figure-character" SelectedOptionChanged=@(o => figureInput.CharacterId = o != null ? int.Parse(o.Value) : -1)
+							  PlaceHolder="Character ID..."
+							  Disabled=@isProcessing Options=@characterOptions />
         </div>
         <div>
             <img src="Image/boxes.png">
-            <input @bind="input_data.StockCount" placeholder="Instock...">
+            <input @bind="figureInput.StockCount" placeholder="Instock...">
         </div>
         <div>
             <img src="Image/id-card.png">
-            <input @bind="input_data.ManufactureId" placeholder="Manufacture ID...">
+			<SelectWithSearch Id="figure-manufacture" SelectedOptionChanged=@(o => figureInput.ManufactureId = o != null ? int.Parse(o.Value) : -1)
+							  PlaceHolder="Manufacture ID..."
+							  Disabled=@isProcessing Options=@manufactureOptions/>
         </div>
         <div>
             <img src="Image/price-tag.png">
-			<input @bind="input_data.Price" placeholder="Price...">
+			<input @bind="figureInput.Price" placeholder="Price...">
         </div>
         <div>
             <img src="Image/scale.png">
-			<input placeholder="@(scale_disabled ? FigureScale.NonScale.GetDisplayText() : "Scale...")" disabled=@scale_disabled>
+			<SelectWithSearch Id="figure-scale" SelectedOptionChanged=@(o => figureInput.Scale = o != null ? Enum.Parse<FigureScale>(o.Value) : FigureScale.NonScale)
+							  PlaceHolder=@(scaleDisabled ? FigureScale.NonScale.GetDisplayText() : "Scale...")
+							  Disabled=@(isProcessing || scaleDisabled) Options=@scaleOptions/>
         </div>
         <div>
             <img src="Image/robot.png">
-			<input placeholder="@(gundam_type_disabled ? GundamType.NonGundam.GetDisplayText() : "Gundam Type..." )" disabled=@gundam_type_disabled>
+			<input placeholder="@(gundamTypeDisabled ? GundamType.NonGundam.GetDisplayText() : "Gundam Type..." )" disabled=@gundamTypeDisabled>
         </div>
     </div>
     <div class="button_ctn">
-        <button>Thêm</button>
+		<button @onclick=OnAddFigure disabled=@FigureButtonsDisabled>Thêm</button>
     </div>
     <div class="input_extra_ctn">
         <div class="extra_part_ctn">
@@ -85,7 +91,7 @@
             </div>
             <div>
                 <img src="Image/badge.png">
-				<SelectWithSearch 
+				<SelectWithSearch Id="character-series"
 					SelectedOptionChanged=@(o => characterInput.SeriesId = o != null ? int.Parse(o.Value) : -1)
 					PlaceHolder="Series..."
 					Disabled=@isProcessing Options=@seriesOptions />
@@ -119,10 +125,10 @@
 </div>
 <h3>Dưới này là danh sách hàng hóa</h3>
 @code {
-	private bool gundam_type_disabled = false;
-	private bool scale_disabled = false;
+	private bool gundamTypeDisabled = false;
+	private bool scaleDisabled = false;
 	private FigureType selectedFigureType = FigureType.ScaleFigure;
-	private FigureInputData input_data = new();
+	private FigureInputData figureInput = new();
 	private CharacterInput characterInput = new();
 	private SeriesInput seriesInput = new();
 	private ManufactureInput manufactureInput = new();
@@ -130,6 +136,7 @@
 	private List<SelectWithSearch.Option> characterOptions = new();
 	private List<SelectWithSearch.Option> seriesOptions = new();
 	private List<SelectWithSearch.Option> manufactureOptions = new();
+	private List<SelectWithSearch.Option> scaleOptions = new();
 
 	private bool isProcessing = false;
 	private bool hideNotification = true;
@@ -149,6 +156,19 @@
 		get => isProcessing || String.IsNullOrEmpty(manufactureInput.Name);
 	}
 
+	private bool FigureButtonsDisabled
+	{
+		get {
+			var invalid = (string str) => String.IsNullOrEmpty(str);
+			var isNull = (int? num) => num == null;
+			var invalidId = (int? num) => num <= 0;
+			var fi = figureInput;
+			return isProcessing || invalid(fi.ProductName) || invalid(fi.Image1) || invalid(fi.Image2) ||
+			isNull(fi.Price) || isNull(fi.Height) || isNull(fi.StockCount) ||
+			(!scaleDisabled && fi.Scale == null) || fi.ReleaseDate == null || invalidId(fi.CharacterId) || invalidId(fi.ManufactureId) ||
+			(!gundamTypeDisabled && fi.GundamType == null);
+		}
+	}
 
 	protected override async Task OnInitializedAsync()
 	{
@@ -174,13 +194,28 @@
 				Value = c.Id.ToString(),
 				DisplayText = c.Name
 		}).ToList();
+
+		scaleOptions = Enum.GetValues<FigureScale>().Select(
+			e => new SelectWithSearch.Option() {
+				Value = e.ToString(),
+				DisplayText = e.GetDisplayText()
+			}
+		).ToList();
 	}
 
 
 	void UpdateInputFields()
 	{
-		scale_disabled = selectedFigureType != FigureType.ScaleFigure;
-		gundam_type_disabled = selectedFigureType != FigureType.Gundam;
+		scaleDisabled = selectedFigureType != FigureType.ScaleFigure;
+		gundamTypeDisabled = selectedFigureType != FigureType.Gundam;
+
+		if (scaleDisabled) {
+			figureInput.Scale = FigureScale.NonScale;
+		}
+
+		if (gundamTypeDisabled) {
+			figureInput.GundamType = GundamType.NonGundam;
+		}
 	}
 
 	void SelectOnChange(ChangeEventArgs e)
@@ -212,6 +247,63 @@
 	{
 		isProcessing = true;
 		await ManufactureRepository.AddManufacture(manufactureInput);
+		isProcessing = false;
+		manufactureInput = new();
+
+		await NotifyAndUpdateOptions();
+	}
+
+	private async Task OnAddFigure() {
+		isProcessing = true;
+
+		var images = new List<string> { figureInput.Image1, figureInput.Image2 };
+		if (string.IsNullOrEmpty(figureInput.Image3))
+		{
+			images.Add(figureInput.Image3);
+		}
+
+		if (string.IsNullOrEmpty(figureInput.Image4))
+		{
+			images.Add(figureInput.Image4);
+		}
+
+		T createAndPopulateFigure<T>(Action<T, FigureInputData> manualHandler = null) where T : FigureInput, new()
+		{
+			T figure = new T();
+			figure.CharacterId = figureInput.CharacterId.Value;
+			figure.Height = figureInput.Height.Value;
+			figure.Images = images.ToArray();
+			figure.ManufactureId = figureInput.ManufactureId.Value;
+			figure.Price = figureInput.Price.Value;
+			figure.ProductName = figureInput.ProductName;
+			figure.ReleaseDate = figureInput.ReleaseDate.Value;
+			figure.StockCount = figureInput.StockCount.Value;
+			manualHandler?.Invoke(figure, figureInput);
+			return figure;
+		}
+
+		var task = selectedFigureType switch
+		{
+			FigureType.Nendoroid => FigureRepository.AddNendoroidFigure(
+				createAndPopulateFigure<FigureInput>()
+			),
+			FigureType.Gundam => FigureRepository.AddGundamFigure(
+				createAndPopulateFigure<GundamFigureInput>((f, fi) => {
+					f.GundamType = fi.GundamType.Value;
+				}) 
+			),
+			FigureType.ScaleFigure => FigureRepository.AddScaleFigure(
+				createAndPopulateFigure<ScaleFigureInput>((f, fi) => {
+					f.Scale = fi.Scale.Value;
+				})
+			),
+			FigureType.Others => FigureRepository.AddOtherFigure(
+				createAndPopulateFigure<FigureInput>()
+			),
+		};
+
+		await task;
+
 		isProcessing = false;
 		manufactureInput = new();
 

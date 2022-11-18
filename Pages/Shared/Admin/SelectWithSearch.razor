@@ -1,5 +1,5 @@
-﻿<input @onchange=OnInputChanged @bind-value:event="oninput" @bind-value=_DisplayText list="items" placeholder=@PlaceHolder disabled=@Disabled>
-<datalist id="items">
+﻿<input @onchange=OnInputChanged @bind-value:event="oninput" @bind-value=_DisplayText list=@Id placeholder=@PlaceHolder disabled=@Disabled>
+<datalist id=@Id>
 	@foreach (var option in Options)
 	{
 		<option value="@option.Value">@option.DisplayText</option>
@@ -7,6 +7,9 @@
 </datalist>  
 
 @code {
+	[Parameter]
+	public string Id { get; set; }
+
 	[Parameter]
 	public bool Disabled { get; set; }
 
@@ -22,6 +25,13 @@
 	public EventCallback<Option?> SelectedOptionChanged { get; set; }
 
 	private string _DisplayText { get; set; } = "";
+
+	protected override void OnParametersSet()
+	{
+		if (Disabled) {
+			_DisplayText = "";
+		}
+	}
 
 	private async Task OnInputChanged(ChangeEventArgs e)
 	{
