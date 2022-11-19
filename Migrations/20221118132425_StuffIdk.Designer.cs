@@ -7,21 +7,19 @@ using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
-using NpgsqlTypes;
 
 #nullable disable
 
 namespace JPFigure.Migrations
 {
     [DbContext(typeof(JPFigureContext))]
-    [Migration("20221005141537_AddFigurePriceAndImages")]
-    partial class AddFigurePriceAndImages
+    [Migration("20221118132425_StuffIdk")]
+    partial class StuffIdk
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
-                .HasAnnotation("Npgsql:CollationDefinition:nondeterministic", "vi-VN,vi-VN,icu,False")
                 .HasAnnotation("ProductVersion", "6.0.9")
                 .HasAnnotation("Relational:MaxIdentifierLength", 63);
 
@@ -89,11 +87,6 @@ namespace JPFigure.Migrations
                     b.Property<FigureScale>("Scale")
                         .HasColumnType("figure_scale");
 
-                    b.Property<NpgsqlTsVector>("SearchVector")
-                        .IsRequired()
-                        .HasColumnType("tsvector")
-                        .UseCollation("nondeterministic");
-
                     b.Property<int>("StockCount")
                         .HasColumnType("integer");
 
@@ -105,10 +98,6 @@ namespace JPFigure.Migrations
                     b.HasIndex("CharacterId");
 
                     b.HasIndex("ManufactureId");
-
-                    b.HasIndex("SearchVector");
-
-                    NpgsqlIndexBuilderExtensions.HasMethod(b.HasIndex("SearchVector"), "GIN");
 
                     b.ToTable("Figures");
                 });

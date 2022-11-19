@@ -5,7 +5,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace JPFigure.Migrations
 {
-    public partial class AddFigurePriceAndImages : Migration
+    public partial class StuffIdk : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {

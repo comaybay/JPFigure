@@ -25,6 +25,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <Folder Include="Pages\Shared\Admin\" />
     <Folder Include="wwwroot\Image\" />
   </ItemGroup>
 

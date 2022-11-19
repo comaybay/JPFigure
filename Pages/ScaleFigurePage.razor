@@ -1,4 +1,9 @@
 ﻿@page "/scalefigure"
+@using JPFigure.Entities.Enums
+@using JPFigure.Repositories.Data.Filters
+@inject FigureRepository FigureRepository;
+@inject ManufactureRepository ManufactureRepository;
+@inject NavigationManager Navigation
 
 <NavBar></NavBar>
 <div class="banner_ctn">
@@ -8,7 +13,10 @@
     <h2>Scale Figure</h2>
     <div class="select_container">
         <img src="Image/sort.png">
-        <select class="sort">
+        <select class="sort" @onchange="@(e => {
+				filter.OrderNewest = e.Value?.ToString() == "oldest" ? false : true;
+				ApplyFilter();
+			})">
             <option value="news">Mới Nhất</option>
             <option value="oldest">Cũ Nhất</option>
         </select>
@@ -22,95 +30,185 @@
     <div>
         <img src="Image/brand-image.png">
         <p>Thương Hiệu</p>
-        <select class="filter_brand">
-            <option value="1">1</option>
-            <option value="2">2</option>
-            <option value="3">3</option>
-            <option value="4">4</option>
-        </select>
+		<SelectWithSearch Options=@brandOptions 
+			SelectedOptionChanged=@(async o => {
+				filter.ManufactureId = o != null ? int.Parse(o.Value) : null;
+						  currentPage = 1;
+						  ApplyFilter();
+			}) />
     </div>
     <div>
         <img src="Image/price-tag.png">
         <p>Giá Tiền</p>
-        <select class="filter_price">
-            <option value="price1">Dưới 1.000.000₫</option>
-            <option value="price2">1.000.000₫ - 2.000.000₫</option>
-            <option value="price3">2.000.000₫ - 3.000.000₫</option>
-            <option value="price4">3.000.000₫ - 4.000.000₫</option>
-            <option value="price5">3.000.000₫ - 4.000.000₫</option>
-            <option value="price6">Trên 4.000.000₫</option>
-        </select>
+		<SelectWithSearch
+			Options=@(new() {
+				new() {DisplayText = "Dưới 1.000.000₫", Value="1"},
+				new() {DisplayText = "1.000.000₫ - 2.000.000₫", Value="2"},
+				new() {DisplayText = "2.000.000₫ - 3.000.000₫", Value="3"},
+				new() {DisplayText = "3.000.000₫ - 4.000.000₫", Value="4"},
+				new() {DisplayText = "Trên 4.000.000₫", Value="5"}
+			})
+			SelectedOptionChanged=@(async o => {
+				filter.PriceRange = (o?.Value) switch {
+						"1" => (null, 1000000),
+						"2" => (1000000, 2000000),
+						"3" => (2000000, 3000000),
+						"4" => (3000000, 4000000),
+						"5" => (4000000, null),
+						_ => (null, null),
+					};
+				currentPage = 1;
+				ApplyFilter();
+			}) />
     </div>
 </div>
 <div class="product_ctn">
     <ul class="products">
-        @for (int i = 0; i < list.Count; i++)
-        {
-            <li>
-                <div class="product_item">
-                    <div class="product_top">
-                        <a href="" class="product_thumb">
-                            <img src=@list[i].Image alt="">
-                        </a>
-                        <a href="" class="add_cart">
-                            <span>Add To Cart</span>
-                            <img src="Image/cart-white.png">
-                        </a>
-                    </div>
-                    <div class="product_info">
-                        <div class="product_name_ctn">
-                            <a href="" class="product_name">@list[i].Name</a>
-                        </div>
-                        <div class="product_price">@list[i].Price</div>
-                    </div>
-                </div>
+		@if (figures != null) {
+			@for (int i = 0; i < figures.Items.Count; i++)
+			{
+				<li>
+					<div class="product_item">
+						<div class="product_top">
+							<a href="" class="product_thumb">
+								<img src=@figures.Items[i].Images[0] alt="">
+							</a>
+							<a href="" class="add_cart">
+								<span>Add To Cart</span>
+								<img src="Image/cart-white.png">
+							</a>
+						</div>
+						<div class="product_info">
+							<div class="product_name_ctn">
+								<a href="" class="product_name">@figures.Items[i].ProductName</a>
+							</div>
+							<div class="product_price">@figures.Items[i].Price</div>
+						</div>
+					</div>
 
-            </li>
-        }
+				</li>
+			}
+		}
+
     </ul>
 </div>
-<div class="page_navigate_ctn">
-    <nav aria-label="Page navigation example">
-        <ul class="pagination">
-            <li class="page-item">
-                <a class="page-link" href="#" aria-label="Previous">
-                    <span aria-hidden="true">&laquo;</span>
-                    <span class="sr-only"></span>
-                </a>
-            </li>
-            <li class="page-item"><a class="page-link" href="#">1</a></li>
-            <li class="page-item"><a class="page-link" href="#">2</a></li>
-            <li class="page-item"><a class="page-link" href="#">3</a></li>
-            <li class="page-item">
-                <a class="page-link" href="#" aria-label="Next">
-                    <span aria-hidden="true">&raquo;</span>
-                    <span class="sr-only"></span>
-                </a>
-            </li>
-        </ul>
-    </nav>
-</div>
+@if (figures != null && figures.NumberOfPages > 0) {
+	<div class="page_navigate_ctn">
+		<nav aria-label="Page navigation example">
+			<ul class="pagination">
+				<li class="page-item">
+					<a class="page-link" href="#" aria-label="Previous" @onclick=@(e => {
+						   currentPage = 1;
+						   ApplyFilter();
+						   })>
+						<span aria-hidden="true">&laquo;</span>
+						<span class="sr-only"></span>
+					</a>
+				</li>
+				@for (int i = Math.Max(1, Math.Min(figures.PageNumber - 1, figures.NumberOfPages - 5)); i <= Math.Min(Math.Max(3, 2 + figures.PageNumber - 1), figures.NumberOfPages - 4 + 1); i++)
+				{
+					var index = i;
+					<li class="page-item">
+						<a class="page-link" @onclick=@(e => {
+				   currentPage = index;
+				   ApplyFilter();
+						   })>@index
+					   </a>
+					</li>
+				}
+				@if (figures.NumberOfPages - (figures.PageNumber - 1) + 1 > 6)
+				{
+					<li class="page-item"><span class="page-link">...</span></li>
+				}
+				@for (int i = Math.Min(figures.PageNumber + 3, figures.NumberOfPages - 3 + 1); i <= figures.NumberOfPages; i++)
+				{
+					var index = i;
+					<li class="page-item">
+						<a class="page-link" @onclick=@(e => {
+							currentPage = index;
+						   ApplyFilter();
+						   })>@index
+						</a>
+					</li>
+				}
+				<li class="page-item">
+					<a class="page-link" href="#" aria-label="Next" 
+						@onclick=@(e => {
+						   currentPage = figures.NumberOfPages;
+						   ApplyFilter();
+						   })
+					>
+						<span aria-hidden="true">&raquo;</span>
+						<span class="sr-only"></span>
+					</a>
+				</li>
+			</ul>
+		</nav>
+	</div>
+}
+
 <BottomBar></BottomBar>
 
 @code {
-    public class Product
-    {
-        public string Image { get; set; }
-        public string Name { get; set; }
-        public string Price { get; set; }
+	[Parameter]
+	[SupplyParameterFromQuery]
+	public int Page { get; set; }
 
-        public Product(string image, string name, string price)
-        {
-            Image = image;
-            Name = name;
-            Price = price;
-        }
-    }
-    List<Product> list = new List<Product>{
-       new Product("https://product.hstatic.net/1000160337/product/steins_gate_kurisu_makise_-_reading_steiner_-_1__2__942867e096e04b3aa8b4965e8229f0a3_master.jpg", "Steins;Gate Kurisu Makise - Reading Steiner - 1/7", "9,800,000₫"),
-       new Product("https://product.hstatic.net/1000160337/product/rezero_-_starting_life_in_another_world_-_emilia_-_hanfu_-_1__2__24fb7fdf0219474e98676baf0e47e2b3_master.jpg", "Re:ZERO - Starting Life in Another World - Emilia - Hanfu - 1/7", "9,950,000₫"),
-       new Product("https://product.hstatic.net/1000160337/product/steins_gate_kurisu_makise_-_reading_steiner_-_1__2__942867e096e04b3aa8b4965e8229f0a3_master.jpg", "Steins;Gate Kurisu Makise - Reading Steiner - 1/7", "9,800,000₫"),
-       new Product("https://product.hstatic.net/1000160337/product/rezero_-_starting_life_in_another_world_-_emilia_-_hanfu_-_1__2__24fb7fdf0219474e98676baf0e47e2b3_master.jpg", "Re:ZERO - Starting Life in Another World - Emilia - Hanfu - 1/7", "9,950,000₫"),
-       new Product("https://product.hstatic.net/1000160337/product/rezero_-_starting_life_in_another_world_-_emilia_-_hanfu_-_1__2__24fb7fdf0219474e98676baf0e47e2b3_master.jpg", "Re:ZERO - Starting Life in Another World - Emilia - Hanfu - 1/7", "9,950,000₫"),
-    };
+	[Parameter]
+	[SupplyParameterFromQuery]
+	public int? Scale { get; set; }
+
+	[Parameter]
+	[SupplyParameterFromQuery]
+	public int? Brand { get; set; }
+
+	[Parameter]
+	[SupplyParameterFromQuery]
+	public int? PriceFrom { get; set; }
+
+	[Parameter]
+	[SupplyParameterFromQuery]
+	public int? PriceTo { get; set; }
+
+	[Parameter]
+	[SupplyParameterFromQuery]
+	public string? Order { get; set; }
+
+	private Pagination<Models.ScaleFigure>? figures = null;
+
+	private List<SelectWithSearch.Option> brandOptions = new();
+	private ScaleFigureFilter filter = new();
+	private int currentPage = 1;
+
+	protected override async Task OnInitializedAsync()
+	{
+		brandOptions =  (await ManufactureRepository.GetAllManufactures()).Select(
+			c => new SelectWithSearch.Option() {
+				Value = c.Id.ToString(),
+				DisplayText = c.Name
+		}).ToList();
+	}
+
+	protected override async Task OnParametersSetAsync()
+	{
+		filter = new()
+		{
+			FigureScale = (FigureScale?)Scale,
+			ManufactureId = Brand,
+			PriceRange = (PriceFrom, PriceTo),
+			OrderNewest = Order != null && Order == "asc" ? false : true,
+		};
+
+		figures = await FigureRepository.GetScaleFigures(filter, Math.Max(1, Page), 2);
+	}
+
+	/// Áp dụng filter để tìm figure, gọi hàm này khi có thay đổi về lựa chọn lọc hay lựa chọn sắp xếp
+	private void ApplyFilter() {
+		string paramBrand = filter.ManufactureId != null ? $"&brand={filter.ManufactureId}" : "";
+		string paramScale = filter.FigureScale != null ? $"&scale={(int) filter.FigureScale}" : "";
+		string paramPriceFrom = filter.PriceRange.from != null ? $"&pricefrom={filter.PriceRange.from}" : "";
+		string paramPriceTo = filter.PriceRange.to != null ? $"&priceto={filter.PriceRange.to}" : "";
+		string paramOrder = filter.OrderNewest == false ? $"&order=asc" : "";
+		Navigation.NavigateTo($"/scalefigure?page={currentPage}{paramBrand}{paramScale}{paramPriceFrom}{paramPriceTo}{paramOrder}");
+	}
 }

@@ -30,10 +30,9 @@ namespace JPFigure.Entities
 		public FigureScale Scale { get; set; }
 		public GundamType GundamType { get; set; }
 
-		public NpgsqlTsVector SearchVector { get; set; } = null!;
-
 		public Character Character { get; set; } = null!;
 		public Manufacture Manufacture { get; set; } = null!;
+		public DateTime DateAdded { get; set; } = DateTime.Now;
 
 	}
 }

@@ -92,9 +92,35 @@ namespace JPFigure.Repositories
 			await Context.SaveChangesAsync();
 		}
 
-		public async Task<Pagination<ScaleFigure>> GetScaleFigures(int pageNumber, int limit, ScaleFigureFilter filter)
+		public async Task<Pagination<ScaleFigure>> GetScaleFigures(ScaleFigureFilter? filter, int pageNumber = 1, int limit = 20)
 		{
-			throw new NotImplementedException();
+			var query = Context.Figures.Where(f => f.Type == FigureType.ScaleFigure);
+
+			if (filter != null)
+			{
+				if (filter.ManufactureId != null)
+					query = query.Where(f => f.ManufactureId == filter.ManufactureId);
+				
+				if (filter.FigureScale != null)
+					query = query.Where(f => f.Scale == filter.FigureScale);
+
+				(int? from, int? to) = filter.PriceRange;
+
+				if (from != null && to != null)
+					query = query.Where(f => f.Price >= from && f.Price <= to);
+
+				else if (from != null)
+					query = query.Where(f => f.Price >= from);
+
+				else if (to != null)
+					query = query.Where(f => f.Price <= to);
+			}
+
+			return await PaginationHelper.Create<ScaleFigure>(
+				limit, pageNumber, 
+				() => filter == null || filter.OrderNewest ? 
+					query.OrderByDescending(f => f.DateAdded) : query.OrderBy(f => f.DateAdded)
+			);
 		}
 	}
 }

@@ -1,5 +1,6 @@
 ﻿@page "/";
 @page "/Hehe";
+@inject FigureRepository FigureRepository
 
 <NavBar></NavBar>
 <div id="carouselExampleIndicators" class="carousel slide" data-bs-interval="4000" data-bs-ride="carousel">
@@ -171,126 +172,31 @@
     <div class="ctn">
         <div class="gundam_left_ctn">
             <ul class="products">
-                <li>
-                    <div class="product_item">
-                        <div class="product_top">
-                            <a href="" class="product_thumb">
-                                <img src="Image/product1.png" alt="">
-                            </a>
-                            <a href="" class="add_cart">   
-                                <span>Add To Cart</span>
-                                <img src="Image/cart-white.png">
-                            </a>
-                        </div>
-                        <div class="product_info">                            
-                            <div class="product_name_ctn">
-                                <a href="" class="product_name">Nendoroid Swacchao! Attack on Titan Levi</a>
-                            </div>
-                            <div class="product_price">1,300,000₫</div>
-                        </div>
-                    </div>
+				@if (figures != null) {
+					@for (int i = 0; i < figures.Items.Count; i++)
+					{
+						<li>
+							<div class="product_item">
+								<div class="product_top">
+									<a href="" class="product_thumb">
+										<img src="@figures.Items[i].Images[0]" alt="">
+									</a>
+									<a href="" class="add_cart">
+										<span>Add To Cart</span>
+										<img src="Image/cart-white.png">
+									</a>
+								</div>
+								<div class="product_info">
+									<div class="product_name_ctn">
+										<a href="" class="product_name">@figures.Items[i].ProductName</a>
+									</div>
+									<div class="product_price">@(figures.Items[i].Price.ToString("#,##0"))₫</div>
+								</div>
+							</div>
 
-                </li>
-                <li>
-                    <div class="product_item">
-                        <div class="product_top">
-                            <a href="" class="product_thumb">
-                                <img src="Image/product2.png" alt="">
-                            </a>
-                            <a href="" class="add_cart">
-                                <span>Add To Cart</span>
-                                <img src="Image/cart-white.png">
-                            </a>
-                        </div>
-                        <div class="product_info">                            
-                            <div class="product_name_ctn">
-                                <a href="" class="product_name">Nendoroid Swacchao! Attack on Titan Levi</a>
-                            </div>
-                            <div class="product_price">1,300,000₫</div>
-                        </div>
-                    </div>
-
-                </li>
-                <li>
-                    <div class="product_item">
-                        <div class="product_top">
-                            <a href="" class="product_thumb">
-                                <img src="Image/product3.png" alt="">
-                            </a>
-                            <a href="" class="add_cart">
-                                <span>Add To Cart</span>
-                                <img src="Image/cart-white.png">
-                            </a>
-                        </div>
-                        <div class="product_info">                            
-                            <div class="product_name_ctn">
-                                <a href="" class="product_name">Nendoroid Swacchao! Attack on Titan Levi</a>
-                            </div>                           
-                            <div class="product_price">1,300,000₫</div>
-                        </div>
-                    </div>
-
-                </li>
-                <li>
-                    <div class="product_item">
-                        <div class="product_top">
-                            <a href="" class="product_thumb">
-                                <img src="Image/product4.png" alt="">
-                            </a>
-                            <a href="" class="add_cart">
-                                <span>Add To Cart</span>
-                                <img src="Image/cart-white.png">
-                            </a>
-                        </div>
-                        <div class="product_info">                            
-                            <div class="product_name_ctn">
-                                <a href="" class="product_name">Nendoroid Swacchao! Attack on Titan Levi</a>
-                            </div>                          
-                            <div class="product_price">1,300,000₫</div>
-                        </div>
-                    </div>
-
-                </li>
-                <li>
-                    <div class="product_item">
-                        <div class="product_top">
-                            <a href="" class="product_thumb">
-                                <img src="Image/product5.png" alt="">
-                            </a>
-                            <a href="" class="add_cart">
-                                <span>Add To Cart</span>
-                                <img src="Image/cart-white.png">
-                            </a>
-                        </div>
-                        <div class="product_info">
-                            <div class="product_name_ctn">
-                                <a href="" class="product_name">Nendoroid Swacchao! Attack on Titan Levi</a>
-                            </div>                           
-                            <div class="product_price">1,300,000₫</div>
-                        </div>
-                    </div>
-
-                </li>
-                <li>
-                    <div class="product_item">
-                        <div class="product_top">
-                            <a href="" class="product_thumb">
-                                <img src="Image/product6.png" alt="">
-                            </a>
-                            <a href="" class="add_cart">
-                                <span>Add To Cart</span>
-                                <img src="Image/cart-white.png">
-                            </a>
-                        </div>
-                        <div class="product_info">
-                            <div class="product_name_ctn">
-                                <a href="" class="product_name">Nendoroid Swacchao! Attack on Titan Levi</a>
-                            </div>                           
-                            <div class="product_price">1,300,000₫</div>
-                        </div>
-                    </div>
-
-                </li>
+						</li>
+					}
+				}
             </ul>
         </div>
         <div class="gundam_right_ctn">
@@ -502,5 +408,9 @@
 <BottomBar></BottomBar>
 
 @code {
-    
+	private Pagination<Models.ScaleFigure> figures;
+
+	protected override async Task OnInitializedAsync() {
+		figures = await FigureRepository.GetScaleFigures(null, 1);
+	}
 }

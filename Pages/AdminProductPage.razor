@@ -3,7 +3,7 @@
 @inject CharacterRepository CharacterRepository; 
 @inject SeriesRepository SeriesRepository;
 @inject ManufactureRepository ManufactureRepository;
-@using JPFigure.Pages.Shared.Admin
+@using JPFigure.Pages.Shared
 @using JPFigure.Entities.Enums
 @using JPFigure.Extensions
 @using JPFigure.Repositories
@@ -42,11 +42,11 @@
         </div>
         <div>
             <img src="Image/height.png">
-            <input @bind="figureInput.Height" placeholder="Product Height...">
+            <input @bind="figureInput.Height" placeholder="Kích thước (đơn vị: mm)...">
         </div>
         <div>
             <img src="Image/release.png">
-            <input @bind="figureInput.ReleaseDate" placeholder="Release Date...">
+            <input @bind="figureInput.ReleaseDate" placeholder="Release Date (MM/DD/YYYY)...">
         </div>
         <div>
             <img src="Image/face-id.png">
@@ -163,7 +163,7 @@
 			var isNull = (int? num) => num == null;
 			var invalidId = (int? num) => num <= 0;
 			var fi = figureInput;
-			return isProcessing || invalid(fi.ProductName) || invalid(fi.Image1) || invalid(fi.Image2) ||
+			return isProcessing || invalid(fi.ProductName) || invalid(fi.Image1) ||
 			isNull(fi.Price) || isNull(fi.Height) || isNull(fi.StockCount) ||
 			(!scaleDisabled && fi.Scale == null) || fi.ReleaseDate == null || invalidId(fi.CharacterId) || invalidId(fi.ManufactureId) ||
 			(!gundamTypeDisabled && fi.GundamType == null);
@@ -305,7 +305,7 @@
 		await task;
 
 		isProcessing = false;
-		manufactureInput = new();
+		figureInput = new();
 
 		await NotifyAndUpdateOptions();
 	}

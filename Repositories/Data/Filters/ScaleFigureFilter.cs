@@ -4,6 +4,6 @@ namespace JPFigure.Repositories.Data.Filters
 {
     public class ScaleFigureFilter : FigureFilter
     {
-		public FigureScale FigureScale { get; set; }
+		public FigureScale? FigureScale { get; set; }
 	}
 }

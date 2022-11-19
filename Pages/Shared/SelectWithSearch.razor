@@ -1,20 +1,20 @@
-﻿<input @onchange=OnInputChanged @bind-value:event="oninput" @bind-value=_DisplayText list=@Id placeholder=@PlaceHolder disabled=@Disabled>
-<datalist id=@Id>
+﻿<input @onchange=OnInputChanged @bind-value:event="oninput" @bind-value=_DisplayText list=@id placeholder=@PlaceHolder disabled=@Disabled>
+<datalist id=@id>
+	<option>Tất cả</option>
 	@foreach (var option in Options)
 	{
-		<option value="@option.Value">@option.DisplayText</option>
+		<option>@option.DisplayText</option>
 	}
 </datalist>  
 
 @code {
-	[Parameter]
-	public string Id { get; set; }
+	private string id = Guid.NewGuid().ToString();
 
 	[Parameter]
 	public bool Disabled { get; set; }
 
 	[Parameter]
-	public string PlaceHolder { get; set; }
+	public string PlaceHolder { get; set; } = "Tất cả";
 
 	[Parameter]
 	public List<Option> Options { get; set; } = null!;
@@ -37,15 +37,22 @@
 	{
 		var value = e.Value?.ToString()?.Trim() ?? "";
 
-		var option = Options.Find(o => o.Value == value || o.DisplayText == value);
-		if (option != null || String.IsNullOrEmpty(value))
+		_DisplayText = "";
+		var option = Options.Find(o => o.DisplayText == value);
+		if (option != null)
 		{
-			_DisplayText = option?.DisplayText ?? "";
+			PlaceHolder = option.DisplayText;
 			_previousSelectedOption = option;
 			await SelectedOptionChanged.InvokeAsync(option);
 		}
+		else if (String.IsNullOrEmpty(value) || value == "Tất cả")
+		{
+			PlaceHolder = "Tất cả";
+			_previousSelectedOption = null;
+			await SelectedOptionChanged.InvokeAsync(null);
+		}
 		else {
-			_DisplayText = _previousSelectedOption?.DisplayText ?? "";
+			PlaceHolder = _previousSelectedOption?.DisplayText ?? "";
 		}
 	}
 

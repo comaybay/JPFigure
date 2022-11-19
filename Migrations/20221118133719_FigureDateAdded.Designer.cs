@@ -7,21 +7,19 @@ using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
-using NpgsqlTypes;
 
 #nullable disable
 
 namespace JPFigure.Migrations
 {
     [DbContext(typeof(JPFigureContext))]
-    [Migration("20221004043818_InitialFTSSetup")]
-    partial class InitialFTSSetup
+    [Migration("20221118133719_FigureDateAdded")]
+    partial class FigureDateAdded
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
-                .HasAnnotation("Npgsql:CollationDefinition:nondeterministic", "vi-VN,vi-VN,icu,False")
                 .HasAnnotation("ProductVersion", "6.0.9")
                 .HasAnnotation("Relational:MaxIdentifierLength", 63);
 
@@ -63,13 +61,23 @@ namespace JPFigure.Migrations
                     b.Property<int>("CharacterId")
                         .HasColumnType("integer");
 
+                    b.Property<DateTime>("DateAdded")
+                        .HasColumnType("timestamp with time zone");
+
                     b.Property<GundamType>("GundamType")
                         .HasColumnType("gundam_type");
 
                     b.Property<int>("Height")
                         .HasColumnType("integer");
 
+                    b.Property<string[]>("Images")
+                        .IsRequired()
+                        .HasColumnType("text[]");
+
                     b.Property<int>("ManufactureId")
+                        .HasColumnType("integer");
+
+                    b.Property<int>("Price")
                         .HasColumnType("integer");
 
                     b.Property<string>("ProductName")
@@ -82,11 +90,6 @@ namespace JPFigure.Migrations
                     b.Property<FigureScale>("Scale")
                         .HasColumnType("figure_scale");
 
-                    b.Property<NpgsqlTsVector>("SearchVector")
-                        .IsRequired()
-                        .HasColumnType("tsvector")
-                        .UseCollation("nondeterministic");
-
                     b.Property<int>("StockCount")
                         .HasColumnType("integer");
 
@@ -98,10 +101,6 @@ namespace JPFigure.Migrations
                     b.HasIndex("CharacterId");
 
                     b.HasIndex("ManufactureId");
-
-                    b.HasIndex("SearchVector");
-
-                    NpgsqlIndexBuilderExtensions.HasMethod(b.HasIndex("SearchVector"), "GIN");
 
                     b.ToTable("Figures");
                 });

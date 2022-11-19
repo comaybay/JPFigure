@@ -16,6 +16,7 @@ builder.Host.ConfigureAppConfiguration(builder =>
 builder.Services.AddRazorPages();
 builder.Services.AddServerSideBlazor();
 
+AppContext.SetSwitch("Npgsql.EnableLegacyTimestampBehavior", true);
 var config = builder.Configuration;
 var connectionString = config.GetConnectionString("JPFigure");
 
@@ -50,9 +51,10 @@ app.UseHttpsRedirection();
 app.UseStaticFiles();
 
 app.UseRouting();
-
 app.MapBlazorHub();
 app.MapFallbackToPage("/_Host");
-app.UseAuthentication();;
+
+app.UseAuthentication();
+app.UseAuthorization();
 
 app.Run();
