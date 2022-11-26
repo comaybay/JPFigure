@@ -50,7 +50,7 @@
         </div>
         <div>
             <img src="Image/face-id.png">
-			<SelectWithSearch Id="figure-character" SelectedOptionChanged=@(o => figureInput.CharacterId = o != null ? int.Parse(o.Value) : -1)
+			<SelectWithSearch SelectedOptionChanged=@(o => figureInput.CharacterId = o != null ? int.Parse(o.Value) : -1)
 							  PlaceHolder="Character ID..."
 							  Disabled=@isProcessing Options=@characterOptions />
         </div>
@@ -60,7 +60,7 @@
         </div>
         <div>
             <img src="Image/id-card.png">
-			<SelectWithSearch Id="figure-manufacture" SelectedOptionChanged=@(o => figureInput.ManufactureId = o != null ? int.Parse(o.Value) : -1)
+			<SelectWithSearch  SelectedOptionChanged=@(o => figureInput.ManufactureId = o != null ? int.Parse(o.Value) : -1)
 							  PlaceHolder="Manufacture ID..."
 							  Disabled=@isProcessing Options=@manufactureOptions/>
         </div>
@@ -70,7 +70,7 @@
         </div>
         <div>
             <img src="Image/scale.png">
-			<SelectWithSearch Id="figure-scale" SelectedOptionChanged=@(o => figureInput.Scale = o != null ? Enum.Parse<FigureScale>(o.Value) : FigureScale.NonScale)
+			<SelectWithSearch  SelectedOptionChanged=@(o => figureInput.Scale = o != null ? Enum.Parse<FigureScale>(o.Value) : FigureScale.NonScale)
 							  PlaceHolder=@(scaleDisabled ? FigureScale.NonScale.GetDisplayText() : "Scale...")
 							  Disabled=@(isProcessing || scaleDisabled) Options=@scaleOptions/>
         </div>
@@ -79,6 +79,10 @@
 			<input placeholder="@(gundamTypeDisabled ? GundamType.NonGundam.GetDisplayText() : "Gundam Type..." )" disabled=@gundamTypeDisabled>
         </div>
     </div>
+	<div class="product_id_ctn">
+		<img src="Image/id.png">
+		<input style="border-bottom: 2px solid red" placeholder="Product ID..." />
+	</div>
     <div class="button_ctn">
 		<button @onclick=OnAddFigure disabled=@FigureButtonsDisabled>Thêm</button>
     </div>
@@ -91,7 +95,7 @@
             </div>
             <div>
                 <img src="Image/badge.png">
-				<SelectWithSearch Id="character-series"
+				<SelectWithSearch 
 					SelectedOptionChanged=@(o => characterInput.SeriesId = o != null ? int.Parse(o.Value) : -1)
 					PlaceHolder="Series..."
 					Disabled=@isProcessing Options=@seriesOptions />
@@ -123,7 +127,45 @@
 		<div hidden=@hideNotification class="notification">Xử lý thành công!</div>
     </div>
 </div>
-<h3>Dưới này là danh sách hàng hóa</h3>
+<div class="search_ctn">
+	<form>
+		<input type="text" placeholder="Tìm kiếm sản phẩm...?" />
+		<button type="submit">
+			<img src="Image/magnifying-glass.png">
+		</button>
+		<div class="sort_title">
+			<label>Sắp xếp:</label>
+		</div>
+		<div class="select_container">
+			<select class="sort">
+				<option value="news">Mới Nhất</option>
+				<option value="oldest">Cũ Nhất</option>
+			</select>
+		</div>
+	</form>
+</div>
+<div class="table_ctn">
+    <table>
+        <tr>
+            <th>STT</th>
+			<th>Hình ảnh</th>
+            <th>Email</th>
+            <th>Địa Chỉ</th>
+            <th>Tổng hàng đã mua</th>
+        </tr>
+        <tr>
+            <td>1</td>
+			<td style="display:flex; justify-content: center; padding: 5px 0">
+				<div class="product_img_ctn">
+					<img class="product_img" src="Image/product1,1.png"/>
+				</div>
+			</td>
+            <td>123@gmail.com</td>
+            <td>Ho Chi Minh</td>
+            <td>10</td>
+        </tr>
+    </table>
+</div>
 @code {
 	private bool gundamTypeDisabled = false;
 	private bool scaleDisabled = false;

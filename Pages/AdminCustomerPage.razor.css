@@ -7,3 +7,57 @@ html, body {
     width: 85%;
     height: 100%;
 }
+.search_ctn{
+    padding: 10px 20px;
+}
+form{
+    height: 35px;
+    display: flex;
+}
+form input{
+    width: 60%;
+    outline: none;
+    border: 1.5px solid #D3D3D3;
+    border-bottom-left-radius: 5px;
+    border-top-left-radius: 5px;
+    padding: 0 10px;
+}
+form button{
+    width: 10%;
+    border: none;
+    background: #ff0000;
+    border-bottom-right-radius: 5px;
+    border-top-right-radius: 5px;
+}
+form button img{
+    height: 22px;
+}
+.sort_title{
+    width: 10%;
+    text-align: center;
+    padding: 3px 0;
+}
+.sort_title label{
+    font-size: 18px;
+    font-weight: bold;
+}
+.select_container{
+    width: 20%;
+}
+.sort{
+    width: 100%;
+    height: 100%;
+}
+.table_ctn{
+    padding: 5px 10px;
+}
+table{
+    width: 100%;
+    text-align: center;
+}
+table th{
+    border: 1px solid black;
+    height: 40px;
+    color: white;
+    background-color:hsl(240, 100%, 75%);
+}

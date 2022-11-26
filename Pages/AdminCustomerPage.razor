@@ -1,6 +1,39 @@
 ﻿@page "/admin/customer"
-<h3>AdminCustomerPage</h3>
-
+<div class="search_ctn">
+    <form>
+        <input type="text" placeholder="Tìm kiếm khách hàng...?" />
+        <button type="submit">
+            <img src="Image/magnifying-glass.png">
+        </button>
+        <div class="sort_title">
+            <label>Sắp xếp:</label>
+        </div>
+        <div class="select_container">
+            <select class="sort">
+                <option value="news">Mới Nhất</option>
+                <option value="oldest">Cũ Nhất</option>
+            </select>
+        </div>
+    </form>
+</div>
+<div class="table_ctn">
+    <table>
+        <tr>
+            <th>STT</th>
+            <th>Họ và Tên</th>
+            <th>Email</th>
+            <th>Địa Chỉ</th>
+            <th>Tổng hàng đã mua</th>
+        </tr>
+        <tr>
+            <td>1</td>
+            <td>Tan Hoang</td>
+            <td>123@gmail.com</td>
+            <td>Ho Chi Minh</td>
+            <td>10</td>
+        </tr>
+    </table>
+</div>
 @code {
 
 }

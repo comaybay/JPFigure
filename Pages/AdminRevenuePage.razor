@@ -1,6 +1,174 @@
 ﻿@page "/admin/revenue"
-<h3>AdminRevenuePage</h3>
+@using ChartJs.Blazor.BarChart
 
+<div class="top_ctn">
+    <h4>Tổng Lợi Nhuận: 10000000 VND</h4>
+    <div class="select_ctn" style="display: flex">
+        <h4>Năm: </h4>
+        <input type="number" class="year_input"/>
+        <input type="submit" class="year_submit" value="Search"/>
+    </div>
+</div>
+<div class="chart_ctn">
+    <div class="chart_left">
+        <Chart Config="barConfig"></Chart>
+    </div>
+    <div class="chart_right">
+        <Chart Config="barConfig2"></Chart>
+    </div>
+</div>
+<div class="table_ctn">
+    <div class="table_left_ctn">
+        <label>Chi tiết doanh thu</label>
+        <table>
+            <tr>
+                <th>STT</th>
+                <th>Thời Gian</th>
+                <th>Số Tiền</th>
+                <th>Nguồn Từ</th>
+            </tr>
+            <tr>
+                <td>1</td>
+                <td>7:08:24 26/11/2022</td>
+                <td>2000000</td>
+                <td>Tan Hoang</td>
+            </tr>
+        </table>
+    </div>
+    <div class="table_right_ctn">
+        <label>Chi tiết chi tiêu</label>
+        <table>
+            <tr>
+                <th>STT</th>
+                <th>Thời Gian</th>
+                <th>Số Tiền</th>
+                <th>Nguồn Từ</th>
+            </tr>
+            <tr>
+                <td>1</td>
+                <td>7:08:24 26/11/2022</td>
+                <td>2000000</td>
+                <td>Admin</td>
+            </tr>
+        </table>
+    </div>
+</div>
 @code {
+    private BarConfig barConfig;
+    private BarConfig barConfig2;
 
+    protected override void OnInitialized()
+    {
+        ConfigureBarChart();
+        ConfigureBarChart2();
+    }
+
+    private void ConfigureBarChart(){
+        barConfig = new BarConfig()
+            {
+                Options = new BarOptions
+                {
+                    Title = new OptionsTitle
+                    {
+                        Display = true,
+                        Text = "Doanh Thu"
+                    },
+                    Scales = new BarScales
+                    {
+                        YAxes = new List<CartesianAxis>
+                        {
+                            new LinearCartesianAxis
+                            {
+                                Ticks = new LinearCartesianTicks
+                                {
+                                    BeginAtZero = true,
+                                }
+                            }
+                        }
+                    },
+                    Responsive = true
+                }
+            };
+        foreach (var month1 in new[] { "Tháng 1", "Tháng 2", "Tháng 3", "Tháng 4", "Tháng 5", "Tháng 6", 
+                                        "Tháng 7", "Tháng 8", "Tháng 9", "Tháng 10", "Tháng 11", "Tháng 12" })
+        {
+            barConfig.Data.Labels.Add(month1);
+        }
+        var dataset1 = new BarDataset<int>(new[] { 10, 35, 50, 70, 70, 70, 70, 70, 70, 70, 70, 70 })
+        {
+            Label = "Bảng doanh thu",
+            BackgroundColor = new[]
+            {
+                ColorUtil.ColorHexString(252, 118, 106),
+                ColorUtil.ColorHexString(91, 132, 177),
+                ColorUtil.ColorHexString(252, 118, 106),
+                ColorUtil.ColorHexString(91, 132, 177),
+                ColorUtil.ColorHexString(252, 118, 106),
+                ColorUtil.ColorHexString(91, 132, 177),
+                ColorUtil.ColorHexString(252, 118, 106),
+                ColorUtil.ColorHexString(91, 132, 177),
+                ColorUtil.ColorHexString(252, 118, 106),
+                ColorUtil.ColorHexString(91, 132, 177),
+                ColorUtil.ColorHexString(252, 118, 106),
+                ColorUtil.ColorHexString(91, 132, 177),
+            }
+            
+        };
+        barConfig.Data.Datasets.Add(dataset1);
+    }
+
+    private void ConfigureBarChart2()
+    {
+        barConfig2 = new BarConfig()
+            {
+                Options = new BarOptions
+                {
+                    Title = new OptionsTitle
+                    {
+                        Display = true,
+                        Text = "Chi Tiêu"
+                    },
+                    Scales = new BarScales
+                    {
+                        YAxes = new List<CartesianAxis>
+                        {
+                            new LinearCartesianAxis
+                            {
+                                Ticks = new LinearCartesianTicks
+                                {
+                                    BeginAtZero = true,
+                                }
+                            }
+                        }
+                    },
+                    Responsive = true
+                }
+            };
+        foreach (var month2 in new[] { "Tháng 1", "Tháng 2", "Tháng 3", "Tháng 4", "Tháng 5", "Tháng 6",
+                                        "Tháng 7", "Tháng 8", "Tháng 9", "Tháng 10", "Tháng 11", "Tháng 12" })
+        {
+            barConfig2.Data.Labels.Add(month2);
+        }
+        var dataset2 = new BarDataset<int>(new[] { 10, 35, 50, 70, 70, 70, 70, 70, 70, 70, 70, 70 })
+            {
+                Label = "Bảng chi tiêu",
+                BackgroundColor = new[]
+                {
+                ColorUtil.ColorHexString(0, 32, 63),
+                ColorUtil.ColorHexString(173, 239, 209),
+                ColorUtil.ColorHexString(0, 32, 63),
+                ColorUtil.ColorHexString(173, 239, 209),
+                ColorUtil.ColorHexString(0, 32, 63),
+                ColorUtil.ColorHexString(173, 239, 209),
+                ColorUtil.ColorHexString(0, 32, 63),
+                ColorUtil.ColorHexString(173, 239, 209),
+                ColorUtil.ColorHexString(0, 32, 63),
+                ColorUtil.ColorHexString(173, 239, 209),
+                ColorUtil.ColorHexString(0, 32, 63),
+                ColorUtil.ColorHexString(173, 239, 209),
+            }
+
+            };
+        barConfig2.Data.Datasets.Add(dataset2);
+    }
 }

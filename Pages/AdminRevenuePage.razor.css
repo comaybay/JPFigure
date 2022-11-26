@@ -7,3 +7,48 @@ html, body {
     width: 85%;
     height: 100%;
 }
+.top_ctn{
+    padding: 10px;
+    display: flex;
+    justify-content: space-between;
+}
+.year_input{
+    margin-left: 10px;
+    outline: none;
+}
+.year_submit {
+    width: 60px;
+    color: white;
+    background-color: hsl(240, 100%, 75%);
+}
+.chart_ctn{
+    width: 100%;
+    display: flex;
+}
+.chart_left{
+    width: 50%;
+}
+.chart_right {
+    width: 50%;
+}
+.table_ctn{
+    width:100%;
+    display: flex;
+}
+.table_left_ctn, .table_right_ctn {
+    width: 50%;
+    padding: 5px 10px;
+}
+table{
+    width: 100%;
+    text-align: center;
+}
+table th{
+    border: 1px solid black;
+    height: 40px;
+    color: white;
+    background-color:hsl(240, 100%, 75%);
+}
+label{
+    font-weight: bold;
+}
