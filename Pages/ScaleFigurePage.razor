@@ -32,7 +32,8 @@
     <div>
         <img src="Image/brand-image.png">
         <p>Thương Hiệu</p>
-		<SelectWithSearch Options=@brandOptions 
+		<SelectWithSearch 
+			Options=@brandOptions 
 			SelectedOptionChanged=@(async o => {
 				filter.ManufactureId = o != null ? int.Parse(o.Value) : null;
 						  currentPage = 1;

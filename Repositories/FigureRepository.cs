@@ -122,5 +122,90 @@ namespace JPFigure.Repositories
 					query.OrderByDescending(f => f.DateAdded) : query.OrderBy(f => f.DateAdded)
 			);
 		}
+		public async Task<Pagination<ScaleFigure>> GetGundamFigures(GundamFigureFilter? filter, int pageNumber = 1, int limit = 20)
+		{
+			var query = Context.Figures.Where(f => f.Type == FigureType.Gundam);
+
+			if (filter != null)
+			{
+				if (filter.ManufactureId != null)
+					query = query.Where(f => f.ManufactureId == filter.ManufactureId);
+
+				if (filter.GundamType != null)
+					query = query.Where(f => f.GundamType == filter.GundamType);
+
+				(int? from, int? to) = filter.PriceRange;
+
+				if (from != null && to != null)
+					query = query.Where(f => f.Price >= from && f.Price <= to);
+
+				else if (from != null)
+					query = query.Where(f => f.Price >= from);
+
+				else if (to != null)
+					query = query.Where(f => f.Price <= to);
+			}
+
+			return await PaginationHelper.Create<ScaleFigure>(
+				limit, pageNumber,
+				() => filter == null || filter.OrderNewest ?
+					query.OrderByDescending(f => f.DateAdded) : query.OrderBy(f => f.DateAdded)
+			);
+		}
+		public async Task<Pagination<ScaleFigure>> GetNendroidFigures(FigureFilter? filter, int pageNumber = 1, int limit = 20)
+		{
+			var query = Context.Figures.Where(f => f.Type == FigureType.Nendoroid);
+
+			if (filter != null)
+			{
+				if (filter.ManufactureId != null)
+					query = query.Where(f => f.ManufactureId == filter.ManufactureId);
+
+				(int? from, int? to) = filter.PriceRange;
+
+				if (from != null && to != null)
+					query = query.Where(f => f.Price >= from && f.Price <= to);
+
+				else if (from != null)
+					query = query.Where(f => f.Price >= from);
+
+				else if (to != null)
+					query = query.Where(f => f.Price <= to);
+			}
+
+			return await PaginationHelper.Create<ScaleFigure>(
+				limit, pageNumber,
+				() => filter == null || filter.OrderNewest ?
+					query.OrderByDescending(f => f.DateAdded) : query.OrderBy(f => f.DateAdded)
+			);
+		}
+
+		public async Task<Pagination<ScaleFigure>> GetOtherFigures(FigureFilter? filter, int pageNumber = 1, int limit = 20)
+		{
+			var query = Context.Figures.Where(f => f.Type == FigureType.Others);
+
+			if (filter != null)
+			{
+				if (filter.ManufactureId != null)
+					query = query.Where(f => f.ManufactureId == filter.ManufactureId);
+
+				(int? from, int? to) = filter.PriceRange;
+
+				if (from != null && to != null)
+					query = query.Where(f => f.Price >= from && f.Price <= to);
+
+				else if (from != null)
+					query = query.Where(f => f.Price >= from);
+
+				else if (to != null)
+					query = query.Where(f => f.Price <= to);
+			}
+
+			return await PaginationHelper.Create<ScaleFigure>(
+				limit, pageNumber,
+				() => filter == null || filter.OrderNewest ?
+					query.OrderByDescending(f => f.DateAdded) : query.OrderBy(f => f.DateAdded)
+			);
+		}
 	}
 }
