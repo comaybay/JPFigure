@@ -35,6 +35,8 @@ builder.Services.AddScoped<FigureRepository>();
 builder.Services.AddScoped<CharacterRepository>();
 builder.Services.AddScoped<SeriesRepository>();
 builder.Services.AddScoped<ManufactureRepository>();
+builder.Services.AddOptions();
+builder.Services.AddAuthorizationCore();
 
 var app = builder.Build();
 

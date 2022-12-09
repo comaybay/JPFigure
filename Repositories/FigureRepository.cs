@@ -122,7 +122,7 @@ namespace JPFigure.Repositories
 					query.OrderByDescending(f => f.DateAdded) : query.OrderBy(f => f.DateAdded)
 			);
 		}
-		public async Task<Pagination<ScaleFigure>> GetGundamFigures(GundamFigureFilter? filter, int pageNumber = 1, int limit = 20)
+		public async Task<Pagination<GundamFigure>> GetGundamFigures(GundamFigureFilter? filter, int pageNumber = 1, int limit = 20)
 		{
 			var query = Context.Figures.Where(f => f.Type == FigureType.Gundam);
 
@@ -146,13 +146,13 @@ namespace JPFigure.Repositories
 					query = query.Where(f => f.Price <= to);
 			}
 
-			return await PaginationHelper.Create<ScaleFigure>(
+			return await PaginationHelper.Create<GundamFigure>(
 				limit, pageNumber,
 				() => filter == null || filter.OrderNewest ?
 					query.OrderByDescending(f => f.DateAdded) : query.OrderBy(f => f.DateAdded)
 			);
 		}
-		public async Task<Pagination<ScaleFigure>> GetNendroidFigures(FigureFilter? filter, int pageNumber = 1, int limit = 20)
+		public async Task<Pagination<Figure>> GetNendroidFigures(FigureFilter? filter, int pageNumber = 1, int limit = 20)
 		{
 			var query = Context.Figures.Where(f => f.Type == FigureType.Nendoroid);
 
@@ -173,14 +173,14 @@ namespace JPFigure.Repositories
 					query = query.Where(f => f.Price <= to);
 			}
 
-			return await PaginationHelper.Create<ScaleFigure>(
+			return await PaginationHelper.Create<Figure>(
 				limit, pageNumber,
 				() => filter == null || filter.OrderNewest ?
 					query.OrderByDescending(f => f.DateAdded) : query.OrderBy(f => f.DateAdded)
 			);
 		}
 
-		public async Task<Pagination<ScaleFigure>> GetOtherFigures(FigureFilter? filter, int pageNumber = 1, int limit = 20)
+		public async Task<Pagination<Figure>> GetOtherFigures(FigureFilter? filter, int pageNumber = 1, int limit = 20)
 		{
 			var query = Context.Figures.Where(f => f.Type == FigureType.Others);
 
@@ -201,7 +201,7 @@ namespace JPFigure.Repositories
 					query = query.Where(f => f.Price <= to);
 			}
 
-			return await PaginationHelper.Create<ScaleFigure>(
+			return await PaginationHelper.Create<Figure>(
 				limit, pageNumber,
 				() => filter == null || filter.OrderNewest ?
 					query.OrderByDescending(f => f.DateAdded) : query.OrderBy(f => f.DateAdded)
