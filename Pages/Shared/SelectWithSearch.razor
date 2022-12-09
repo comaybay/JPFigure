@@ -1,4 +1,4 @@
-﻿<input @onchange=OnInputChanged @bind-value:event="oninput" @bind-value=_DisplayText list=@id placeholder=@PlaceHolder disabled=@Disabled>
+﻿<input @onchange=OnInputChanged @bind-value:event="oninput" @bind-value=_DisplayText list=@id placeholder=@ShowText disabled=@Disabled>
 <datalist id=@id>
 	<option>Tất cả</option>
 	@foreach (var option in Options)
@@ -16,6 +16,8 @@
 	[Parameter]
 	public string PlaceHolder { get; set; } = "Tất cả";
 
+	private string ShowText = "";
+
 	[Parameter]
 	public List<Option> Options { get; set; } = null!;
 
@@ -25,6 +27,11 @@
 	public EventCallback<Option?> SelectedOptionChanged { get; set; }
 
 	private string _DisplayText { get; set; } = "";
+
+	protected override void OnInitialized()
+	{
+		ShowText = PlaceHolder;
+	}
 
 	protected override void OnParametersSet()
 	{
@@ -41,18 +48,18 @@
 		var option = Options.Find(o => o.DisplayText == value);
 		if (option != null)
 		{
-			PlaceHolder = option.DisplayText;
+			ShowText = option.DisplayText;
 			_previousSelectedOption = option;
 			await SelectedOptionChanged.InvokeAsync(option);
 		}
 		else if (String.IsNullOrEmpty(value) || value == "Tất cả")
 		{
-			PlaceHolder = "Tất cả";
+			ShowText = "Tất cả";
 			_previousSelectedOption = null;
 			await SelectedOptionChanged.InvokeAsync(null);
 		}
 		else {
-			PlaceHolder = _previousSelectedOption?.DisplayText ?? "";
+			ShowText = _previousSelectedOption?.DisplayText ?? PlaceHolder;
 		}
 	}
 
