@@ -4,6 +4,7 @@ using JPFigure;
 using JPFigure.Entities.Enums;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 
@@ -12,9 +13,10 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace JPFigure.Migrations
 {
     [DbContext(typeof(JPFigureContext))]
-    partial class JPFigureContextModelSnapshot : ModelSnapshot
+    [Migration("20221125035827_FigureAlterDateAdded")]
+    partial class FigureAlterDateAdded
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -45,7 +47,7 @@ namespace JPFigure.Migrations
 
                     b.HasIndex("SeriesId");
 
-                    b.ToTable("Characters", (string)null);
+                    b.ToTable("Characters");
                 });
 
             modelBuilder.Entity("JPFigure.Entities.Figure", b =>
@@ -100,7 +102,7 @@ namespace JPFigure.Migrations
 
                     b.HasIndex("ManufactureId");
 
-                    b.ToTable("Figures", (string)null);
+                    b.ToTable("Figures");
                 });
 
             modelBuilder.Entity("JPFigure.Entities.Manufacture", b =>
@@ -117,7 +119,7 @@ namespace JPFigure.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Manufactures", (string)null);
+                    b.ToTable("Manufactures");
                 });
 
             modelBuilder.Entity("JPFigure.Entities.Series", b =>
@@ -134,7 +136,7 @@ namespace JPFigure.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Series", (string)null);
+                    b.ToTable("Series");
                 });
 
             modelBuilder.Entity("JPFigure.Entities.Character", b =>
