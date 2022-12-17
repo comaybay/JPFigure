@@ -3,6 +3,7 @@ using JPFigure.Models;
 using JPFigure.Repositories.Data;
 using JPFigure.Repositories.Data.Filters;
 using JPFigure.Repositories.Data.Inputs;
+using Microsoft.EntityFrameworkCore;
 
 namespace JPFigure.Repositories
 {
@@ -206,6 +207,22 @@ namespace JPFigure.Repositories
 				() => filter == null || filter.OrderNewest ?
 					query.OrderByDescending(f => f.DateAdded) : query.OrderBy(f => f.DateAdded)
 			);
+		}
+	
+		public async Task<Entities.Figure?> GetFigureDetail(int id)
+		{
+			return await Context.Figures.Where(f => f.Id == id)
+				.Include(f => f.Manufacture)
+				.Include(f => f.Character).ThenInclude(s => s.Series)
+				.FirstOrDefaultAsync();
+		}
+
+		public async Task<List<Entities.Figure>> GetRelatedFigures(Entities.Figure figure)
+		{
+			return await Context.Figures
+				.Where(f => f.Character.SeriesId == figure.Character.SeriesId && f.Type == figure.Type)
+				.Take(5)
+				.ToListAsync();
 		}
 	}
 }

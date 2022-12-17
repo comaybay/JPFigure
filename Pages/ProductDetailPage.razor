@@ -1,39 +1,46 @@
-﻿@page "/productdetail";
+﻿@page "/figure/{Id:int}";
+@using JPFigure.Extensions;
+@using Entities.Enums;
+@inject FigureRepository figRepo;
+@inject NavigationManager UriHelper
 <NavBar></NavBar>
+@if (figure != null) {
 <div class="product_detail_ctn">
     <div class="left_ctn">
         <div class="sub_image_ctn">
+		@foreach (var (img, i) in figure.Images.Select((img,i) => (img, i)))
+		{
             <div class="small_image_ctn">
-                <img src="Image/product1,1.png" @onclick="OnclickImg1">
+                <img src="@img" @onclick="() => OnclickImg(i)">
             </div>
-            <div class="small_image_ctn">
-                <img src="Image/product1,2.png" @onclick="OnclickImg2">
-            </div>
-            <div class="small_image_ctn">
-                <img src="Image/product1,3.png" @onclick="OnclickImg3">
-            </div>
-            <div class="small_image_ctn">
-                <img src="Image/product1,4.png" @onclick="OnclickImg4">
-            </div>
+		}
         </div>
         <div class="main_image_ctn">
-            <img src="@src" id="ProductImg">
+            <img style="width:467px; height:679px; object-fit:cover" src="@bigImgageSrc" id="ProductImg">
         </div>
     </div>
     <div class="right_ctn">
-        <h1>Nendoroid Swacchao! Attack on Titan Levi</h1>
-        <h4>2,200,000₫</h4>
+        <h1>@figure.ProductName</h1>
+			<h4>@String.Format("{0:n0}", figure.Price)₫</h4>
         <div class="row">
             <input type="number" value="1" min="1">
             <button class="btn">THÊM VÀO GIỎ</button>
         </div>
         <h3>THÔNG TIN SẢN PHẨM</h3>
-        <p>Nendoroid Swacchao! Attack on Titan Levi</p>
-        <p>Nhân vật: Levi(Levi Ackerman)</p>
-        <p>Series: Attack on Titan (Shingeki no Kyojin)</p>
-        <p>Hãng sản xuất: Good Smile Company</p>
-        <p>Kích thước: 9cm </p>
-        <p>Phát hành: 3/2023</p>
+        <p>@figure.ProductName</p>
+        <p>Nhân vật: @figure.Character.Name</p>
+        <p>Series: @figure.Character.Series.Name</p>
+        <p>Hãng sản xuất: @figure.Manufacture.Name</p>
+        <p>Kích thước: @figure.Height </p>
+        <p>Phát hành: @figure.ReleaseDate</p>
+			@if (figure.Type == FigureType.Gundam)
+			{
+					<p>Loại Gundam: @figure.GundamType.GetDisplayText()</p>
+			}
+			else if (figure.Type == FigureType.ScaleFigure)
+			{
+				<p>Scale: @figure.Scale.GetDisplayText()</p>
+			}
         <div class="info_ctn">          
             <img src="Image/package-box.png">
             <div>
@@ -57,126 +64,61 @@
 <h1 class="other_product_title">Sản Phẩm Liên Quan</h1>
 <div class="other_product_ctn">
     <ul class="products">
-        <li>
-            <div class="product_item">
-                <div class="product_top">
-                    <a href="" class="product_thumb">
-                        <img src="Image/product1.png" alt="">
-                    </a>
-                    <a href="" class="add_cart">
-                        <span>Add To Cart</span>
-                        <img src="Image/cart-white.png">
-                    </a>
-                </div>
-                <div class="product_info">
-                    <div class="product_name_ctn">
-                        <a href="" class="product_name">Nendoroid Swacchao! Attack on Titan Levi</a>
-                    </div>
-                    <div class="product_price">1,300,000₫</div>
-                </div>
-            </div>
-        </li>
-        <li>
-            <div class="product_item">
-                <div class="product_top">
-                    <a href="" class="product_thumb">
-                        <img src="Image/product2.png" alt="">
-                    </a>
-                    <a href="" class="add_cart">
-                        <span>Add To Cart</span>
-                        <img src="Image/cart-white.png">
-                    </a>
-                </div>
-                <div class="product_info">
-                    <div class="product_name_ctn">
-                        <a href="" class="product_name">Nendoroid Swacchao! Attack on Titan Levi</a>
-                    </div>
-                    <div class="product_price">1,300,000₫</div>
-                </div>
-            </div>
-
-        </li>
-        <li>
-            <div class="product_item">
-                <div class="product_top">
-                    <a href="" class="product_thumb">
-                        <img src="Image/product2.png" alt="">
-                    </a>
-                    <a href="" class="add_cart">
-                        <span>Add To Cart</span>
-                        <img src="Image/cart-white.png">
-                    </a>
-                </div>
-                <div class="product_info">
-                    <div class="product_name_ctn">
-                        <a href="" class="product_name">Nendoroid Swacchao! Attack on Titan Levi</a>
-                    </div>
-                    <div class="product_price">1,300,000₫</div>
-                </div>
-            </div>
-
-        </li>
-        <li>
-            <div class="product_item">
-                <div class="product_top">
-                    <a href="" class="product_thumb">
-                        <img src="Image/product1.png" alt="">
-                    </a>
-                    <a href="" class="add_cart">
-                        <span>Add To Cart</span>
-                        <img src="Image/cart-white.png">
-                    </a>
-                </div>
-                <div class="product_info">
-                    <div class="product_name_ctn">
-                        <a href="" class="product_name">Nendoroid Swacchao! Attack on Titan Levi</a>
-                    </div>
-                    <div class="product_price">1,300,000₫</div>
-                </div>
-            </div>
-
-        </li>
-        <li>
-            <div class="product_item">
-                <div class="product_top">
-                    <a href="" class="product_thumb">
-                        <img src="Image/product1.png" alt="">
-                    </a>
-                    <a href="" class="add_cart">
-                        <span>Add To Cart</span>
-                        <img src="Image/cart-white.png">
-                    </a>
-                </div>
-                <div class="product_info">
-                    <div class="product_name_ctn">
-                        <a href="" class="product_name">Nendoroid Swacchao! Attack on Titan Levi</a>
-                    </div>
-                    <div class="product_price">1,300,000₫</div>
-                </div>
-            </div>
-        </li>
+        @if (relatedFigures != null) {
+		@foreach (var (rfig, i) in relatedFigures.Select((f, i) => (f, i)))
+		{
+			<li>
+				<div class="product_item">
+					<div class="product_top">
+								<a href="/figure/@rfig.Id" class="product_thumb">
+							<img src="@rfig.Images.First()" alt="">
+						</a>
+						<a href="" class="add_cart">
+							<span>Add To Cart</span>
+							<img src="Image/cart-white.png">
+						</a>
+					</div>
+					<div class="product_info">
+						<div class="product_name_ctn">
+							<a href="" class="product_name">@rfig.ProductName</a>
+						</div>
+						<div class="product_price">@string.Format("{0:n0}", rfig.Price)₫</div>
+					</div>
+				</div>
+			</li>
+				}}
     </ul>
 </div>
+}
 <BottomBar></BottomBar>
 @code {
-    public string src { get; set; }
-    protected override async Task OnInitializedAsync()
-    {
-        src = "Image/product1,1.png";
-    }
-    protected void OnclickImg1(MouseEventArgs mouseEventArgs){
-        src = "Image/product1,1.png";
-    }
-    protected void OnclickImg2(MouseEventArgs mouseEventArgs)
-    {
-        src = "Image/product1,2.png";
-    }
-    protected void OnclickImg3(MouseEventArgs mouseEventArgs)
-    {
-        src = "Image/product1,3.png";
-    }
-    protected void OnclickImg4(MouseEventArgs mouseEventArgs)
-    {
-        src = "Image/product1,4.png";
+	[Parameter]
+	public int Id { get; set; }
+
+
+	private string bigImgageSrc { get; set; }
+	private Entities.Figure figure = null;
+	private List<Entities.Figure> relatedFigures = null;
+
+	protected override async Task OnInitializedAsync()
+	{
+		figure = await figRepo.GetFigureDetail(Id);
+		if (figure == null)
+		{
+			UriHelper.NavigateTo("/");
+		}
+
+		relatedFigures = await figRepo.GetRelatedFigures(figure);
+		bigImgageSrc = figure.Images[0];
+	}
+
+	protected override async Task OnParametersSetAsync()
+	{
+		await OnInitializedAsync();
+		StateHasChanged();
+	}
+
+	protected void OnclickImg(int index){
+		bigImgageSrc = figure.Images[index];
     }
 }
