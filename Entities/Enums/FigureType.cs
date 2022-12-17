@@ -15,10 +15,13 @@ namespace JPFigure.Entities.Enums
 		[Description("Nendoroid")]
 		Nendoroid, 
 		
-		[Description("Gundam")]
-		Gundam, 
-		
 		[Description("Các loại figure khác")]
-		Others
+		Others,
+
+		[Description("Gundam")]
+		Gundam,
+
+		[Description("Gundam")]
+		Gundam2,
 	}
 }

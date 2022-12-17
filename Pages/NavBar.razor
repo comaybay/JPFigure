@@ -1,4 +1,7 @@
-﻿@inject NavigationManager UriHelper
+﻿@using JPFigure.Auth
+@inject NavigationManager UriHelper
+@inject AuthenticationStateProvider authStateProvider;
+@inject UserRepository userRepo;
 
 <div class="navbar">
     <div class="left_nb">
@@ -13,52 +16,87 @@
         </form>
     </div>
     <div class="right_nb">
-        <div class="container">
-            <button type="button" class="icon_bt" @onclick=@OnClickAccount>
-                <img src="Image/user.png">
-            </button>            
-            <img class="arrow_image" src="Image/arrow-up.png">          
-            <div class="account_ctn" style="display: @account_statue">
-                <h4>ĐĂNG NHẬP TÀI KHOẢN</h4>
-                <p class="signin_title">Nhập email và mật khẩu của bạn:</p>
-                <input placeholder="Email...">
-                <input placeholder="Password...">
-                <p class="sub_title">This site is protected by reCAPTCHA and the Google <b>Privacy Policy</b> and <b>Terms of Service</b> apply.</p>
-                <button class="signin_bt">ĐĂNG NHẬP</button>
-                <div class="signup_ctn">
-                    <p class="signup_title">Khách hàng mới?</p>
-                    <button class="signup_bt" @onclick=@OnClickCreateAccount>Tạo tài khoản</button>
-                </div>
-                <div class="forgot_pass_ctn">
-                    <p class="forgot_pass_title">Quên mật khẩu?</p>
-                    <button class="forgot_pass_bt" @onclick=@OnClickForgotAccount>Khôi phục mật khẩu</button>
-                </div>
-            </div>
-            <div class="create_account_ctn" style="display: @create_account_statue">
-                <h4>Tạo tài khoản</h4>
-                <input placeholder="Họ và Tên">
-                <input placeholder="Email...">
-                <input placeholder="Password...">
-                <p class="sub_title">This site is protected by reCAPTCHA and the Google <b>Privacy Policy</b> and <b>Terms of Service</b> apply.</p>
-                <button class="create_acc_signup_bt">ĐĂNG KÝ</button>
-                <div class="create_acc_signin_ctn">
-                    <p class="create_acc_signin_title">Đã có tài khoản?</p>
-                    <button class="create_acc_signin_bt" @onclick=@OnClickBack2Account>Trở lại đăng nhập</button>
-                </div>
-            </div>
-            <div class="forgot_account_ctn" style="display: @forgot_account_statue">
-                <h4>KHÔI PHỤC MẬT KHẨU</h4>
-                <p class="signin_title">Nhập email của bạn:</p>
-                <input placeholder="Email">
-                <p class="sub_title">This site is protected by reCAPTCHA and the Google <b>Privacy Policy</b> and <b>Terms of Service</b> apply.</p>
-                <button class="forgot_acc_bt">KHÔI PHỤC</button>
-                <div class="forgot_acc_ctn">
-                    <p class="forgot_acc_title">Bạn đã nhớ mật khẩu?</p>
-                    <button class="forgot_acc_signin_bt" @onclick=@OnClickBack2Account>Trở lại đăng nhập</button>
-                </div>
-            </div>
-            <span>Tài Khoản Của Tôi</span>
-        </div>
+       <AuthorizeView>
+		    <NotAuthorized>
+		<div class="container">
+				<div @onclick=@OnClickAccount>
+						<button type="button" class="icon_bt" >
+				<img src="Image/user.png">
+			</button>
+				<span>Tài Khoản Của Tôi</span>
+			</div>
+		
+
+			<img class="arrow_image" src="Image/arrow-up.png">
+			<div class="account_ctn" style="display: @account_statue">
+				<h4>ĐĂNG NHẬP TÀI KHOẢN</h4>
+				<p class="signin_title">Nhập email và mật khẩu của bạn:</p>
+				<input placeholder="Email..." @bind="email">
+				<input placeholder="Password..." @bind="password">
+				@if (WrongEmailOrPassword)
+				{
+					<p style="color:red">Sai email hoặc mật khẩu</p>
+				}
+				<p class="sub_title">This site is protected by reCAPTCHA and the Google <b>Privacy Policy</b> and <b>Terms of Service</b> apply.</p>
+				<button class="signin_bt" @onclick=@OnClickLogin>ĐĂNG NHẬP</button>
+				<div class="signup_ctn">
+					<p class="signup_title">Khách hàng mới?</p>
+					<button class="signup_bt" @onclick=@OnClickCreateAccount>Tạo tài khoản</button>
+				</div>
+				<div class="forgot_pass_ctn">
+					<p class="forgot_pass_title">Quên mật khẩu?</p>
+					<button class="forgot_pass_bt" @onclick=@OnClickForgotAccount>Khôi phục mật khẩu</button>
+				</div>
+			</div>
+			<div class="create_account_ctn" style="display: @create_account_statue">
+				<h4>Tạo tài khoản</h4>
+				<input placeholder="Họ và Tên" @bind="@signupName">
+				<input placeholder="Email..." @bind="@signupEmail">
+				<input placeholder="Password..." @bind="@signupPass">
+				<p class="sub_title">This site is protected by reCAPTCHA and the Google <b>Privacy Policy</b> and <b>Terms of Service</b> apply.</p>
+				<p style="color:red">@signupMessage</p>
+				<button class="create_acc_signup_bt" @onclick=@OnClickSignup>ĐĂNG KÝ</button>
+				<div class="create_acc_signin_ctn">
+					<p class="create_acc_signin_title">Đã có tài khoản?</p>
+					<button class="create_acc_signin_bt" @onclick=@OnClickBack2Account>Trở lại đăng nhập</button>
+				</div>
+			</div>
+			<div class="forgot_account_ctn" style="display: @forgot_account_statue">
+				<h4>KHÔI PHỤC MẬT KHẨU</h4>
+				<p class="signin_title">Nhập email của bạn:</p>
+				<input placeholder="Email">
+				<p class="sub_title">This site is protected by reCAPTCHA and the Google <b>Privacy Policy</b> and <b>Terms of Service</b> apply.</p>
+				<button class="forgot_acc_bt">KHÔI PHỤC</button>
+				<div class="forgot_acc_ctn">
+					<p class="forgot_acc_title">Bạn đã nhớ mật khẩu?</p>
+					<button class="forgot_acc_signin_bt" @onclick=@OnClickBack2Account>Trở lại đăng nhập</button>
+				</div>
+			</div>
+		</div>
+		    </NotAuthorized>
+			<Authorized>
+				<div class="container">
+					<div @onclick=@OnClickAccount>
+					<button type="button" class="icon_bt">
+						<img src="Image/user.png">	
+
+
+					</button>
+					@if (string.IsNullOrEmpty(@context.User.Identity.Name))
+					{
+						<span>@context.User.Claims.FirstOrDefault(r => r.Type == System.Security.Claims.ClaimTypes.Email)?.Value</span>
+					}
+					else
+					{
+						<span>Xin chào, @context.User.Identity.Name</span>
+					}
+					</div>
+					<div class="account_ctn" style="display: @account_statue; height:100px; top:80px">
+						<button class="signin_bt" @onclick=@OnClickLogout>ĐĂNG Xuất</button>
+					</div>
+				</div>
+			</Authorized>
+	   </AuthorizeView>
         <div class="container">
             <button type="button" class="icon_bt" @onclick=@Navigate2Cart>
                 <img src="Image/shopping-cart.png">
@@ -118,41 +156,105 @@
 </div>
 
 @code {
-    private string inputValue = "";
-    private string account_statue = "none";
-    private string create_account_statue = "none";
-    private string forgot_account_statue = "none";
-    private void OnInputEvent(ChangeEventArgs changeEvent)
-    {
-        inputValue = (string)changeEvent.Value;
-    }
-    private void Navigate() => UriHelper.NavigateTo($"/searchfor/{inputValue}", true);
-    private void Navigate2Cart() => UriHelper.NavigateTo($"/cart", true);
-    private void OnClickAccount(MouseEventArgs mouseEventArgs)
-    {
-        if (account_statue == "none" && create_account_statue == "none" && forgot_account_statue == "none")
-        {
-            account_statue = "block";
-        }else{
-            account_statue = "none";
-            create_account_statue = "none";
-            forgot_account_statue = "none";
-        }
-    }
-    private void OnClickCreateAccount(MouseEventArgs mouseEventArgs)
-    {
-        create_account_statue = "block";
-        account_statue = "none";
-    }
-    private void OnClickForgotAccount(MouseEventArgs mouseEventArgs)
-    {
-        forgot_account_statue = "block";
-        account_statue = "none";
-    }
-    private void OnClickBack2Account(MouseEventArgs mouseEventArgs)
-    {
-        forgot_account_statue = "none";
-        create_account_statue = "none";
-        account_statue = "block";
-    }
+	private string inputValue = "";
+	private string account_statue = "none";
+	private string create_account_statue = "none";
+	private string forgot_account_statue = "none";
+	private string email = "";
+	private string password = "";
+	private string signupName = "";
+	private string signupEmail = "";
+	private string signupPass = "";
+	private string signupMessage = "";
+
+	private bool WrongEmailOrPassword = false;
+	private void OnInputEvent(ChangeEventArgs changeEvent)
+	{
+		inputValue = (string)changeEvent.Value;
+	}
+	private void Navigate() => UriHelper.NavigateTo($"/searchfor/{inputValue}", true);
+	private void Navigate2Cart() => UriHelper.NavigateTo($"/cart", true);
+	private void OnClickAccount(MouseEventArgs mouseEventArgs)
+	{
+		WrongEmailOrPassword = false;
+		if (account_statue == "none" && create_account_statue == "none" && forgot_account_statue == "none")
+		{
+			account_statue = "block";
+		}else{
+			account_statue = "none";
+			create_account_statue = "none";
+			forgot_account_statue = "none";
+		}
+	}
+	private void OnClickCreateAccount(MouseEventArgs mouseEventArgs)
+	{
+		WrongEmailOrPassword = false;
+		create_account_statue = "block";
+		account_statue = "none";
+	}
+	private void OnClickForgotAccount(MouseEventArgs mouseEventArgs)
+	{
+		forgot_account_statue = "block";
+		account_statue = "none";
+	}
+	private void OnClickBack2Account(MouseEventArgs mouseEventArgs)
+	{
+		forgot_account_statue = "none";
+		create_account_statue = "none";
+		account_statue = "block";
+	}
+
+	public async void OnClickLogin(MouseEventArgs e) {
+		var asp = (AuthStateProvider) authStateProvider;
+
+		WrongEmailOrPassword = false;
+		var user = await userRepo.GetUser(email, password);
+		if (user != null) {
+			await asp.UpdateAuthenticationState(new UserSession()
+			{
+				Email = email,
+				Role = user.Role,	
+				Name = user.Name
+			});
+			account_statue = "none";
+			email = "";
+			password = "";
+		}
+		else
+		{
+			WrongEmailOrPassword = true;
+		}
+		StateHasChanged();
+	}
+
+	public async void OnClickSignup(MouseEventArgs e)
+	{
+		var asp = (AuthStateProvider)authStateProvider;
+
+		if (await userRepo.EmailExists(email))
+		{
+			signupMessage = "Email đã có người sử dụng";
+		}
+		else
+		{
+			await userRepo.AddUser(new() { Name = signupName, Email = signupEmail, Password = signupPass, Role = "User" });
+			var user = await userRepo.GetUser(signupEmail, signupPass);
+			await asp.UpdateAuthenticationState(new UserSession() { Email = signupEmail, Role = user.Role, Name = signupName });
+			signupMessage = "";
+			create_account_statue = "none";
+			signupEmail = "";
+			signupName = "";
+			signupPass = "";
+		}
+
+		StateHasChanged();
+	}
+
+	public async void OnClickLogout(MouseEventArgs e)
+	{
+		var asp = (AuthStateProvider)authStateProvider;
+		await asp.UpdateAuthenticationState(null);
+		account_statue = "none";
+		StateHasChanged();
+	}
 }

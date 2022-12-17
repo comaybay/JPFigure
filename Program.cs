@@ -4,6 +4,9 @@ using Microsoft.AspNetCore.Components.Web;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.AspNetCore.Identity;
 using JPFigure.Repositories;
+using Microsoft.AspNetCore.Components.Authorization;
+using JPFigure.Auth;
+using Microsoft.AspNetCore.Components.Server.ProtectedBrowserStorage;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -24,19 +27,16 @@ builder.Services.AddDbContext<JPFigureContext>(
 	optionsBuilder => optionsBuilder.UseNpgsql(connectionString)
 );
 
-builder.Services.AddDbContext<IdentityContext>(
-	optionsBuilder => optionsBuilder.UseNpgsql(connectionString)
-);
 
-builder.Services.AddDefaultIdentity<IdentityUser>(options => options.SignIn.RequireConfirmedAccount = true)
-	.AddEntityFrameworkStores<IdentityContext>();
-
+builder.Services.AddAuthorizationCore();
 builder.Services.AddScoped<FigureRepository>();
 builder.Services.AddScoped<CharacterRepository>();
 builder.Services.AddScoped<SeriesRepository>();
 builder.Services.AddScoped<ManufactureRepository>();
+builder.Services.AddScoped<UserRepository>();
+builder.Services.AddScoped<ProtectedSessionStorage>();
+builder.Services.AddScoped<AuthenticationStateProvider, AuthStateProvider>();
 builder.Services.AddOptions();
-builder.Services.AddAuthorizationCore();
 
 var app = builder.Build();
 

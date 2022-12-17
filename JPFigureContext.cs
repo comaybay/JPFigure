@@ -11,6 +11,7 @@ namespace JPFigure
 		public DbSet<Character> Characters { get; set; } = null!;
 		public DbSet<Series> Series { get; set; } = null!;
 		public DbSet<Manufacture> Manufactures { get; set; } = null!;
+		public DbSet<User> Users { get; set; } = null!;
 
 		static JPFigureContext()
 			=> NpgsqlConnection.GlobalTypeMapper.MapEnum<FigureScale>()
@@ -28,6 +29,8 @@ namespace JPFigure
 								   .HasPostgresEnum<FigureType>()
 								   .HasPostgresEnum<GundamType>()
 								   .HasPostgresEnum<FigureScale>();
+
+			modelBuilder.Entity<User>().HasData(new User { Id = 1, Name = "Admin", Email = "admin@gmail.com", Password = "admin", Role="Admin" });
 		}
 	}
 }

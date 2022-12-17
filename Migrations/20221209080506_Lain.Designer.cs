@@ -4,6 +4,7 @@ using JPFigure;
 using JPFigure.Entities.Enums;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 
@@ -12,9 +13,10 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace JPFigure.Migrations
 {
     [DbContext(typeof(JPFigureContext))]
-    partial class JPFigureContextModelSnapshot : ModelSnapshot
+    [Migration("20221209080506_Lain")]
+    partial class Lain
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -22,7 +24,7 @@ namespace JPFigure.Migrations
                 .HasAnnotation("Relational:MaxIdentifierLength", 63);
 
             NpgsqlModelBuilderExtensions.HasPostgresEnum(modelBuilder, "figure_scale", new[] { "one_twelveth", "one_tenth", "one_eight", "one_seventh", "one_sixth", "one_fifth", "one_fourth", "one_third", "non_scale" });
-            NpgsqlModelBuilderExtensions.HasPostgresEnum(modelBuilder, "figure_type", new[] { "scale_figure", "nendoroid", "others", "gundam", "gundam2" });
+            NpgsqlModelBuilderExtensions.HasPostgresEnum(modelBuilder, "figure_type", new[] { "scale_figure", "nendoroid", "others", "gundam" });
             NpgsqlModelBuilderExtensions.HasPostgresEnum(modelBuilder, "gundam_type", new[] { "super_deformed", "high_grade", "real_grade", "master_grade", "perfect_grade", "non_gundam" });
             NpgsqlModelBuilderExtensions.UseIdentityByDefaultColumns(modelBuilder);
 
@@ -138,50 +140,6 @@ namespace JPFigure.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("Series");
-                });
-
-            modelBuilder.Entity("JPFigure.Entities.User", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("integer");
-
-                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
-
-                    b.Property<DateOnly?>("DateOfBirth")
-                        .HasColumnType("date");
-
-                    b.Property<string>("Email")
-                        .IsRequired()
-                        .HasColumnType("text");
-
-                    b.Property<bool?>("IsFemale")
-                        .HasColumnType("boolean");
-
-                    b.Property<string>("Name")
-                        .HasColumnType("text");
-
-                    b.Property<string>("Password")
-                        .IsRequired()
-                        .HasColumnType("text");
-
-                    b.Property<string>("Role")
-                        .IsRequired()
-                        .HasColumnType("text");
-
-                    b.HasKey("Id");
-
-                    b.ToTable("Users");
-
-                    b.HasData(
-                        new
-                        {
-                            Id = 1,
-                            Email = "admin@gmail.com",
-                            Name = "Admin",
-                            Password = "admin",
-                            Role = "Admin"
-                        });
                 });
 
             modelBuilder.Entity("JPFigure.Entities.Character", b =>
