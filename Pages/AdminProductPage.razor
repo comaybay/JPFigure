@@ -76,7 +76,9 @@
         </div>
         <div>
             <img src="Image/robot.png">
-			<input placeholder="@(gundamTypeDisabled ? GundamType.NonGundam.GetDisplayText() : "Gundam Type..." )" disabled=@gundamTypeDisabled>
+			<SelectWithSearch SelectedOptionChanged=@(o => figureInput.GundamType = o != null ? Enum.Parse<GundamType>(o.Value) : GundamType.NonGundam)
+							  PlaceHolder=@(gundamTypeDisabled ? GundamType.NonGundam.GetDisplayText() : "Gundam Type...")
+							  Disabled=@(isProcessing || gundamTypeDisabled) Options=@gundamOptions />
         </div>
     </div>
 	<div class="product_id_ctn">
@@ -179,6 +181,7 @@
 	private List<SelectWithSearch.Option> seriesOptions = new();
 	private List<SelectWithSearch.Option> manufactureOptions = new();
 	private List<SelectWithSearch.Option> scaleOptions = new();
+	private List<SelectWithSearch.Option> gundamOptions = new();
 
 	private bool isProcessing = false;
 	private bool hideNotification = true;
@@ -242,6 +245,13 @@
 				Value = e.ToString(),
 				DisplayText = e.GetDisplayText()
 			}
+		).ToList();
+		gundamOptions = Enum.GetValues<GundamType>().Select(
+			e => new SelectWithSearch.Option()
+				{
+					Value = e.ToString(),
+					DisplayText = e.GetDisplayText()
+				}
 		).ToList();
 	}
 
