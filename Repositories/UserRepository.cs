@@ -29,6 +29,7 @@ namespace JPFigure.Repositories
 		public async Task AddUser(User input)
 		{
 			await Context.Users.AddAsync(input);
+			await Context.Carts.AddAsync(new Cart { UserId = input.Id });
 			await Context.SaveChangesAsync();
 		}
 

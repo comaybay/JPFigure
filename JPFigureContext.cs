@@ -12,6 +12,10 @@ namespace JPFigure
 		public DbSet<Series> Series { get; set; } = null!;
 		public DbSet<Manufacture> Manufactures { get; set; } = null!;
 		public DbSet<User> Users { get; set; } = null!;
+		public DbSet<Order> Orders { get; set; } = null!;
+		public DbSet<OrderDetail> OrderDetails { get; set; } = null!;
+		public DbSet<Cart> Carts { get; set; } = null!;
+		public DbSet<CartDetail> CartDetails { get; set; } = null!;
 
 		static JPFigureContext()
 			=> NpgsqlConnection.GlobalTypeMapper.MapEnum<FigureScale>()

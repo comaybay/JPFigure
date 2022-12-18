@@ -4,6 +4,7 @@ using JPFigure;
 using JPFigure.Entities.Enums;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 
@@ -12,9 +13,10 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace JPFigure.Migrations
 {
     [DbContext(typeof(JPFigureContext))]
-    partial class JPFigureContextModelSnapshot : ModelSnapshot
+    [Migration("20221218131618_CartAndOrder")]
+    partial class CartAndOrder
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -42,7 +44,7 @@ namespace JPFigure.Migrations
                     b.HasIndex("UserId")
                         .IsUnique();
 
-                    b.ToTable("Carts");
+                    b.ToTable("Cart");
                 });
 
             modelBuilder.Entity("JPFigure.Entities.CartDetail", b =>
@@ -66,9 +68,7 @@ namespace JPFigure.Migrations
 
                     b.HasIndex("CartId");
 
-                    b.HasIndex("FigureId");
-
-                    b.ToTable("CartDetails");
+                    b.ToTable("CartDetail");
                 });
 
             modelBuilder.Entity("JPFigure.Entities.Character", b =>
@@ -186,7 +186,7 @@ namespace JPFigure.Migrations
 
                     b.HasIndex("UserId");
 
-                    b.ToTable("Orders");
+                    b.ToTable("Order");
                 });
 
             modelBuilder.Entity("JPFigure.Entities.OrderDetail", b =>
@@ -212,7 +212,7 @@ namespace JPFigure.Migrations
 
                     b.HasIndex("OrderId");
 
-                    b.ToTable("OrderDetails");
+                    b.ToTable("OrderDetail");
                 });
 
             modelBuilder.Entity("JPFigure.Entities.Series", b =>
@@ -295,15 +295,7 @@ namespace JPFigure.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("JPFigure.Entities.Figure", "Figure")
-                        .WithMany()
-                        .HasForeignKey("FigureId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
                     b.Navigation("Cart");
-
-                    b.Navigation("Figure");
                 });
 
             modelBuilder.Entity("JPFigure.Entities.Character", b =>

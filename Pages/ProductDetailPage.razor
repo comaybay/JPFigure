@@ -3,6 +3,7 @@
 @using Entities.Enums;
 @inject FigureRepository figRepo;
 @inject NavigationManager UriHelper
+@inject CartRepository cartRepo;
 <NavBar></NavBar>
 @if (figure != null) {
 <div class="product_detail_ctn">
@@ -23,8 +24,8 @@
         <h1>@figure.ProductName</h1>
 			<h4>@String.Format("{0:n0}", figure.Price)₫</h4>
         <div class="row">
-            <input type="number" value="1" min="1">
-            <button class="btn">THÊM VÀO GIỎ</button>
+            <input @bind-value=@quantity type="number" min="1">
+            <button @onclick=@AddToCart class="btn">THÊM VÀO GIỎ</button>
         </div>
         <h3>THÔNG TIN SẢN PHẨM</h3>
         <p>@figure.ProductName</p>
@@ -95,9 +96,12 @@
 	[Parameter]
 	public int Id { get; set; }
 
+	[CascadingParameter]
+	public Task<AuthenticationState> authenticationStateTask { get; set; }
 
 	private string bigImgageSrc { get; set; }
 	private Entities.Figure figure = null;
+	private int quantity = 1;
 	private List<Entities.Figure> relatedFigures = null;
 
 	protected override async Task OnInitializedAsync()
@@ -120,5 +124,13 @@
 
 	protected void OnclickImg(int index){
 		bigImgageSrc = figure.Images[index];
-    }
+	}
+
+
+	private async void AddToCart()
+	{
+		var state = await authenticationStateTask;
+		var email = state.User.Claims.First(c => c.Type == ClaimTypes.Email).Value;
+		await cartRepo.AddToCart(email, figure.Id, quantity);
+	}
 }

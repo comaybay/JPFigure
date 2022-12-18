@@ -34,6 +34,7 @@ builder.Services.AddScoped<CharacterRepository>();
 builder.Services.AddScoped<SeriesRepository>();
 builder.Services.AddScoped<ManufactureRepository>();
 builder.Services.AddScoped<UserRepository>();
+builder.Services.AddScoped<CartRepository>();
 builder.Services.AddScoped<ProtectedSessionStorage>();
 builder.Services.AddScoped<AuthenticationStateProvider, AuthStateProvider>();
 builder.Services.AddOptions();
