@@ -32,7 +32,7 @@
 				<h4>ĐĂNG NHẬP TÀI KHOẢN</h4>
 				<p class="signin_title">Nhập email và mật khẩu của bạn:</p>
 				<input placeholder="Email..." @bind="email">
-				<input placeholder="Password..." @bind="password">
+				<input type="password" placeholder="Mật khẩu..." @bind="password">
 				@if (WrongEmailOrPassword)
 				{
 					<p style="color:red">Sai email hoặc mật khẩu</p>
@@ -52,7 +52,7 @@
 				<h4>Tạo tài khoản</h4>
 				<input placeholder="Họ và Tên" @bind="@signupName">
 				<input placeholder="Email..." @bind="@signupEmail">
-				<input placeholder="Password..." @bind="@signupPass">
+				<input type="password" placeholder="Mật khẩu..."  @bind="@signupPass">
 				<p class="sub_title">This site is protected by reCAPTCHA and the Google <b>Privacy Policy</b> and <b>Terms of Service</b> apply.</p>
 				<p style="color:red">@signupMessage</p>
 				<button class="create_acc_signup_bt" @onclick=@OnClickSignup>ĐĂNG KÝ</button>
@@ -100,7 +100,7 @@
         <div class="container">
             <button type="button" class="icon_bt" @onclick=@Navigate2Cart>
                 <img src="Image/shopping-cart.png">
-                <span class="icon_badge">0</span>
+                <span class="icon_badge"></span>
             </button>
             <span>Giỏ Hàng</span>
         </div>

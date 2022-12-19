@@ -42,9 +42,18 @@ namespace JPFigure.Repositories
 			await Context.SaveChangesAsync();
 		}
 
+		public async Task UpdateCartDetail(CartDetail cartDetail)
+		{
+			Context.CartDetails.Update(cartDetail);
+			await Context.SaveChangesAsync();
+		}
+
 		public async Task<Cart> GetCart(string userEmail)
 		{
-			var cart = await Context.Carts.Where(c => c.User.Email == userEmail).FirstOrDefaultAsync();
+			var cart = await Context.Carts.Where(c => c.User.Email == userEmail)
+									.Include(c => c.CartDetails)
+									.ThenInclude(cd => cd.Figure)
+									.FirstOrDefaultAsync();
 			if (cart == null)
 			{
 				cart = await AddCart(Context.Users.Where(u => u.Email == userEmail).First().Id);
@@ -52,5 +61,12 @@ namespace JPFigure.Repositories
 
 			return cart;
 		}
+
+		public async Task DeleteCartDetail(CartDetail cartDetail)
+		{
+			Context.CartDetails.Remove(cartDetail);
+			await Context.SaveChangesAsync();
+		}
+		
 	}
 }
