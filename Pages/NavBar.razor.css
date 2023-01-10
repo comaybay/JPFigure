@@ -16,7 +16,8 @@ html, body {
     height: 100%;
     width: 20%;
 }
-img{
+.left_nb img{
+    width:100%;
     object-fit: contain;
 }
 .center_nb{
@@ -74,7 +75,7 @@ form button img{
     border-radius: 50%;
 }
 .right_nb img{
-    height: 25px;   
+    height: 27px;   
 }
 .right_nb span{
     font-size: 15px;
@@ -205,5 +206,23 @@ b {
     border: none;
     background-color: white;
     color: red;
+}
+
+@media only screen and (max-width: 910px) {
+    .right_nb span {
+        display: none;
+    }
+    #badge{
+        display:block;
+    }
+    .center_nb{
+        width: 60%;
+    }
+    .right_nb{
+        width: 20%;
+    }
+    .container{
+        justify-content: center;
+    }
 }
 

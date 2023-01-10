@@ -8,7 +8,7 @@
 
 <NavBar></NavBar>
 <div class="banner_ctn">
-    <img src="Image/scale_figure_banner.png" class="banner">
+    <img src="Image/scale_figure_banner.png">
 </div>
 <div class="sort_ctn">
     <h2>Scale Figure</h2>
@@ -66,34 +66,29 @@
     </div>
 </div>
 <div class="product_ctn">
-    <ul class="products">
+    <div class="products">
 		@if (figures != null) {
 			@for (int i = 0; i < figures.Items.Count; i++)
 			{
-				<li>
-					<div class="product_item">
-						<div class="product_top">
-							<a href="" class="product_thumb">
-								<img src=@figures.Items[i].Images[0] alt="">
-							</a>
-							<a href="" class="add_cart">
-								<span>Add To Cart</span>
-								<img src="Image/cart-white.png">
-							</a>
-						</div>
-						<div class="product_info">
-							<div class="product_name_ctn">
-								<a href="" class="product_name">@figures.Items[i].ProductName</a>
-							</div>
-							<div class="product_price">@figures.Items[i].Price</div>
-						</div>
+				<div class="product_item">
+					<div class="product_thumb">
+						<a href="">
+							<img class="product_img" src=@figures.Items[i].Images[0] alt="">
+						</a>
+						<a href="" class="add_cart">
+							<img src="Image/cart-white.png">
+							<span>Add To Cart</span>
+						</a>
 					</div>
-
-				</li>
+					<div class="product_name_ctn">
+						<a href="" class="product_name">@figures.Items[i].ProductName</a>
+					</div>
+					<div class="product_price">@figures.Items[i].Price</div>
+				</div>
 			}
 		}
 
-    </ul>
+    </div>
 </div>
 @if (figures != null && figures.NumberOfPages > 0) {
 	<div class="page_navigate_ctn">

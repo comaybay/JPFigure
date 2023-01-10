@@ -94,11 +94,11 @@ html, body {
     width: 100%;
 }
 .support_ctn_left{
-    width: 80%;
-    height: 40px;
-}
-.support_ctn_left {
     width: 20%;
+    margin-right: 5px;
+}
+.support_ctn_right {
+    width: 80%;
 }
 .h4_phone {
     font-size: 18px;
@@ -106,7 +106,36 @@ html, body {
     color: white;
 }
 .support_ctn_left img {
-    height: 100%;
-    object-fit: contain;
+    width: 100%;
 }
+@media only screen and (max-width: 992px) {
+    .bottom_bar div li, .bottom_bar div p {
+        font-size: 12px;
+    }
 
+    .h4_title, .h4_phone {
+        font-size: 16px;
+    }
+}
+@media only screen and (max-width: 768px) {
+    .bottom_bar div li, .bottom_bar div p {
+        font-size: 11px;
+    }
+    .h4_title, .h4_phone {
+        font-size: 16px;
+    }
+    .support_ctn_left {
+        display: none;
+    }
+    .support_ctn_right {
+        width: 100%;
+    }
+}
+@media only screen and (max-width: 700px) {
+    .h4_title, .h4_phone {
+        font-size: 14px;
+    }
+    .bottom_bar div li, .bottom_bar div p {
+        font-size: 9px;
+    }
+}

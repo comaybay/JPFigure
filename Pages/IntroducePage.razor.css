@@ -8,8 +8,6 @@ html, body {
 }
 .banner_ctn {
     margin: 30px 0;
-    display: flex;
-    justify-content: center;
 }
 .ctn {
     padding: 10px 50px;
@@ -25,11 +23,30 @@ li{
     margin-bottom: 15px;
 }
 .image_ctn{
-    display: flex;
-    justify-content: center;
+    padding: 20px 200px;
 }
-.image_ctn img{
-    margin: 10px;
+img{
+    width: 100%;
+}
+.img1{
+    grid-area: a;
+}
+.img2{
+    grid-area: b;
+}
+.img3{
+    grid-area: c;
+}
+.img4{
+    grid-area: d;
+}
+.image_ctn_4{
+    display: grid;
+    grid-template-areas:
+        'a b'
+        'c d';
+    gap: 20px;
+    padding: 20px;
 }
 .image_title{
     font-size: 15px;
@@ -37,13 +54,38 @@ li{
     text-align: center;
 }
 .content{
-    margin: 10px;
+    padding: 10px;
 }
 .sub{
     list-style: outside;
     margin-left: 40px;
 }
+.video_ctn{
+    padding: 0 50px;
+}
 .video{
-    width: 1000px;
+    width: 100%;
     margin-bottom: 10px;
+}
+.sm_image{
+    width: 500px;
+    height: 200px;
+}
+
+@media screen and (max-width: 890px){
+    .image_ctn {
+        padding: 20px 100px;
+    }
+}
+@media screen and (max-width: 650px) {
+    .image_ctn_4 {
+        grid-template-areas:
+            'a'
+            'b'
+            'c'
+            'd';
+    }
+    .image_ctn {
+        padding: 20px 50px;
+    }
 }

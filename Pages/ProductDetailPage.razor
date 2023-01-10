@@ -17,7 +17,7 @@
 		}
         </div>
         <div class="main_image_ctn">
-            <img style="width:467px; height:679px; object-fit:cover" src="@bigImgageSrc" id="ProductImg">
+            <img src="@bigImgageSrc">
         </div>
     </div>
     <div class="right_ctn">
@@ -64,31 +64,27 @@
 </div>
 <h1 class="other_product_title">Sản Phẩm Liên Quan</h1>
 <div class="other_product_ctn">
-    <ul class="products">
+    <div class="products">
         @if (relatedFigures != null) {
 		@foreach (var (rfig, i) in relatedFigures.Select((f, i) => (f, i)))
 		{
-			<li>
-				<div class="product_item">
-					<div class="product_top">
-								<a href="/figure/@rfig.Id" class="product_thumb">
-							<img src="@rfig.Images.First()" alt="">
-						</a>
-						<a href="" class="add_cart">
-							<span>Add To Cart</span>
-							<img src="Image/cart-white.png">
-						</a>
-					</div>
-					<div class="product_info">
-						<div class="product_name_ctn">
-							<a href="" class="product_name">@rfig.ProductName</a>
-						</div>
-						<div class="product_price">@string.Format("{0:n0}", rfig.Price)₫</div>
-					</div>
+			<div class="product_item">
+				<div class="product_thumb">
+					<a href="/figure/@rfig.Id">
+						<img class="product_img" src="@rfig.Images.First()" alt="">
+					</a>
+					<a href="" class="add_cart">
+						<span>Add To Cart</span>
+						<img src="Image/cart-white.png">
+					</a>
 				</div>
-			</li>
-				}}
-    </ul>
+				<div class="product_name_ctn">
+					<a href="" class="product_name">@rfig.ProductName</a>
+				</div>
+				<div class="product_price">@string.Format("{0:n0}", rfig.Price)₫</div>
+			</div>
+		}}
+    </div>
 </div>
 }
 <BottomBar></BottomBar>
