@@ -134,4 +134,7 @@ img{
     .add_cart span {
         display: none
     }
+    .ctn {
+        padding: 0 50px;
+    }
 }
