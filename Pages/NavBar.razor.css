@@ -98,8 +98,8 @@ form button img{
     color: #252A2B;
     transition: all 0.1s;
 }
-.menu ul li a:hover{
-    color: #f879ff;
+.menu ul li:hover{
+    background-color: #E8E8E8;
     cursor: pointer;
 }
 .menu img{

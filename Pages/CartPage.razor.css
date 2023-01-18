@@ -1,11 +1,9 @@
 ﻿* {
     margin: 0;
     padding: 0;
-}
-
-html, body {
-    width: 100%;
-    height: 100%;
+    box-sizing: border-box;
+    text-decoration: none;
+    list-style: none;
 }
 .title_ctn{
     padding: 10px;
@@ -20,7 +18,6 @@ html, body {
    margin: 10px auto;
 }
 .content_ctn{
-    width: 100%;
     display: flex;
     padding: 0 200px;
     margin-bottom: 20px;
@@ -49,7 +46,7 @@ html, body {
 }
 .product_info_ctn_right{
     width: 70%;
-    padding-right: 20px;
+    padding: 0 10px;
 }
 input {
     width: 40px;
@@ -105,4 +102,48 @@ ul {
     -webkit-transition-property: box-shadow, transform;
     transition-property: box-shadow, transform;
     margin: 10px 0;
+}
+@media screen and (max-width: 1200px) {
+    .content_ctn {
+        padding: 0 100px;
+    }
+}
+@media screen and (max-width: 870px) {
+    .content_ctn {
+        padding: 0 10px;
+    }
+}
+@media screen and (max-width: 768px) {
+    .content_ctn {
+        padding: 0 10px;
+    }
+    .left_content_ctn {
+        width: 60%;
+    }
+
+    .right_content_ctn {
+        width: 40%;
+        border: 1px solid grey;
+        padding: 10px;
+    }
+    .product_info_ctn_left{
+        width: 40%;
+    }
+    .product_info_ctn_right{
+        width: 60%;
+    }
+}
+@media screen and (max-width: 600px) {
+    label {
+        font-size: 15px;
+    }
+    .right_content_ctn div h4 {
+        font-size: 18px;
+    }
+    .bill_title {
+        font-size: 20px;
+    }
+    p {
+        font-size: 14px;
+    }
 }

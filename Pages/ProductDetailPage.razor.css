@@ -10,7 +10,6 @@ img{
 }
 .product_detail_ctn {
     display: flex;
-    height: 800px;
     padding: 0 20px 20px 20px;
     border-bottom: solid 1px #E8E8E8;
     margin: 20px 0;
@@ -174,12 +173,9 @@ h3{
     font-size: 15px;
     font-weight: bold;
 }
-@media screen and (max-width: 768px){
+@media screen and (max-width: 870px){
     .info_ctn div {
         padding: 0;
-    }
-    .info_ctn span {
-        font-size: 12px;
     }
     h1{
         font-size: 25px;
@@ -190,13 +186,17 @@ h3{
     .add_cart span{
         display: none;
     }
-    .info_ctn img {
-        width: 30px;
-        height: 30px;
+    .product_detail_ctn{
+        display: block;
     }
-}
-@media screen and (max-width: 640px){
-    .info_ctn span {
-        font-size: 10px;
+    .left_ctn, .right_ctn {
+        width: 100%;
+    }
+    .products {
+        justify-content: flex-start;
+    }
+    .product_item {
+        width: 32%;
+        margin-right: 5px;
     }
 }

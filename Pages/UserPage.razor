@@ -22,46 +22,34 @@
         <input placeholder="Hồ Chí Minh">
         <button>Cập Nhập</button>
     </div>
-    <div >
+</div>
+<div class="bougth_product_ctn">
+    <div>
         <h4 class="bougth_title">SẢN PHẨM ĐÃ MUA</h4>
     </div>
-    <div class="bougth_ctn">
-        <div class="image_ctn">
-            <img src="Image/product1,1.png">
-        </div>
-        <div class="bougth_info_title">
-            <div>
-                <span style="font-weight: bold">Nendoroid Swacchao! Attack on Titan Levi</span>
+    @for (int i = 0; i < 2; i++)
+    {
+        <div class="bougth_ctn">
+            <div class="image_ctn">
+                <img src="Image/product1.png">
             </div>
-            <div>
-                <span style="color: red">1,400,000₫</span>
-            </div>
-            <div>
-                <span>Số lượng: 2</span>
-            </div>          
-        </div>
-    </div>
-    <div class="bougth_ctn">
-        <div class="image_ctn">
-            <img src="Image/product1,1.png">
-        </div>
-        <div class="bougth_info_title">
-            <div>
-                <span style="font-weight: bold">Nendoroid Swacchao! Attack on Titan Levi</span>
-            </div>
-            <div>
-                <span style="color: red">1,400,000₫</span>
-            </div>
-            <div>
-                <span>Số lượng: 2</span>
+            <div class="bougth_info_title">
+                <div>
+                    <span style="font-weight: bold">Nendoroid Swacchao! Attack on Titan Levi</span>
+                </div>
+                <div>
+                    <span style="color: red">1,400,000₫</span>
+                </div>
+                <div>
+                    <span>Số lượng: 2</span>
+                </div>
             </div>
         </div>
-    </div>
-    <div class="logout_ctn">
-        <button>Đăng Xuất</button>
-    </div>   
+    }
 </div>
-
+<div class="logout_ctn">
+    <button>Đăng Xuất</button>
+</div>
 <BottomBar></BottomBar>
 
 @code {
