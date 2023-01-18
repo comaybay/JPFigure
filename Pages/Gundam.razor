@@ -89,22 +89,22 @@
 <div class="product_ctn">
     <div class="products">
         @if (figures != null){
-            @for (int i = 0; i < figures.Items.Count; i++)
-            {
+        @foreach (var (figure, i) in figures.Items.Select((figure, i) => (figure, i)))
+			{
                 <div class="product_item">
                     <div class="product_thumb">
-                        <a href="">
-                            <img src=@figures.Items[i].Images[0] alt="">
+                        <a href="/figure/@figure.Id">
+							<img src=@figure.Images[0] alt="">
                         </a>
-                        <a href="" class="add_cart">
+						<a @onclick=@(() => AddToCart(figure)) class="add_cart">
                             <img src="Image/cart-white.png">
                             <span>Add To Cart</span>
                         </a>
                     </div>
                     <div class="product_name_ctn">
-                        <a href="" class="product_name">@figures.Items[i].ProductName</a>
+						<a href="" class="product_name">@figure.ProductName</a>
                     </div>
-                    <div class="product_price">@figures.Items[i].Price</div>
+					<div class="product_price">@figure.Price</div>
                 </div>
             }
         }
@@ -230,4 +230,9 @@
         string paramOrder = filter.OrderNewest == false ? $"&order=asc" : "";
         Navigation.NavigateTo($"/gundam?page={currentPage}{paramBrand}{paramPriceFrom}{paramPriceTo}{paramOrder}");
     }
+
+	private void AddToCart(Models.GundamFigure figure)
+	{
+
+	}
 }
