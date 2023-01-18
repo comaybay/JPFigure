@@ -1,6 +1,11 @@
 ﻿@page "/user"
-
+@using JPFigure.Entities;
+@inject UserRepository userRepo;
+@inject CartRepository cartRepo;
+@inject NavigationManager _navigationManager
+@inject JPFigureContext context
 <NavBar></NavBar>
+@if (_user != null) {
 <div class="title_ctn">
     <h3>Tài khoản của bạn</h3>
     <div></div>
@@ -11,16 +16,16 @@
     </div>
     <div class="user_info_ctn">
         <p>Họ và tên:</p>
-        <p class="user_name">Tan Ne</p>
+        <p class="user_name">@_user.Name</p>
     </div>
     <div class="user_info_ctn">
         <p>Email:</p>
-        <p>tan@gmail.com</p>
+        <p>@_user.Email</p>
     </div>
     <div class="user_info_ctn">
         <p>Địa chỉ:</p>
-        <input placeholder="Hồ Chí Minh">
-        <button>Cập Nhập</button>
+			<input placeholder="Địa chỉ..." @bind-value=@_address>
+        <button @onclick=@UpdateAddress>Cập Nhập</button>
     </div>
 </div>
 <div class="bougth_product_ctn">
@@ -50,8 +55,29 @@
 <div class="logout_ctn">
     <button>Đăng Xuất</button>
 </div>
+}
 <BottomBar></BottomBar>
 
 @code {
+	[CascadingParameter]
+	public Task<AuthenticationState> AuthenticationState { get; set; }
+
+	private User _user;
+	private string _address;
+
+	protected override async Task OnInitializedAsync()
+	{
+		var userEmail = (await AuthenticationState).User?.FindFirst(ClaimTypes.Email)?.Value;
+
+		_user = await userRepo.GetUser(userEmail);
+
+
+	}
+
+	public async Task UpdateAddress()
+	{
+		_user.Address = _address;
+		await userRepo.UpdateUser(_user);
+	}
 
 }

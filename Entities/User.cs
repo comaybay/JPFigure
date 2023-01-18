@@ -9,6 +9,7 @@
 		public string Password { get; set; } = null!;
 		public DateOnly? DateOfBirth { get; set; }
 		public bool? IsFemale { get; set; }
+		public string? Address { get; set; }
 
 		public List<Order> Orders { get; set; } = null!;
 		public Cart Cart { get; set; } = null!;

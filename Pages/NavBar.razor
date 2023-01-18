@@ -88,7 +88,7 @@
 					}
 					</div>
 					<div class="account_ctn" style="display: @account_statue; height:100px; top:80px">
-						<button class="signin_bt" @onclick=@OnClickLogout>ĐĂNG Xuất</button>
+						<button class="signin_bt" @onclick=@OnClickLogout>ĐĂNG XUẤT</button>
 					</div>
 				</div>
 			</Authorized>
@@ -227,7 +227,7 @@
 	{
 		var asp = (AuthStateProvider)authStateProvider;
 
-		if (await userRepo.EmailExists(email))
+		if (await userRepo.EmailExists(signupEmail))
 		{
 			signupMessage = "Email đã có người sử dụng";
 		}

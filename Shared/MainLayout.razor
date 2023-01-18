@@ -1,7 +1,8 @@
-﻿@inherits LayoutComponentBase
+﻿@using Blazored.Toast.Configuration;
+@inherits LayoutComponentBase
 
 <PageTitle>JPFigure</PageTitle>
-
+<BlazoredToasts Position="ToastPosition.BottomRight" Timeout="10" ShowProgressBar="true" />
 <div class="page">
     <main>  
         @Body

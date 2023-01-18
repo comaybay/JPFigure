@@ -67,6 +67,11 @@ namespace JPFigure.Repositories
 			Context.CartDetails.Remove(cartDetail);
 			await Context.SaveChangesAsync();
 		}
-		
+
+		public async Task DeleteCartDetails(IEnumerable<CartDetail> cartDetails)
+		{
+			Context.CartDetails.RemoveRange(cartDetails);
+			await Context.SaveChangesAsync();
+		}
 	}
 }

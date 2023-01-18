@@ -7,6 +7,7 @@ using JPFigure.Repositories;
 using Microsoft.AspNetCore.Components.Authorization;
 using JPFigure.Auth;
 using Microsoft.AspNetCore.Components.Server.ProtectedBrowserStorage;
+using Blazored.Toast;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -18,6 +19,8 @@ builder.Host.ConfigureAppConfiguration(builder =>
 // Add services to the container.
 builder.Services.AddRazorPages();
 builder.Services.AddServerSideBlazor();
+builder.Services.AddBlazoredToast();
+
 
 AppContext.SetSwitch("Npgsql.EnableLegacyTimestampBehavior", true);
 var config = builder.Configuration;

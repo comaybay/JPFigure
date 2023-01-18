@@ -21,6 +21,14 @@ namespace JPFigure.Repositories
 			return await Context.Users.Where(u => u.Id == id).FirstOrDefaultAsync();
 		}
 
+		public async Task<User?> GetUser(string email)
+		{
+			return await Context.Users.Where(u => u.Email == email)
+				.Include(u => u.Orders)
+				.ThenInclude(u => u.OrderDetails)
+				.FirstOrDefaultAsync();
+		}
+
 		public async Task<User?> GetUser(string email, string password)
 		{
 			return await Context.Users.Where(u => u.Email == email && u.Password == password).FirstOrDefaultAsync();
@@ -29,6 +37,8 @@ namespace JPFigure.Repositories
 		public async Task AddUser(User input)
 		{
 			await Context.Users.AddAsync(input);
+			await Context.SaveChangesAsync();
+
 			await Context.Carts.AddAsync(new Cart { UserId = input.Id });
 			await Context.SaveChangesAsync();
 		}
@@ -36,6 +46,12 @@ namespace JPFigure.Repositories
 		public async Task<List<Entities.User>> GetAllUsers()
 		{
 			return await Context.Users.ToListAsync();
+		}
+
+		public async Task UpdateUser(User user)
+		{
+			Context.Users.Update(user);
+			await Context.SaveChangesAsync();
 		}
 	}
 }

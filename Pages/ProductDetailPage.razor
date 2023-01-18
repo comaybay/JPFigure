@@ -4,6 +4,7 @@
 @inject FigureRepository figRepo;
 @inject NavigationManager UriHelper
 @inject CartRepository cartRepo;
+@inject IToastService toastService
 <NavBar></NavBar>
 @if (figure != null) {
 <div class="product_detail_ctn">
@@ -62,10 +63,10 @@
         </div>
     </div>
 </div>
+ @if (relatedFigures != null && relatedFigures.Count > 0) {
 <h1 class="other_product_title">Sản Phẩm Liên Quan</h1>
 <div class="other_product_ctn">
-    <div class="products">
-        @if (relatedFigures != null) {
+    <div class="products" style="padding: 3rem">
 		@foreach (var (rfig, i) in relatedFigures.Select((f, i) => (f, i)))
 		{
 			<div class="product_item">
@@ -83,9 +84,10 @@
 				</div>
 				<div class="product_price">@string.Format("{0:n0}", rfig.Price)₫</div>
 			</div>
-		}}
+		}
     </div>
 </div>
+		}
 }
 <BottomBar></BottomBar>
 @code {
@@ -128,5 +130,7 @@
 		var state = await authenticationStateTask;
 		var email = state.User.Claims.First(c => c.Type == ClaimTypes.Email).Value;
 		await cartRepo.AddToCart(email, figure.Id, quantity);
+
+		toastService.ShowSuccess("Đã thêm vào giỏ hàng.", s => { s.Timeout = 5;});
 	}
 }
