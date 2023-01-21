@@ -1,5 +1,6 @@
 ﻿@page "/gundam"
 @using JPFigure.Entities.Enums
+@using JPFigure.Extensions;
 @using JPFigure.Repositories.Data.Filters
 @inject FigureRepository FigureRepository;
 @inject ManufactureRepository ManufactureRepository;
@@ -17,8 +18,8 @@
 				filter.OrderNewest = e.Value?.ToString() == "oldest" ? false : true;
 				ApplyFilter();
 			})">
-            <option value="news">Mới Nhất</option>
-            <option value="oldest">Cũ Nhất</option>
+            <option selected=@(filter.OrderNewest==true) value="news">Mới Nhất</option>
+			<option selected=@(filter.OrderNewest==false) value ="oldest">Cũ Nhất</option>
         </select>
     </div>
 </div>
@@ -28,19 +29,33 @@
         <p>Phân Loại</p>
     </div>
     <div>
-        <img src="Image/brand-image.png">
-        <p>Thương Hiệu</p>
-        <SelectWithSearch Options=@brandOptions 
-			SelectedOptionChanged=@(async o => {
-				filter.ManufactureId = o != null ? int.Parse(o.Value) : null;
-						  currentPage = 1;
-						  ApplyFilter();
-			}) />
+		@if (brands.Count != 0)
+		{
+			<img src="Image/brand-image.png">
+			<p>Thương Hiệu</p>
+			<SelectWithSearch 
+				Options=@brandOptions 
+				PlaceHolder=@(brands.Where(b => b.Id == Brand).FirstOrDefault()?.Name)
+				SelectedOptionChanged=@(async o => {
+					filter.ManufactureId = o != null ? int.Parse(o.Value) : null;
+							  currentPage = 1;
+							  ApplyFilter();
+				}) />
+		}
     </div>
     <div>
         <img src="Image/price-tag.png">
         <p>Giá Tiền</p>
         <SelectWithSearch
+			PlaceHolder=@((PriceFrom, PriceTo) switch {
+						  (null, 1000000) => "Dưới 1.000.000₫",
+						  (1000000, 2000000) => "1.000.000₫ - 2.000.000₫",
+						  (2000000, 3000000) => "2.000.000₫ - 3.000.000₫",
+						  (3000000, 4000000) => "3.000.000₫ - 4.000.000₫",
+						  (4000000, null) => "Trên 4.000.000₫",
+							_ => null,
+				
+			})
 			Options=@(new() {
 				new() {DisplayText = "Dưới 1.000.000₫", Value="1"},
 				new() {DisplayText = "1.000.000₫ - 2.000.000₫", Value="2"},
@@ -63,23 +78,24 @@
     </div>
     <div>
         <img src="Image/volume.png">
-        <p>Cấp Độ</p>
+        <p>Thể loại</p>
         <SelectWithSearch
+			PlaceHolder=@(Type != null ? ((GundamType)Type).GetDisplayText() : null)
 			Options=@(new() {
-				new() {DisplayText = "Dưới 1.000.000₫", Value="1"},
-				new() {DisplayText = "1.000.000₫ - 2.000.000₫", Value="2"},
-				new() {DisplayText = "2.000.000₫ - 3.000.000₫", Value="3"},
-				new() {DisplayText = "3.000.000₫ - 4.000.000₫", Value="4"},
-				new() {DisplayText = "Trên 4.000.000₫", Value="5"}
+				new() {DisplayText = GundamType.RealGrade.GetDisplayText(), Value="1"},
+				new() {DisplayText = GundamType.HighGrade.GetDisplayText(), Value="2"},
+				new() {DisplayText = GundamType.PerfectGrade.GetDisplayText(), Value="3"},
+				new() {DisplayText = GundamType.MasterGrade.GetDisplayText(), Value="4"},
+				new() {DisplayText = GundamType.SuperDeformed.GetDisplayText(), Value="5"},
 			})
 			SelectedOptionChanged=@(async o => {
-				filter.PriceRange = (o?.Value) switch {
-						"1" => (null, 1000000),
-						"2" => (1000000, 2000000),
-						"3" => (2000000, 3000000),
-						"4" => (3000000, 4000000),
-						"5" => (4000000, null),
-						_ => (null, null),
+				filter.GundamType = (o?.Value) switch {
+						"1" => GundamType.RealGrade,
+						"2" => GundamType.HighGrade,
+						"3" => GundamType.PerfectGrade,
+						  "4" => GundamType.MasterGrade,
+						  "5" => GundamType.SuperDeformed,
+						_ => null,
 					};
 				currentPage = 1;
 				ApplyFilter();
@@ -169,39 +185,45 @@
 <BottomBar></BottomBar>
 
 @code {
-    [Parameter]
-    [SupplyParameterFromQuery]
-    public int Page { get; set; }
+	[Parameter]
+	[SupplyParameterFromQuery]
+	public int Page { get; set; }
 
-    [Parameter]
-    [SupplyParameterFromQuery]
-    public int? GundamFigure { get; set; }
+	[Parameter]
+	[SupplyParameterFromQuery]
+	public int? GundamFigure { get; set; }
 
-    [Parameter]
-    [SupplyParameterFromQuery]
-    public int? Brand { get; set; }
+	[Parameter]
+	[SupplyParameterFromQuery]
+	public int? Brand { get; set; }
 
-    [Parameter]
-    [SupplyParameterFromQuery]
-    public int? PriceFrom { get; set; }
+	[Parameter]
+	[SupplyParameterFromQuery]
+	public int? PriceFrom { get; set; }
 
-    [Parameter]
-    [SupplyParameterFromQuery]
-    public int? PriceTo { get; set; }
+	[Parameter]
+	[SupplyParameterFromQuery]
+	public int? PriceTo { get; set; }
 
-    [Parameter]
-    [SupplyParameterFromQuery]
-    public string? Order { get; set; }
+	[Parameter]
+	[SupplyParameterFromQuery]
+	public string? Order { get; set; }
 
-    private Pagination<Models.GundamFigure>? figures = null;
+	[Parameter]
+	[SupplyParameterFromQuery]
+	public int? Type { get; set; }
 
-    private List<SelectWithSearch.Option> brandOptions = new();
-    private GundamFigureFilter filter = new();
-    private int currentPage = 1;
+	private Pagination<Models.GundamFigure>? figures = null;
 
-    protected override async Task OnInitializedAsync()
-    {
-        brandOptions = (await ManufactureRepository.GetAllManufactures()).Select(
+	private List<SelectWithSearch.Option> brandOptions = new();
+	private GundamFigureFilter filter = new();
+	private int currentPage = 1;
+	private List<Models.Manufacture> brands = new();
+
+	protected override async Task OnInitializedAsync()
+	{
+		brands = (await ManufactureRepository.GetAllManufactures());
+		brandOptions = brands.Select(
             c => new SelectWithSearch.Option()
                 {
                     Value = c.Id.ToString(),
@@ -216,6 +238,7 @@
                 ManufactureId = Brand,
                 PriceRange = (PriceFrom, PriceTo),
                 OrderNewest = Order != null && Order == "asc" ? false : true,
+				GundamType = (GundamType?)Type,
             };
 
         figures = await FigureRepository.GetGundamFigures(filter, Math.Max(1, Page), 2);
@@ -228,11 +251,12 @@
         string paramPriceFrom = filter.PriceRange.from != null ? $"&pricefrom={filter.PriceRange.from}" : "";
         string paramPriceTo = filter.PriceRange.to != null ? $"&priceto={filter.PriceRange.to}" : "";
         string paramOrder = filter.OrderNewest == false ? $"&order=asc" : "";
-        Navigation.NavigateTo($"/gundam?page={currentPage}{paramBrand}{paramPriceFrom}{paramPriceTo}{paramOrder}");
+		string paramType = filter.GundamType != null ? $"&type={(int)filter.GundamType}" : "";
+
+        Navigation.NavigateTo($"/gundam?page={currentPage}{paramBrand}{paramPriceFrom}{paramPriceTo}{paramOrder}{paramType}");
     }
 
 	private void AddToCart(Models.GundamFigure figure)
 	{
-
 	}
 }

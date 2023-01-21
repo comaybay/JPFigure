@@ -30,14 +30,23 @@
 
 	protected override void OnInitialized()
 	{
+		if (PlaceHolder == null)
+		{
+			PlaceHolder = "Tất cả";
+		}
 		ShowText = PlaceHolder;
 	}
 
 	protected override void OnParametersSet()
 	{
+		if (PlaceHolder == null)
+		{
+			PlaceHolder = "Tất cả";
+		}
 		if (Disabled) {
 			_DisplayText = "";
 		}
+		ShowText = PlaceHolder;
 	}
 
 	private async Task OnInputChanged(ChangeEventArgs e)

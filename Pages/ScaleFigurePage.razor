@@ -20,8 +20,8 @@
 				filter.OrderNewest = e.Value?.ToString() == "oldest" ? false : true;
 				ApplyFilter();
 			})">
-            <option value="news">Mới Nhất</option>
-            <option value="oldest">Cũ Nhất</option>
+			<option selected=@(filter.OrderNewest==true) value="news">Mới Nhất</option>
+			<option selected=@(filter.OrderNewest==false) value="oldest">Cũ Nhất</option>
         </select>
     </div>
 </div>
@@ -30,21 +30,33 @@
         <img src="Image/filter.png">
         <p>Phân Loại</p>
     </div>
-    <div>
+	@if (brands.Count > 0)
+	{
+		
+	<div>
         <img src="Image/brand-image.png">
         <p>Thương Hiệu</p>
-		<SelectWithSearch 
-			Options=@brandOptions 
-			SelectedOptionChanged=@(async o => {
-				filter.ManufactureId = o != null ? int.Parse(o.Value) : null;
+		<SelectWithSearch Options=@brandOptions
+						  PlaceHolder=@(brands.Where(b => b.Id == Brand).FirstOrDefault()?.Name)
+						  SelectedOptionChanged=@(async o => {
+						  filter.ManufactureId = o != null ? int.Parse(o.Value) : null;
 						  currentPage = 1;
 						  ApplyFilter();
-			}) />
+						  }) />
     </div>
+	}
     <div>
         <img src="Image/price-tag.png">
         <p>Giá Tiền</p>
-		<SelectWithSearch
+		<SelectWithSearch 
+			PlaceHolder=@((PriceFrom, PriceTo) switch {
+				  (null, 1000000) => "Dưới 1.000.000₫",
+						  (1000000, 2000000) => "1.000.000₫ - 2.000.000₫",
+						  (2000000, 3000000) => "2.000.000₫ - 3.000.000₫",
+						  (3000000, 4000000) => "3.000.000₫ - 4.000.000₫",
+						  (4000000, null) => "Trên 4.000.000₫",
+						  _ => null,
+						  })
 			Options=@(new() {
 				new() {DisplayText = "Dưới 1.000.000₫", Value="1"},
 				new() {DisplayText = "1.000.000₫ - 2.000.000₫", Value="2"},
@@ -180,10 +192,12 @@
 	private List<SelectWithSearch.Option> brandOptions = new();
 	private ScaleFigureFilter filter = new();
 	private int currentPage = 1;
+	private List<Models.Manufacture> brands = new();
 
 	protected override async Task OnInitializedAsync()
 	{
-		brandOptions =  (await ManufactureRepository.GetAllManufactures()).Select(
+		brands = await ManufactureRepository.GetAllManufactures();
+		brandOptions = brands.Select(
 			c => new SelectWithSearch.Option() {
 				Value = c.Id.ToString(),
 				DisplayText = c.Name
