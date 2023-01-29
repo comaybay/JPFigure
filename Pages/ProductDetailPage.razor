@@ -12,9 +12,13 @@
         <div class="sub_image_ctn">
 		@foreach (var (img, i) in figure.Images.Select((img,i) => (img, i)))
 		{
+					@if (!string.IsNullOrEmpty(img))
+					{
+						
             <div class="small_image_ctn">
                 <img src="@img" @onclick="() => OnclickImg(i)">
             </div>
+					}
 		}
         </div>
         <div class="main_image_ctn">

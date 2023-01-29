@@ -1,14 +1,22 @@
 ﻿@page "/admin/revenue"
+@inject JPFigureContext context
+@inject Faker Faker
+@inject IToastService toastService
 @using ChartJs.Blazor.BarChart
+@using Microsoft.EntityFrameworkCore;
 
 <div class="top_ctn">
     <h4>Tổng Lợi Nhuận: 10000000 VND</h4>
     <div class="select_ctn" style="display: flex">
         <h4>Năm: </h4>
-        <input type="number" class="year_input"/>
-        <input type="submit" class="year_submit" value="Search"/>
+        <input type="number" class="year_input" @bind=_year/>
+        <input type="submit" class="year_submit" value="Search" @onclick=Search/>
+		<div>
+			<button style="color:white; background-color:crimson" @onclick=GenerateData>Tạo dữ liệu ngẫu nhiêu</button>
+		</div>
     </div>
 </div>
+	
 <div class="chart_ctn">
     <div class="chart_left">
         <Chart Config="barConfig"></Chart>
@@ -17,6 +25,7 @@
         <Chart Config="barConfig2"></Chart>
     </div>
 </div>
+
 <div class="table_ctn">
     <div class="table_left_ctn">
         <label>Chi tiết doanh thu</label>
@@ -54,19 +63,32 @@
     </div>
 </div>
 @code {
-    private BarConfig barConfig;
-    private BarConfig barConfig2;
+	private BarConfig barConfig = new BarConfig();
+	private BarConfig barConfig2 = new BarConfig();
+	private int _year;
 
-    protected override void OnInitialized()
-    {
-        ConfigureBarChart();
-        ConfigureBarChart2();
-    }
+	protected override async Task OnInitializedAsync()
+	{
+		foreach (var month1 in new[] { "Tháng 1", "Tháng 2", "Tháng 3", "Tháng 4", "Tháng 5", "Tháng 6",
+										"Tháng 7", "Tháng 8", "Tháng 9", "Tháng 10", "Tháng 11", "Tháng 12" })
+		{
+			barConfig.Data.Labels.Add(month1);
+			barConfig2.Data.Labels.Add(month1);
+		}
 
-    private void ConfigureBarChart(){
-        barConfig = new BarConfig()
-            {
-                Options = new BarOptions
+		_year = DateTime.Now.Year;
+		await Search();
+	}
+
+	private async Task Search()
+	{
+		await ConfigureBarChart();
+		await ConfigureBarChart2();
+	}
+
+	private async Task ConfigureBarChart()
+	{
+		barConfig.Options = new BarOptions
                 {
                     Title = new OptionsTitle
                     {
@@ -87,15 +109,26 @@
                         }
                     },
                     Responsive = true
-                }
             };
-        foreach (var month1 in new[] { "Tháng 1", "Tháng 2", "Tháng 3", "Tháng 4", "Tháng 5", "Tháng 6", 
-                                        "Tháng 7", "Tháng 8", "Tháng 9", "Tháng 10", "Tháng 11", "Tháng 12" })
-        {
-            barConfig.Data.Labels.Add(month1);
-        }
-        var dataset1 = new BarDataset<int>(new[] { 10, 35, 50, 70, 70, 70, 70, 70, 70, 70, 70, 70 })
-        {
+
+
+		var rev = await (from o in context.Orders.Where(o => o.Date.Year == _year).Include(o => o.OrderDetails).ThenInclude(o => o.Figure)
+							group o by o.Date.Month into g
+							select new {Month = g.Key, Rev = g.SelectMany(o => o.OrderDetails).Sum(od => (long)od.Figure.Price * od.Quantity)}).ToListAsync();
+
+		if (rev.Count < 12)
+		{
+			for (int i =1; i <= 12; i++)
+			{
+				if (rev.Find(r => r.Month == i) == null)
+				{
+					rev.Add(new { Month = i, Rev = (long)0 });
+				}
+			}
+		}
+
+		var dataset1 = new BarDataset<long>(rev.Select(r => r.Rev))
+		{
             Label = "Bảng doanh thu",
             BackgroundColor = new[]
             {
@@ -112,16 +145,15 @@
                 ColorUtil.ColorHexString(252, 118, 106),
                 ColorUtil.ColorHexString(91, 132, 177),
             }
-            
-        };
-        barConfig.Data.Datasets.Add(dataset1);
-    }
 
-    private void ConfigureBarChart2()
-    {
-        barConfig2 = new BarConfig()
-            {
-                Options = new BarOptions
+        };
+		barConfig.Data.Datasets.Clear();
+		barConfig.Data.Datasets.Add(dataset1);
+	}
+
+	private async Task ConfigureBarChart2()
+	{
+		barConfig2.Options = new BarOptions
                 {
                     Title = new OptionsTitle
                     {
@@ -142,14 +174,9 @@
                         }
                     },
                     Responsive = true
-                }
             };
-        foreach (var month2 in new[] { "Tháng 1", "Tháng 2", "Tháng 3", "Tháng 4", "Tháng 5", "Tháng 6",
-                                        "Tháng 7", "Tháng 8", "Tháng 9", "Tháng 10", "Tháng 11", "Tháng 12" })
-        {
-            barConfig2.Data.Labels.Add(month2);
-        }
-        var dataset2 = new BarDataset<int>(new[] { 10, 35, 50, 70, 70, 70, 70, 70, 70, 70, 70, 70 })
+
+		var dataset2 = new BarDataset<int>(new[] { 10, 35, 50, 70, 70, 70, 70, 70, 70, 70, 70, 70 })
             {
                 Label = "Bảng chi tiêu",
                 BackgroundColor = new[]
@@ -169,6 +196,21 @@
             }
 
             };
-        barConfig2.Data.Datasets.Add(dataset2);
-    }
+		barConfig2.Data.Datasets.Clear();
+		barConfig2.Data.Datasets.Add(dataset2);
+	}
+
+	private async Task GenerateData()
+	{
+		if (_year >= DateTime.Now.Year)
+		{
+			toastService.ShowError("Không thể tạo dữ liệu cho năm hiện tại hoặc tương lai");
+			return;
+		}
+
+
+		await Faker.AddRandomOrders(_year);
+		await Search();
+		toastService.ShowSuccess("Tạo dữ liệu thành công");
+	}
 }

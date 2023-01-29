@@ -3,9 +3,13 @@
     padding: 0;
 }
 
+tr:hover {
+	background-color: hsl(240, 100%, 85%);
+}
+
 html, body {
-    width: 85%;
-    height: 100%;
+	width: 85%;
+	height: 100%;
 }
 .search_ctn{
     padding: 10px 20px;

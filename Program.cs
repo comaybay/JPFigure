@@ -33,6 +33,7 @@ builder.Services.AddDbContext<JPFigureContext>(
 
 builder.Services.AddAuthorizationCore();
 builder.Services.AddScoped<FigureRepository>();
+builder.Services.AddScoped<Faker>();
 builder.Services.AddScoped<CharacterRepository>();
 builder.Services.AddScoped<SeriesRepository>();
 builder.Services.AddScoped<ManufactureRepository>();

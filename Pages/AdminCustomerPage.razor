@@ -1,7 +1,9 @@
 ﻿@page "/admin/customer"
+@using Microsoft.EntityFrameworkCore;
+@inject JPFigureContext context
 <div class="search_ctn">
     <form>
-        <input type="text" placeholder="Tìm kiếm khách hàng...?" />
+		<input type="text" placeholder="Tìm kiếm khách hàng...?" @oninput=Search/>
         <button type="submit">
             <img src="Image/magnifying-glass.png">
         </button>
@@ -9,9 +11,9 @@
             <label>Sắp xếp:</label>
         </div>
         <div class="select_container">
-            <select class="sort">
-                <option value="news">Mới Nhất</option>
-                <option value="oldest">Cũ Nhất</option>
+			<select class="sort" @onchange=SortChanged>
+                <option value="newest">Mới Nhất</option>
+				<option value="oldest">Cũ Nhất</option>
             </select>
         </div>
     </form>
@@ -22,18 +24,76 @@
             <th>STT</th>
             <th>Họ và Tên</th>
             <th>Email</th>
-            <th>Địa Chỉ</th>
+			<th>Địa Chỉ</th>
             <th>Tổng hàng đã mua</th>
         </tr>
-        <tr>
-            <td>1</td>
-            <td>Tan Hoang</td>
-            <td>123@gmail.com</td>
-            <td>Ho Chi Minh</td>
-            <td>10</td>
-        </tr>
+		@foreach (var (customer, i) in _customers.Select((cd, i) => (cd, i)))
+		{
+			<tr>
+				<td style="padding: 5px 0px">@customer.Id</td>
+				<td style="padding: 5px 0px">@(customer.Name ?? "<trống>")</td>
+				<td style="padding: 5px 0px">@customer.Email</td>
+				<td style="padding: 5px 0px">@(customer.Address ?? "<trống>")</td>
+				<td style="padding: 5px 0px">@customer.Orders.SelectMany(o => o.OrderDetails).Sum(od => od.Quantity)</td>
+
+			</tr>
+		}
     </table>
 </div>
 @code {
+	IEnumerable<User> _customers = new List<User>();
+	bool _sortNewest = true;
+	string _searchString = "";
 
+	protected override async Task OnInitializedAsync()
+	{
+		_customers = await context.Users.Include(u => u.Orders).ThenInclude(o => o.OrderDetails).ToListAsync();
+		SortNewest();
+	}
+
+	private void SortChanged (ChangeEventArgs e)
+	{
+		_sortNewest = e.Value?.ToString() == "newest";
+		if (_sortNewest)
+		{
+			SortNewest();
+		}
+		else
+		{
+			SortOldest();
+		}
+	}
+
+	private void SortNewest()
+	{
+		_customers = _customers.OrderByDescending(u => u.Id);
+	}
+
+	private void SortOldest()
+	{
+		_customers = _customers.OrderBy(u => u.Id);
+	}
+
+	private async Task Search(ChangeEventArgs e)
+	{
+		_searchString = e.Value?.ToString();
+
+		if (string.IsNullOrEmpty(_searchString))
+		{
+			_customers = await context.Users.Include(u => u.Orders).ThenInclude(o => o.OrderDetails).ToListAsync();
+		}
+		else
+		{
+			_customers = await context.Users.Where(u => u.Name.ToLower().Contains(_searchString)).Include(u => u.Orders).ThenInclude(o => o.OrderDetails).ToListAsync();
+		}
+
+		if (_sortNewest)
+		{
+			 SortNewest();
+		}
+		else
+		{
+			 SortOldest();
+		}
+	}
 }

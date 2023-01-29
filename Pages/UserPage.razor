@@ -1,9 +1,13 @@
 ﻿@page "/user"
+@using JPFigure.Auth;
 @using JPFigure.Entities;
+@using Microsoft.EntityFrameworkCore;
 @inject UserRepository userRepo;
 @inject CartRepository cartRepo;
 @inject NavigationManager _navigationManager
+@inject AuthenticationStateProvider authStateProvider;
 @inject JPFigureContext context
+@inject IToastService toastService
 <NavBar></NavBar>
 @if (_user != null) {
 <div class="title_ctn">
@@ -28,33 +32,48 @@
         <button @onclick=@UpdateAddress>Cập Nhập</button>
     </div>
 </div>
+
+	<div class="logout_ctn">
+		<button @onclick=OnClickLogout>Đăng Xuất</button>
+	</div>
+
+		@if (_orders.Count > 0)
+		{
 <div class="bougth_product_ctn">
     <div>
         <h4 class="bougth_title">SẢN PHẨM ĐÃ MUA</h4>
     </div>
-    @for (int i = 0; i < 2; i++)
+			
+		@foreach (var (order, oi) in _orders.Select((o, i) => (o, i)))
     {
-        <div class="bougth_ctn">
+		<h6 style="font:bold; color:crimson; padding-top:10px">@order.Date.ToString("g")</h6>
+		<p style="color:gray">Id: @order.Id</p>
+		@foreach (var (orderDetail, i) in order.OrderDetails.Select((o, i) => (o, i))){
+			<div class="bougth_ctn">
             <div class="image_ctn">
-                <img src="Image/product1.png">
+        <a href="/figure/@orderDetail.Figure.Id">
+				<img src="@orderDetail.Figure.Images[0]">
+		</a>
             </div>
             <div class="bougth_info_title">
                 <div>
-                    <span style="font-weight: bold">Nendoroid Swacchao! Attack on Titan Levi</span>
+        <a href="/figure/@orderDetail.Figure.Id">
+                    <span style="font-weight: bold">@orderDetail.Figure.ProductName</span>
+								</a>
+							</div>
+                <div>
+					<span style="color: red"> @String.Format("{0:n0}", orderDetail.Figure.Price)₫</span>
                 </div>
                 <div>
-                    <span style="color: red">1,400,000₫</span>
-                </div>
-                <div>
-                    <span>Số lượng: 2</span>
+                    <span>Số lượng: @orderDetail.Quantity</span>
                 </div>
             </div>
-        </div>
-    }
+			</div>
+
+		}}
 </div>
-<div class="logout_ctn">
-    <button>Đăng Xuất</button>
-</div>
+}
+
 }
 <BottomBar></BottomBar>
 
@@ -62,8 +81,9 @@
 	[CascadingParameter]
 	public Task<AuthenticationState> AuthenticationState { get; set; }
 
-	private User _user;
+	private User? _user;
 	private string _address;
+	private List<Order> _orders;
 
 	protected override async Task OnInitializedAsync()
 	{
@@ -71,13 +91,27 @@
 
 		_user = await userRepo.GetUser(userEmail);
 
-
+		if (_user != null)
+		{
+			_address = _user.Address;
+			_orders = await context.Orders.Where(o => o.UserId == _user.Id)
+			.Include(o => o.OrderDetails)
+			.ThenInclude(o => o.Figure)
+			.ToListAsync();
+		}
 	}
 
 	public async Task UpdateAddress()
 	{
 		_user.Address = _address;
 		await userRepo.UpdateUser(_user);
+		toastService.ShowSuccess("Cập nhật thành công!");
 	}
 
+	public async void OnClickLogout(MouseEventArgs e)
+	{
+		var asp = (AuthStateProvider)authStateProvider;
+		await asp.UpdateAuthenticationState(null);
+		_navigationManager.NavigateTo("/");
+	}
 }
