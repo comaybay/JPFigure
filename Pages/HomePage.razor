@@ -37,30 +37,31 @@
     <h2>Nendoroid</h2>
     <p>Mô hình đồ chơi Nhật Bản thiết kế theo phong cách chibi</p>
     <div class="ctn">
-        <div class="left_ctn">
+		<div class="left_ctn">
+		<a href="/nendoroid">
             <img src="Image/nendoroid0.jpg">
+		</a>
         </div>
         <div class="right_ctn">
             <div class="products">
-                @for (int i = 0; i < 6; i++)
-                {
-                    <div class="products_item">
-                        <div class="product_thumb">
-                            <a href="">
-                                <img class="product_img" src="Image/product1.png" alt="">
-                            </a>
-                            <a href="" class="add_cart">
-                                <img src="Image/cart-white.png">
-                                <span>Add To Cart</span>
-                            </a>
-                        </div>
-                        <div class="product_name_ctn">
-                            <a href="" class="product_name">Nendoroid Swacchao! Attack on Titan Levi</a>
-                        </div>
-                        <div class="product_price">1,300,000₫</div>
-                    </div>
-                }
-            </div>
+				@if (gundamFigures != null)
+				{
+					@for (int i = 0; i < nenFigures.Items.Count; i++)
+					{
+						<div class="products_item">
+							<div class="product_thumb">
+								<a href="/figure/@nenFigures.Items[i].Id">
+									<img class="product_img" src="@nenFigures.Items[i].Images[0]" alt="">
+								</a>
+							</div>
+							<div class="product_name_ctn">
+								<a href="/figure/@nenFigures.Items[i].Id" class="product_name">@nenFigures.Items[i].ProductName</a>
+							</div>
+							<div class="product_price">@(nenFigures.Items[i].Price.ToString("#,##0"))₫</div>
+						</div>
+					}
+				}
+			</div>
         </div>
     </div>
 </div>
@@ -70,68 +71,72 @@
     <div class="ctn">
         <div class="right_ctn">
             <div class="products">
-				@if (figures != null) {
-					@for (int i = 0; i < figures.Items.Count; i++)
+				@if (gundamFigures != null) {
+					@for (int i = 1; i < gundamFigures.Items.Count; i++)
 					{
                         <div class="products_item">
                             <div class="product_thumb">
-                                <a href="/figure/@figures.Items[i].Id">
-                                    <img class="product_img" src="@figures.Items[i].Images[0]" alt="">
-                                </a>
-                                <a href="" class="add_cart">
-                                    <img src="Image/cart-white.png">
-                                    <span>Add To Cart</span>
+                                <a href="/figure/@gundamFigures.Items[i].Id">
+                                    <img class="product_img" src="@gundamFigures.Items[i].Images[0]" alt="">
                                 </a>
                             </div>
                             <div class="product_name_ctn">
-                                <a href="" class="product_name">@figures.Items[i].ProductName</a>
+								<a href="/figure/@gundamFigures.Items[i].Id" class="product_name">@gundamFigures.Items[i].ProductName</a>
                             </div>
-                            <div class="product_price">@(figures.Items[i].Price.ToString("#,##0"))₫</div>
+                            <div class="product_price">@(gundamFigures.Items[i].Price.ToString("#,##0"))₫</div>
+
                         </div>
 					}
 				}
             </div>
         </div>
         <div class="left_ctn">
+		<a href="/gundam">
             <img src="Image/gundam0.jpg">
+		</a>
         </div>
     </div>
 </div>
 <div class="figure_banner">
-    <img src="Image/banner4.png">
+    <a href="/scalefigure">
+	<img src="Image/banner4.png">
+		</a>
 </div>
 <div class="product_ctn">
     <h2>Scale Figure</h2>
     <p>Những figure được chế tác theo tỉ lệ chuẩn.</p>
     <div class="ctn">
         <div class="products">
-            @for (int i = 0; i < 12; i++)
-            {
-                <div class="figure_product_item">
-                    <div class="product_thumb">
-                        <a href="">
-                            <img class="product_img" src="Image/product5.png" alt="">
-                        </a>
-                        <a href="" class="add_cart">
-                            <img src="Image/cart-white.png">
-                            <span>Add To Cart</span>
-                        </a>
-                    </div>
-                    <div class="product_name_ctn">
-                        <a href="" class="product_name">Nendoroid Swacchao! Attack on Titan Levi</a>
-                    </div>
-                    <div class="product_price">1,300,000₫</div>
-                </div>
-            }
+			@if (scaleFigures != null)
+			{
+				@for (int i = 0; i < scaleFigures.Items.Count; i++)
+				{
+					<div class="figure_product_item">
+						<div class="product_thumb">
+							<a href="/figure/@scaleFigures.Items[i].Id">
+								<img class="product_img" src="@scaleFigures.Items[i].Images[0]" alt="">
+							</a>
+						</div>
+						<div class="product_name_ctn">
+							<a href="/figure/@scaleFigures.Items[i].Id" class="product_name">@scaleFigures.Items[i].ProductName</a>
+						</div>
+						<div class="product_price">@(scaleFigures.Items[i].Price.ToString("#,##0"))₫</div>
+					</div>
+				}
+			}
         </div>
     </div>
 </div>
 <BottomBar></BottomBar>
 
 @code {
-	private Pagination<Models.ScaleFigure> figures;
+	private Pagination<Models.GundamFigure> gundamFigures;
+	private Pagination<Models.ScaleFigure> scaleFigures;
+	private Pagination<Models.Figure> nenFigures;
 
 	protected override async Task OnInitializedAsync() {
-		figures = await FigureRepository.GetScaleFigures(null, 1);
+		gundamFigures = await FigureRepository.GetGundamFigures(null, 1, 6);
+		nenFigures = await FigureRepository.GetNendroidFigures(null, 1, 6);
+		scaleFigures = await FigureRepository.GetScaleFigures(null, 1, 12);
 	}
 }

@@ -15,6 +15,7 @@
 
 	[Parameter]
 	public string PlaceHolder { get; set; } = "Tất cả";
+	public string _placeHolder { get; set; } = "Tất cả";
 
 	private string ShowText = "";
 
@@ -34,6 +35,7 @@
 		{
 			PlaceHolder = "Tất cả";
 		}
+		_placeHolder = PlaceHolder;
 		ShowText = PlaceHolder;
 	}
 
@@ -46,7 +48,11 @@
 		if (Disabled) {
 			_DisplayText = "";
 		}
-		ShowText = PlaceHolder;
+		if (_placeHolder != PlaceHolder)
+		{
+			_placeHolder = PlaceHolder;
+			ShowText = PlaceHolder;
+		}
 	}
 
 	private async Task OnInputChanged(ChangeEventArgs e)

@@ -1,7 +1,15 @@
 ﻿@page "/admin"
-
+@inject JPFigureContext context
+@inject NavigationManager Navigation
+@using JPFigure.Entities;
+@inject UserRepository userRepo;
+@inject CartRepository cartRepo;
+@inject NavigationManager _navigationManager
 <div class="ctn">
-    <h3>Welcome, Admin</h3>
+	@if (!string.IsNullOrEmpty(email))
+	{
+		
+	<h3>Welcome, Admin</h3>
     <div class="content_ctn">
         <div class="side_bar">
             <button style="background-color: @CustomerBtColor" @onclick=@ChangeCustomerBtColor><img src="Image/value.png">Khách Hàng</button>
@@ -11,16 +19,41 @@
         <div class="content">
             <iframe src=@IframeLink></iframe>
         </div>
-    </div>
+		</div>
+	}
+	else
+	{
+		<a href="/">
+		<h3 style="text-align: center; color:red">Bạn không phải là admin để truy cập dịa chỉ này. 
+			Bấm để quay lại trang chính</h3>
+		</a>
+	}
 </div>
 @code {
-    private string CustomerBtColor = "white";
-    private string ProductBtColor = "hsl(240, 100%, 75%)";
-    private string RevenueBtColor = "hsl(240, 100%, 75%)";
-    private string IframeLink = "https://localhost:7041/admin/customer";
+	private string CustomerBtColor = "white";
+	private string ProductBtColor = "hsl(240, 100%, 75%)";
+	private string RevenueBtColor = "hsl(240, 100%, 75%)";
+	private string IframeLink = "https://localhost:7041/admin/customer";
 
-    private void ChangeCustomerBtColor(MouseEventArgs mouseEventArgs)
-    {
+	[CascadingParameter]
+	public Task<AuthenticationState> AuthenticationState { get; set; }
+
+	bool isAdmin = false;
+	string email= "";
+
+	protected override async Task OnInitializedAsync()
+	{
+		 email = (await AuthenticationState).User?.FindFirst(ClaimTypes.Email)?.Value;
+		var u = context.Users.Where(u => email == u.Email).FirstOrDefault();
+		if (u == null || u.Role != "Admin")
+		{
+			isAdmin = false;
+		}
+		else isAdmin = true;
+	}
+
+	private void ChangeCustomerBtColor(MouseEventArgs mouseEventArgs)
+	{
         if (CustomerBtColor == "hsl(240, 100%, 75%)")
         {
             CustomerBtColor = "white";
