@@ -44,7 +44,7 @@
         </div>
         <div class="right_ctn">
             <div class="products">
-				@if (gundamFigures != null)
+				@if (nenFigures != null)
 				{
 					@for (int i = 0; i < nenFigures.Items.Count; i++)
 					{
@@ -53,6 +53,10 @@
 								<a href="/figure/@nenFigures.Items[i].Id">
 									<img class="product_img" src="@nenFigures.Items[i].Images[0]" alt="">
 								</a>
+                                <div class="add_cart">
+                                    <img src="Image/cart-white.png">
+                                    <span>Add To Cart</span>
+                                </div>
 							</div>
 							<div class="product_name_ctn">
 								<a href="/figure/@nenFigures.Items[i].Id" class="product_name">@nenFigures.Items[i].ProductName</a>
@@ -72,13 +76,17 @@
         <div class="right_ctn">
             <div class="products">
 				@if (gundamFigures != null) {
-					@for (int i = 1; i < gundamFigures.Items.Count; i++)
+					@for (int i = 0; i < gundamFigures.Items.Count; i++)
 					{
                         <div class="products_item">
                             <div class="product_thumb">
                                 <a href="/figure/@gundamFigures.Items[i].Id">
                                     <img class="product_img" src="@gundamFigures.Items[i].Images[0]" alt="">
                                 </a>
+                                <div class="add_cart">
+                                    <img src="Image/cart-white.png">
+                                    <span>Add To Cart</span>
+                                </div>
                             </div>
                             <div class="product_name_ctn">
 								<a href="/figure/@gundamFigures.Items[i].Id" class="product_name">@gundamFigures.Items[i].ProductName</a>
@@ -116,6 +124,10 @@
 							<a href="/figure/@scaleFigures.Items[i].Id">
 								<img class="product_img" src="@scaleFigures.Items[i].Images[0]" alt="">
 							</a>
+                            <div class="add_cart">
+                                <img src="Image/cart-white.png">
+                                <span>Add To Cart</span>
+                            </div>
 						</div>
 						<div class="product_name_ctn">
 							<a href="/figure/@scaleFigures.Items[i].Id" class="product_name">@scaleFigures.Items[i].ProductName</a>

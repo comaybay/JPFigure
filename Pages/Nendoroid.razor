@@ -65,22 +65,22 @@
 <div class="product_ctn">
     <div class="products">
         @if (figures != null) {
-			@for (int i = 0; i < figures.Items.Count; i++)
+			@foreach (var (figure, i) in figures.Items.Select((figure, i) => (figure, i)))
 			{
 				<div class="product_item">
 					<div class="product_thumb">
-						<a href="">
-							<img src=@figures.Items[i].Images[0] alt="">
+						<a href="/figure/@figure.Id">
+								<img class="product_img" src=@figure.Images[0] alt="">
 						</a>
-						<a href="" class="add_cart">							
+						<div class="add_cart">
 							<img src="Image/cart-white.png">
 							<span>Add To Cart</span>
-						</a>
+						</div>
 					</div>
 					<div class="product_name_ctn">
-						<a href="" class="product_name">@figures.Items[i].ProductName</a>
+							<a href="/figure/@figure.Id" class="product_name">@figure.ProductName</a>
 					</div>
-					<div class="product_price">@figures.Items[i].Price</div>
+						<div class="product_price">@figure.Price</div>
 				</div>
 			}
 		}     
@@ -192,7 +192,7 @@
 				OrderNewest = Order != null && Order == "asc" ? false : true,
 			};
 
-		figures = await FigureRepository.GetNendroidFigures(filter, Math.Max(1, Page), 2);
+		figures = await FigureRepository.GetNendroidFigures(filter, Math.Max(1, Page), 12);
 	}
 
 	/// Áp dụng filter để tìm figure, gọi hàm này khi có thay đổi về lựa chọn lọc hay lựa chọn sắp xếp

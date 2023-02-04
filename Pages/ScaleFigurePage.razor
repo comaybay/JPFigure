@@ -88,6 +88,10 @@
 						<a href="/figure/@figure.Id">
 								<img class="product_img" src=@figure.Images[0] alt="">
 						</a>
+						<div class="add_cart">
+							<img src="Image/cart-white.png">
+							<span>Add To Cart</span>
+						</div>
 					</div>
 					<div class="product_name_ctn">
 							<a href="/figure/@figure.Id" class="product_name">@figure.ProductName</a>
@@ -210,7 +214,7 @@
 			OrderNewest = Order != null && Order == "asc" ? false : true,
 		};
 
-		figures = await FigureRepository.GetScaleFigures(filter, Math.Max(1, Page), 10);
+		figures = await FigureRepository.GetScaleFigures(filter, Math.Max(1, Page), 12);
 	}
 
 	/// Áp dụng filter để tìm figure, gọi hàm này khi có thay đổi về lựa chọn lọc hay lựa chọn sắp xếp
