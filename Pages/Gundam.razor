@@ -128,59 +128,11 @@
 </div>
 @if (figures != null && figures.NumberOfPages > 0)
 {
-    <div class="page_navigate_ctn">
-        <nav aria-label="Page navigation example">
-            <ul class="pagination">
-                <li class="page-item">
-                    <a class="page-link" href="#" aria-label="Previous" @onclick=@(e => {
-                   currentPage = 1;
-                   ApplyFilter();
-                   })>
-                        <span aria-hidden="true">&laquo;</span>
-                        <span class="sr-only"></span>
-                    </a>
-                </li>
-                @for (int i = Math.Max(1, Math.Min(figures.PageNumber - 1, figures.NumberOfPages - 5)); i <= Math.Min(Math.Max(3, 2 + figures.PageNumber - 1), figures.NumberOfPages - 4 + 1); i++)
-                {
-                    var index = i;
-                    <li class="page-item">
-                        <a class="page-link" @onclick=@(e => {
-                   currentPage = index;
-                   ApplyFilter();
-                   })>
-                            @index
-                        </a>
-                    </li>
-                }
-                @if (figures.NumberOfPages - (figures.PageNumber - 1) + 1 > 6)
-                {
-                    <li class="page-item"><span class="page-link">...</span></li>
-                }
-                @for (int i = Math.Min(figures.PageNumber + 3, figures.NumberOfPages - 3 + 1); i <= figures.NumberOfPages; i++)
-                {
-                    var index = i;
-                    <li class="page-item">
-                        <a class="page-link" @onclick=@(e => {
-                   currentPage = index;
-                   ApplyFilter();
-                   })>
-                            @index
-                        </a>
-                    </li>
-                }
-                <li class="page-item">
-                    <a class="page-link" href="#" aria-label="Next"
-                   @onclick=@(e => {
-                   currentPage = figures.NumberOfPages;
-                   ApplyFilter();
-                   })>
-                        <span aria-hidden="true">&raquo;</span>
-                        <span class="sr-only"></span>
-                    </a>
-                </li>
-            </ul>
-        </nav>
-    </div>
+	<PageNumbers NumberOfPages=@figures.NumberOfPages Page=@currentPage PageChanged=@(val => {
+		currentPage= val;
+		ApplyFilter();
+	})/>
+
 }
 <BottomBar></BottomBar>
 

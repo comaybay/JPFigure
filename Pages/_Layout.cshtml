@@ -43,6 +43,17 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.29.1/moment.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/chart.js@2.9.4/dist/Chart.min.js"></script>
     <script src="_content/ChartJs.Blazor.Fork/ChartJsBlazorInterop.js"></script>
+	<script>
+	let oldPathName = "";
+    const origScrollTo = window.scrollTo;
+    window.scrollTo = (x, y) => {
+		const shouldSkip = window.location.pathname == oldPathName; // TODO: Insert your own logic here
+		oldPathName = window.location.pathname;
+
+		if (!shouldSkip)
+			return origScrollTo.apply(this, [x, y]);
+    };
+</script>
 </body>
 </html>
 
