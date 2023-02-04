@@ -18,16 +18,13 @@
 </div>
 	
 <div class="chart_ctn">
-    <div class="chart_left">
+    <div class="chart">
         <Chart Config="barConfig"></Chart>
-    </div>
-    <div class="chart_right">
-        <Chart Config="barConfig2"></Chart>
     </div>
 </div>
 
 <div class="table_ctn">
-    <div class="table_left_ctn">
+    <div class="table">
         <label>Chi tiết doanh thu</label>
         <table>
             <tr>
@@ -44,27 +41,9 @@
             </tr>
         </table>
     </div>
-    <div class="table_right_ctn">
-        <label>Chi tiết chi tiêu</label>
-        <table>
-            <tr>
-                <th>STT</th>
-                <th>Thời Gian</th>
-                <th>Số Tiền</th>
-                <th>Nguồn Từ</th>
-            </tr>
-            <tr>
-                <td>1</td>
-                <td>7:08:24 26/11/2022</td>
-                <td>2000000</td>
-                <td>Admin</td>
-            </tr>
-        </table>
-    </div>
 </div>
 @code {
 	private BarConfig barConfig = new BarConfig();
-	private BarConfig barConfig2 = new BarConfig();
 	private int _year;
 
 	protected override async Task OnInitializedAsync()
@@ -73,7 +52,6 @@
 										"Tháng 7", "Tháng 8", "Tháng 9", "Tháng 10", "Tháng 11", "Tháng 12" })
 		{
 			barConfig.Data.Labels.Add(month1);
-			barConfig2.Data.Labels.Add(month1);
 		}
 
 		_year = DateTime.Now.Year;
@@ -83,7 +61,6 @@
 	private async Task Search()
 	{
 		await ConfigureBarChart();
-		await ConfigureBarChart2();
 	}
 
 	private async Task ConfigureBarChart()
@@ -127,7 +104,7 @@
 			}
 		}
 
-		var dataset1 = new BarDataset<long>(rev.Select(r => r.Rev))
+		var dataset = new BarDataset<long>(rev.Select(r => r.Rev))
 		{
             Label = "Bảng doanh thu",
             BackgroundColor = new[]
@@ -148,56 +125,7 @@
 
         };
 		barConfig.Data.Datasets.Clear();
-		barConfig.Data.Datasets.Add(dataset1);
-	}
-
-	private async Task ConfigureBarChart2()
-	{
-		barConfig2.Options = new BarOptions
-                {
-                    Title = new OptionsTitle
-                    {
-                        Display = true,
-                        Text = "Chi Tiêu"
-                    },
-                    Scales = new BarScales
-                    {
-                        YAxes = new List<CartesianAxis>
-                        {
-                            new LinearCartesianAxis
-                            {
-                                Ticks = new LinearCartesianTicks
-                                {
-                                    BeginAtZero = true,
-                                }
-                            }
-                        }
-                    },
-                    Responsive = true
-            };
-
-		var dataset2 = new BarDataset<int>(new[] { 10, 35, 50, 70, 70, 70, 70, 70, 70, 70, 70, 70 })
-            {
-                Label = "Bảng chi tiêu",
-                BackgroundColor = new[]
-                {
-                ColorUtil.ColorHexString(0, 32, 63),
-                ColorUtil.ColorHexString(173, 239, 209),
-                ColorUtil.ColorHexString(0, 32, 63),
-                ColorUtil.ColorHexString(173, 239, 209),
-                ColorUtil.ColorHexString(0, 32, 63),
-                ColorUtil.ColorHexString(173, 239, 209),
-                ColorUtil.ColorHexString(0, 32, 63),
-                ColorUtil.ColorHexString(173, 239, 209),
-                ColorUtil.ColorHexString(0, 32, 63),
-                ColorUtil.ColorHexString(173, 239, 209),
-                ColorUtil.ColorHexString(0, 32, 63),
-                ColorUtil.ColorHexString(173, 239, 209),
-            }
-
-            };
-		barConfig2.Data.Datasets.Clear();
-		barConfig2.Data.Datasets.Add(dataset2);
+		barConfig.Data.Datasets.Add(dataset);
 	}
 
 	private async Task GenerateData()

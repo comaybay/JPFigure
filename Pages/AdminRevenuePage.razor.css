@@ -20,23 +20,23 @@ html, body {
     width: 60px;
     color: white;
     background-color: hsl(240, 100%, 75%);
+    border: 1px solid black;
+    margin-right: 10px;
 }
 .chart_ctn{
     width: 100%;
     display: flex;
 }
-.chart_left{
-    width: 50%;
+.chart{
+    width: 100%;
 }
-.chart_right {
-    width: 50%;
-}
+
 .table_ctn{
     width:100%;
     display: flex;
 }
-.table_left_ctn, .table_right_ctn {
-    width: 50%;
+.table {
+    width: 100%;
     padding: 5px 10px;
 }
 table{
