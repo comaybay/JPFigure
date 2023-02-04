@@ -309,12 +309,12 @@
 		isProcessing = true;
 
 		var images = new List<string> { figureInput.Image1, figureInput.Image2 };
-		if (string.IsNullOrEmpty(figureInput.Image3))
+		if (!string.IsNullOrEmpty(figureInput.Image3))
 		{
 			images.Add(figureInput.Image3);
 		}
 
-		if (string.IsNullOrEmpty(figureInput.Image4))
+		if (!string.IsNullOrEmpty(figureInput.Image4))
 		{
 			images.Add(figureInput.Image4);
 		}
