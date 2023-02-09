@@ -96,7 +96,7 @@
 					<div class="product_name_ctn">
 							<a href="/figure/@figure.Id" class="product_name">@figure.ProductName</a>
 					</div>
-						<div class="product_price">@figure.Price</div>
+						<div class="product_price">@figure.Price.ToString("#,##0")₫</div>
 				</div>
 			}
 		}
@@ -166,7 +166,7 @@
 			OrderNewest = Order != null && Order == "asc" ? false : true,
 		};
 
-		figures = await FigureRepository.GetScaleFigures(filter, Math.Max(1, Page), 1);
+		figures = await FigureRepository.GetScaleFigures(filter, Math.Max(1, Page), 12);
 	}
 
 	/// Áp dụng filter để tìm figure, gọi hàm này khi có thay đổi về lựa chọn lọc hay lựa chọn sắp xếp
