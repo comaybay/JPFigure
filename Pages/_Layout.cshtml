@@ -46,8 +46,13 @@
 	<script>
 	let oldPathName = "";
     const origScrollTo = window.scrollTo;
-    window.scrollTo = (x, y) => {
-		const shouldSkip = window.location.pathname == oldPathName; // TODO: Insert your own logic here
+    let _page = null;
+	
+	window.scrollTo = (x, y) => {
+		const urlParams = new URLSearchParams(window.location.search);
+		let page = urlParams.get('page');
+		const shouldSkip = window.location.pathname == oldPathName && _page == page;
+		_page = page;
 		oldPathName = window.location.pathname;
 
 		if (!shouldSkip)

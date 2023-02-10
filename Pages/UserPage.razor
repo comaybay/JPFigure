@@ -97,6 +97,7 @@
 			_orders = await context.Orders.Where(o => o.UserId == _user.Id)
 			.Include(o => o.OrderDetails)
 			.ThenInclude(o => o.Figure)
+			.OrderByDescending(o => o.Date)
 			.ToListAsync();
 		}
 	}

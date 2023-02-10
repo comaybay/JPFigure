@@ -204,42 +204,32 @@
     </div>
 </div>
 <div class="search_ctn">
-	<form>
-		<input type="text" placeholder="Tìm kiếm sản phẩm...?" />
-		<button type="submit">
-			<img src="Image/magnifying-glass.png">
+		<input type="text" placeholder="Tìm kiếm sản phẩm...?" @bind-value=@search/>
+		<button  @onclick="Search">
+			Tìm kiếm
 		</button>
-		<div class="sort_title">
-			<label>Sắp xếp:</label>
-		</div>
-		<div class="select_container">
-			<select class="sort">
-				<option value="news">Mới Nhất</option>
-				<option value="oldest">Cũ Nhất</option>
-			</select>
-		</div>
-	</form>
 </div>
 <div class="table_ctn">
     <table>
         <tr>
-            <th>STT</th>
-			<th>Hình ảnh</th>
-            <th>Email</th>
-            <th>Địa Chỉ</th>
-            <th>Tổng hàng đã mua</th>
+            <th>Id Sản phẩm</th>
+			<th>Tên sản phẩm</th>
+            <th>Id Nhân vật</th>
+            <th>Id Manufacture</th>
+            <th>Giá sản phẩm</th>
         </tr>
-        <tr>
-            <td>1</td>
-			<td style="display:flex; justify-content: center; padding: 5px 0">
-				<div class="product_img_ctn">
-					<img class="product_img" src="Image/product1,1.png"/>
-				</div>
-			</td>
-            <td>123@gmail.com</td>
-            <td>Ho Chi Minh</td>
-            <td>10</td>
-        </tr>
+		@if (searchFigs != null) {
+
+		@foreach(var figure in searchFigs) {
+			<tr>
+				<td>@figure.Id</td>
+					<td><a href="/figure/@figure.Id">@figure.ProductName</a> </td>
+				<td>@figure.CharacterId</td>
+				<td>@figure.ManufactureId</td>
+					<td>@string.Format("{0:n0}", figure.Price)₫</td>
+			</tr>
+		}
+		}
     </table>
 </div>
 @code {
@@ -451,6 +441,14 @@
 		await Task.Delay(4000);
 		hideNotification = true;
 		StateHasChanged();
+	}
+
+	private string search = "";
+	private List<Figure> searchFigs = null;
+
+	private void Search()
+	{
+		searchFigs = context.Figures.Where(f => f.ProductName.ToLower().Contains(search.ToLower())).ToList();
 	}
 
 

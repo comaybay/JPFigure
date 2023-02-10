@@ -220,7 +220,7 @@ namespace JPFigure.Repositories
 		public async Task<List<Entities.Figure>> GetRelatedFigures(Entities.Figure figure)
 		{
 			return await Context.Figures
-				.Where(f => f.Character.SeriesId == figure.Character.SeriesId && f.Type == figure.Type && f.Id != figure.Id)
+				.Where(f => f.Character.SeriesId == figure.Character.SeriesId && f.Id != figure.Id)
 				.Take(5)
 				.ToListAsync();
 		}

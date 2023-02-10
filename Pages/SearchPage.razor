@@ -33,7 +33,7 @@
 @if (figures != null && figures.NumberOfPages > 0) {
 	<PageNumbers NumberOfPages=@figures.NumberOfPages Page=@currentPage PageChanged=@(async val => {
 		currentPage= val;
-		figures = await PaginationHelper.Create<Models.Figure>(12, currentPage, () => context.Figures.Where(f => f.ProductName.ToLower().Contains(Value)));
+			 figures = await PaginationHelper.Create<Models.Figure>(12, currentPage, () => context.Figures.Where(f => f.ProductName.ToLower().Contains(Value.ToLower())));
 	 }) />
 }
 <BottomBar></BottomBar>
@@ -47,6 +47,6 @@
 
 	protected override async Task OnInitializedAsync()
 	{
-		figures = await PaginationHelper.Create<Models.Figure>(12, currentPage, () => context.Figures.Where(f => f.ProductName.ToLower().Contains(Value)));
+		figures = await PaginationHelper.Create<Models.Figure>(12, currentPage, () => context.Figures.Where(f => f.ProductName.ToLower().Contains(Value.ToLower())));
 	}
 }

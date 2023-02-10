@@ -84,7 +84,7 @@
 		}
 		else
 		{
-			_customers = await context.Users.Where(u => u.Name.ToLower().Contains(_searchString)).Include(u => u.Orders).ThenInclude(o => o.OrderDetails).ToListAsync();
+			_customers = await context.Users.Where(u => u.Name.ToLower().Contains(_searchString.ToLower())).Include(u => u.Orders).ThenInclude(o => o.OrderDetails).ToListAsync();
 		}
 
 		if (_sortNewest)

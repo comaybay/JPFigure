@@ -99,9 +99,9 @@ h3 {
   padding: 20px 0;
 }
 .products {
-  display: flex;
-  flex-wrap: wrap;
-  justify-content: space-between;
+	display: flex;
+	flex-wrap: nowrap;
+	column-gap:20px;
 }
 .product_item {
   width: 19%;

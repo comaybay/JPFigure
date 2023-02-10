@@ -85,13 +85,13 @@
 					<a href="/figure/@rfig.Id">
 						<img class="product_img" src="@rfig.Images.First()" alt="">
 					</a>
-					<a href="" class="add_cart">
+					<a href="/figure/@rfig.Id" class="add_cart">
 						<span>Add To Cart</span>
 						<img src="Image/cart-white.png">
 					</a>
 				</div>
 				<div class="product_name_ctn">
-					<a href="" class="product_name">@rfig.ProductName</a>
+					<a href="/figure/@rfig.Id" class="product_name">@rfig.ProductName</a>
 				</div>
 				<div class="product_price">@string.Format("{0:n0}", rfig.Price)₫</div>
 			</div>
