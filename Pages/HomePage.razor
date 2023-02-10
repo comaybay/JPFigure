@@ -1,6 +1,7 @@
 ﻿@page "/";
 @page "/Hehe";
 @inject FigureRepository FigureRepository
+@inject Faker Faker
 
 <NavBar></NavBar>
 <div id="carouselExampleIndicators" class="carousel slide" data-bs-interval="4000" data-bs-ride="carousel">
@@ -39,7 +40,7 @@
     <div class="ctn">
 		<div class="left_ctn">
 		<a href="/nendoroid">
-            <img src="Image/nendoroid0.jpg">
+            <img src="Image/mock_figure_7.jpg">
 		</a>
         </div>
         <div class="right_ctn">
@@ -147,6 +148,8 @@
 	private Pagination<Models.Figure> nenFigures;
 
 	protected override async Task OnInitializedAsync() {
+		//await Faker.PopulateRandomFigures();
+
 		gundamFigures = await FigureRepository.GetGundamFigures(null, 1, 6);
 		nenFigures = await FigureRepository.GetNendroidFigures(null, 1, 6);
 		scaleFigures = await FigureRepository.GetScaleFigures(null, 1, 12);

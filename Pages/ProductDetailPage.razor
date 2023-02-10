@@ -29,7 +29,7 @@
         <h1>@figure.ProductName</h1>
 			<h4>@String.Format("{0:n0}", figure.Price)₫</h4>
         <div class="row">
-            <input @bind-value=@quantity type="number" min="1">
+            <input @bind-value=@quantity type="number" min="1" style="width:55px">
 				@if (user.FindFirst(ClaimTypes.Email)?.Value != null)
 				{
 				<button @onclick=@AddToCart class="btn">THÊM VÀO GIỎ</button>
@@ -44,7 +44,7 @@
         <p>Nhân vật: @figure.Character.Name</p>
         <p>Series: @figure.Character.Series.Name</p>
         <p>Hãng sản xuất: @figure.Manufacture.Name</p>
-        <p>Kích thước: @figure.Height </p>
+        <p>Kích thước: @figure.Height cm</p>
         <p>Phát hành: @figure.ReleaseDate</p>
 			@if (figure.Type == FigureType.Gundam)
 			{
