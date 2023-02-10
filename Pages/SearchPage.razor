@@ -1,57 +1,52 @@
 ﻿@page "/searchfor/"
 @page "/searchfor/{Value}"
+@inject JPFigureContext context
 
 <NavBar></NavBar>
 <h2>Tìm kiếm sản phẩm</h2>
-<h3>@Value</h3>
+<h3 style="color: dimgrey">"@Value"</h3>
 <div class="product_ctn">
     <div class="products">
-        
-            @for (int i = 0; i < 6; i++)
-            {
-                <div class="product_item">
-                    <div class="product_thumb">
-                        <a href="">
-                            <img src="Image/product5.png" alt="">
-                        </a>
-                        <a href="" class="add_cart">
-                            <img src="Image/cart-white.png">
-                            <span>Add To Cart</span>
-                        </a>
-                    </div>
-                    <div class="product_name_ctn">
-                        <a href="" class="product_name">Nendoroid Swacchao! Attack on Titan Levi</a>
-                    </div>
-                    <div class="product_price">1,300,000₫</div>
-                </div>
-            }
-        
+		@if (figures != null)
+		{
+			@foreach (var (figure, i) in figures.Items.Select((figure, i) => (figure, i)))
+			{
+				<div class="product_item">
+					<div class="product_thumb">
+						<a href="/figure/@figure.Id">
+							<img class="product_img" src=@figure.Images[0] alt="">
+						</a>
+						<div class="add_cart">
+							<img src="Image/cart-white.png">
+							<span>Add To Cart</span>
+						</div>
+					</div>
+					<div class="product_name_ctn">
+						<a href="/figure/@figure.Id" class="product_name">@figure.ProductName</a>
+					</div>
+					<div class="product_price">@figure.Price.ToString("#,##0")₫</div>
+				</div>
+			}
+		}
     </div>
 </div>
-<div class="page_navigate_ctn">
-    <nav aria-label="Page navigation example">
-        <ul class="pagination">
-            <li class="page-item">
-                <a class="page-link" href="#" aria-label="Previous">
-                    <span aria-hidden="true">&laquo;</span>
-                    <span class="sr-only"></span>
-                </a>
-            </li>
-            <li class="page-item"><a class="page-link" href="#">1</a></li>
-            <li class="page-item"><a class="page-link" href="#">2</a></li>
-            <li class="page-item"><a class="page-link" href="#">3</a></li>
-            <li class="page-item">
-                <a class="page-link" href="#" aria-label="Next">
-                    <span aria-hidden="true">&raquo;</span>
-                    <span class="sr-only"></span>
-                </a>
-            </li>
-        </ul>
-    </nav>
-</div>
+@if (figures != null && figures.NumberOfPages > 0) {
+	<PageNumbers NumberOfPages=@figures.NumberOfPages Page=@currentPage PageChanged=@(async val => {
+		currentPage= val;
+		figures = await PaginationHelper.Create<Models.Figure>(12, currentPage, () => context.Figures.Where(f => f.ProductName.ToLower().Contains(Value)));
+	 }) />
+}
 <BottomBar></BottomBar>
 
 @code {
-    [Parameter]
-    public string Value { get; set; }
+	[Parameter]
+	public string Value { get; set; }
+
+	private Pagination<Models.Figure>? figures = null;
+	private int currentPage = 1;
+
+	protected override async Task OnInitializedAsync()
+	{
+		figures = await PaginationHelper.Create<Models.Figure>(12, currentPage, () => context.Figures.Where(f => f.ProductName.ToLower().Contains(Value)));
+	}
 }

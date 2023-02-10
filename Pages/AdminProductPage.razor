@@ -3,6 +3,7 @@
 @inject CharacterRepository CharacterRepository; 
 @inject SeriesRepository SeriesRepository;
 @inject ManufactureRepository ManufactureRepository;
+@inject JPFigureContext context;
 @using JPFigure.Pages.Shared
 @using JPFigure.Entities.Enums
 @using JPFigure.Extensions
@@ -50,7 +51,8 @@
         </div>
         <div>
             <img src="Image/face-id.png">
-			<SelectWithSearch SelectedOptionChanged=@(o => figureInput.CharacterId = o != null ? int.Parse(o.Value) : -1)
+			<SelectWithSearch Secret=@(characterOptions.Where(co => co.Value == figureInput.CharacterId.ToString()).FirstOrDefault())
+				SelectedOptionChanged=@(o => figureInput.CharacterId = o != null ? int.Parse(o.Value) : -1)
 							  PlaceHolder="Character ID..."
 							  Disabled=@isProcessing Options=@characterOptions />
         </div>
@@ -60,7 +62,8 @@
         </div>
         <div>
             <img src="Image/id-card.png">
-			<SelectWithSearch  SelectedOptionChanged=@(o => figureInput.ManufactureId = o != null ? int.Parse(o.Value) : -1)
+			<SelectWithSearch Secret=@(manufactureOptions.Where(co => co.Value == figureInput.ManufactureId.ToString()).FirstOrDefault())
+				SelectedOptionChanged=@(o => figureInput.ManufactureId = o != null ? int.Parse(o.Value) : -1)
 							  PlaceHolder="Manufacture ID..."
 							  Disabled=@isProcessing Options=@manufactureOptions/>
         </div>
@@ -70,25 +73,94 @@
         </div>
         <div>
             <img src="Image/scale.png">
-			<SelectWithSearch  SelectedOptionChanged=@(o => figureInput.Scale = o != null ? Enum.Parse<FigureScale>(o.Value) : FigureScale.NonScale)
+			<SelectWithSearch Secret=@(scaleOptions.Where(co => co.DisplayText == figureInput.Scale?.GetDisplayText()).FirstOrDefault())
+							  SelectedOptionChanged=@(o => figureInput.Scale = o != null ? Enum.Parse<FigureScale>(o.Value) : FigureScale.NonScale)
 							  PlaceHolder=@(scaleDisabled ? FigureScale.NonScale.GetDisplayText() : "Scale...")
 							  Disabled=@(isProcessing || scaleDisabled) Options=@scaleOptions/>
         </div>
         <div>
             <img src="Image/robot.png">
-			<SelectWithSearch SelectedOptionChanged=@(o => figureInput.GundamType = o != null ? Enum.Parse<GundamType>(o.Value) : GundamType.NonGundam)
+			<SelectWithSearch Secret=@(gundamOptions.Where(co => co.DisplayText == figureInput.GundamType?.GetDisplayText()).FirstOrDefault())
+							  SelectedOptionChanged=@(o => figureInput.GundamType = o != null ? Enum.Parse<GundamType>(o.Value) : GundamType.NonGundam)
 							  PlaceHolder=@(gundamTypeDisabled ? GundamType.NonGundam.GetDisplayText() : "Gundam Type...")
 							  Disabled=@(isProcessing || gundamTypeDisabled) Options=@gundamOptions />
         </div>
     </div>
 	<div class="product_id_ctn">
 		<img src="Image/id.png">
-		<input style="border-bottom: 2px solid red" placeholder="Product ID..." />
+		<input style="border-bottom: 2px solid red" placeholder="Product ID..." type="number" @oninput=@((e) => {
+			int result = -1;
+			bool success = int.TryParse((string?) e.Value, out result);
+
+			if (success) {
+				editId = result;
+				var figure = context.Figures.Where(f => f.Id == editId).FirstOrDefault();
+			   editFigureExists = figure != null;
+
+			   if (editFigureExists) {
+				   figureInput.Height = figure.Height;
+				   figureInput.Image1 = figure.Images.Length >= 1 ? figure.Images[0] : null;
+				   figureInput.Image2 = figure.Images.Length >= 2 ? figure.Images[1]: null;
+				   figureInput.Image3 = figure.Images.Length >= 3 ? figure.Images[2]: null;
+				   figureInput.Image4 = figure.Images.Length >= 4 ? figure.Images[3]: null;
+				   figureInput.ManufactureId = figure.ManufactureId;
+				   figureInput.Price = figure.Price;
+				   figureInput.ProductName = figure.ProductName;
+				   figureInput.ReleaseDate = figure.ReleaseDate;
+				   figureInput.StockCount = figure.StockCount;
+				   figureInput.CharacterId = figure.CharacterId;
+				   figureInput.Scale = figure.Scale;
+				   figureInput.GundamType = figure.GundamType;
+				   selectedFigureType = figure.Type;
+			   UpdateInputFields();
+			   }
+			   else {
+			   figureInput = new();
+			   }
+
+			}
+			else {
+				figureInput = new();
+				editFigureExists = false;
+			}
+		})/>
 	</div>
     <div class="button_ctn">
-		<button>Sửa</button>
-		<button>Xóa</button>
-		<button @onclick=OnAddFigure disabled=@FigureButtonsDisabled>Thêm</button>
+		<button disabled=@(!editFigureExists) @onclick=@(async () => {
+				var images = new List<string> { figureInput.Image1, figureInput.Image2 };
+				if (!string.IsNullOrEmpty(figureInput.Image3))
+				{
+				images.Add(figureInput.Image3);
+				}
+				if (!string.IsNullOrEmpty(figureInput.Image4))
+				{
+				images.Add(figureInput.Image4);
+				}
+				var figure = context.Figures.Where(f => f.Id == editId).FirstOrDefault();
+				figure.CharacterId = figureInput.CharacterId.Value;
+				figure.Height = figureInput.Height.Value;
+				figure.Images = images.ToArray();
+				figure.ManufactureId = figureInput.ManufactureId.Value;
+				figure.Price = figureInput.Price.Value;
+				figure.ProductName = figureInput.ProductName;
+				figure.ReleaseDate = figureInput.ReleaseDate.Value;
+				figure.StockCount = figureInput.StockCount.Value;
+				figure.Scale = figureInput.Scale.Value;
+				figure.GundamType = figureInput.GundamType.Value;
+
+				context.Figures.Update(figure);
+				await context.SaveChangesAsync();
+				ShowNotification();
+			
+		})>Sửa</button>
+		<button disabled=@(!editFigureExists) @onclick=@(async () => {
+			context.Figures.Remove(new Entities.Figure() {Id = editId.Value});
+			await context.SaveChangesAsync();
+			ShowNotification();
+			editId = null;
+		})
+		>Xóa</button>
+		<button @onclick=OnAddFigure disabled=@(FigureButtonsDisabled || editFigureExists)>Thêm</button>
     </div>
     <div class="input_extra_ctn">
         <div class="extra_part_ctn">
@@ -187,6 +259,9 @@
 
 	private bool isProcessing = false;
 	private bool hideNotification = true;
+
+	private int? editId = null;
+	private bool editFigureExists = false;
 
 	private bool CharacterButtonsDisabled
 	{

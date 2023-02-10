@@ -23,11 +23,11 @@ img {
   width: 35%;
   padding: 20px;
 }
-.main_image_ctn{
-    width: 80%;
+.main_image_ctn {
+  width: 80%;
 }
 .sub_image_ctn {
-    width: 20%;
+  width: 20%;
 }
 h1 {
   font-size: 30px;
@@ -162,6 +162,11 @@ h3 {
 }
 .product_thumb:hover .product_img {
   filter: opacity(70%);
+}
+.product_thumb > a > img {
+  min-height: 400px;
+  max-height: 400px;
+  object-fit: contain;
 }
 .info_ctn {
   display: flex;

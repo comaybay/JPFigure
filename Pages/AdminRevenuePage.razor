@@ -6,7 +6,7 @@
 @using Microsoft.EntityFrameworkCore;
 
 <div class="top_ctn">
-    <h4>Tổng Lợi Nhuận: 10000000 VND</h4>
+	<h4>Tổng Lợi Nhuận: @String.Format("{0:n0}", total)₫ VND</h4>
     <div class="select_ctn" style="display: flex">
         <h4>Năm: </h4>
         <input type="number" class="year_input" @bind=_year/>
@@ -27,24 +27,46 @@
     <div class="table">
         <label>Chi tiết doanh thu</label>
         <table>
-            <tr>
-                <th>STT</th>
+			 <tr>
+				<th>Id đơn hàng</th>
                 <th>Thời Gian</th>
-                <th>Số Tiền</th>
-                <th>Nguồn Từ</th>
+				<th>Id Khách hàng</th>
+				<th>Tên khách hàng</th>
+				<th>Id sản phẩm</th>
+				<th>Tên sản phẩm</th>
+				<th>Giá sản phẩm</th>
+				<th>Số lượng</th>
+				<th>Thành tiền</th>
             </tr>
-            <tr>
-                <td>1</td>
-                <td>7:08:24 26/11/2022</td>
-                <td>2000000</td>
-                <td>Tan Hoang</td>
-            </tr>
+			@if(orders != null)
+			{
+				
+			@foreach (var order in orders)
+			{
+				@foreach (var detail in order.OrderDetails)
+				{
+					<tr>
+						<td style="font:bold">@detail.Id</td>
+						<td>@order.Date.ToString("G")</td>
+						<td>@order.User.Id</td>
+						<td>@order.User.Name</td>
+						<td>@detail.FigureId</td>
+						<td>@detail.Figure.ProductName</td>
+						<td>@detail.Figure.Price</td>
+						<td>@detail.Quantity</td>
+						<td style="color:crimson">@((detail.Figure.Price * detail.Quantity).ToString("#,##0"))₫</td>
+					</tr>
+				}
+				}
+			}
         </table>
     </div>
 </div>
 @code {
 	private BarConfig barConfig = new BarConfig();
 	private int _year;
+	private List<Order>? orders = null;
+	private long total;
 
 	protected override async Task OnInitializedAsync()
 	{
@@ -88,23 +110,23 @@
                     Responsive = true
             };
 
+		orders = await context.Orders.Where(o => o.Date.Year == _year).Include(o => o.User).Include(o => o.OrderDetails).ThenInclude(o => o.Figure).OrderBy(o => o.Date).ToListAsync();
 
 		var rev = await (from o in context.Orders.Where(o => o.Date.Year == _year).Include(o => o.OrderDetails).ThenInclude(o => o.Figure)
 							group o by o.Date.Month into g
 							select new {Month = g.Key, Rev = g.SelectMany(o => o.OrderDetails).Sum(od => (long)od.Figure.Price * od.Quantity)}).ToListAsync();
-
-		if (rev.Count < 12)
+		total = rev.Select(r => r.Rev).Sum();
+		var x = new List<long>();
+		for (int i =1; i <= 12; i++)
 		{
-			for (int i =1; i <= 12; i++)
+			if (rev.Find(r => r.Month == i) == null)
 			{
-				if (rev.Find(r => r.Month == i) == null)
-				{
-					rev.Add(new { Month = i, Rev = (long)0 });
-				}
+				x.Add(0);
 			}
+			else x.Add(rev.Find(r => r.Month == i).Rev);
 		}
 
-		var dataset = new BarDataset<long>(rev.Select(r => r.Rev))
+		var dataset = new BarDataset<long>(x)
 		{
             Label = "Bảng doanh thu",
             BackgroundColor = new[]

@@ -120,6 +120,11 @@ img {
 .product_thumb:hover .product_img {
   filter: opacity(70%);
 }
+.product_thumb > a > img {
+  min-height: 400px;
+  max-height: 400px;
+  object-fit: contain;
+}
 .page_navigate_ctn {
   height: 50px;
   width: 100%;

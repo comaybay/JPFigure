@@ -166,7 +166,7 @@
 			OrderNewest = Order != null && Order == "asc" ? false : true,
 		};
 
-		figures = await FigureRepository.GetScaleFigures(filter, Math.Max(1, Page), 8);
+		figures = await FigureRepository.GetScaleFigures(filter, Math.Max(1, Page), 12);
 	}
 
 	/// Áp dụng filter để tìm figure, gọi hàm này khi có thay đổi về lựa chọn lọc hay lựa chọn sắp xếp
